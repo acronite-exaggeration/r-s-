@@ -274,7 +274,7 @@ function genX() {
     });
   }
 
-  for (let i = var2; i < l2; i+= CW*0.4 + flor(300)) {
+  for (let i = var2; i < l2; i+= CW/4 + var1 + flor(300)) {
     const topp = rand() < 0.5;
     const robs = obi[flor(obi.length)];
     const scaler = var1/robs.naturalHeight;
