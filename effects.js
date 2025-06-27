@@ -47,16 +47,15 @@ let advanceAF = null;
 
 function doAdv() {
   if (advanceAF) return;
-  on('advance');
 
   function ina() {
     if (showAdvance) {
-      gamePaused ? off('advance') : on('advance');
+      ele('advance').style.display = gamePaused ? 'none' : 'block';
       const visible = Math.floor(Date.now() / 400) % 2 === 0;
       ele('advance').style.opacity = visible ? '1' : '0';
     } else {
       cancelAnimationFrame(advanceAF);
-      off('advance');
+      ele('advance').style.display = 'none';
     }
     advanceAF = requestAnimationFrame(ina);
   }
