@@ -124,7 +124,7 @@ const instructions = [
 
 
 const about = [
-  ["This game was designed and developed by <strong>Anthony Masih</strong>.", "This is the first ever game that I developed", "All my basics and imagination are here... Enjoy!"],
+  ["This game was designed and developed by <strong>Acronite Monsta</strong>.", "This is the first ever game that I developed", "All my basics and imagination are here... Enjoy!"],
   ["Brought to you by <strong>Exaggeration</strong> gaming studio...", "Passionate about games, code, and creativity.. Hope you enjoy playing!", "Feel free to share feedback & have fun 🎮"],
   ["Games often play a great role in <strong>Entertainment</strong>", "My Homeland and Nature has no artificial competitors!", "But still games have their own place in each of us...", "<strong>EXAGGERATION</strong>"],
 ]
