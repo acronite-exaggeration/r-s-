@@ -11,6 +11,7 @@ html, body {
 }
 
 canvas {
+    position: absolute;
     display: block;
     margin: 0;
     top: 0;
