@@ -117,7 +117,9 @@ function gEnd() {
   off('gameCanvasX');
   off('gameOver');
   off('sidebar');
-  ele('gameCanvasX').classList.remove("blur");
+  setTimeout(() => {
+    ele('gameCanvasX').classList.remove("blur");
+  },500);
   on('endu');
   setTimeout(() => {on('enduBtn',2)}, 2000);
 }
@@ -127,7 +129,9 @@ function ends() {
   off('gameCanvasX');
   off('gameOver');
   off('sidebar');
-  ele('gameCanvasX').classList.remove("blur");
+  setTimeout(() => {
+    ele('gameCanvasX').classList.remove("blur");
+  },500);
   off('dark');
   off('endu');
   off('enduBtn');
