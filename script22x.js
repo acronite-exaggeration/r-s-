@@ -589,7 +589,7 @@ function genX() {
   
   for (let i = 0; i < l2/10; i++) {
     crystals.push({
-      x: rand(l2 + 5000),
+      x: rand(l2 + CW*3.5),
       y: 0.36 + rand(0.32),
       radius: 1,
       color: cryCol[flor(cryCol.length)],
