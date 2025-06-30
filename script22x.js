@@ -156,7 +156,7 @@ function showPopup(msg = "Popup!", dura = 2500) {
     const div = document.createElement('div');
     div.id = 'popupContainer';
     div.style.position = 'fixed';
-    div.style.top = '20px';
+    div.style.top = '30px';
     div.style.left = '50%';
     div.style.transform = 'translateX(-50%)';
     div.style.zIndex = '9999999';
