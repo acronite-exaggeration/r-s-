@@ -4,7 +4,7 @@
 const statUp = imgload("others/statup.jpg");
 const statDown = imgload("others/statdown.jpg");
 
-const stat = { x: ending+2000 , rtx: false , plot: 0 , };
+const stat = { x: ending , rtx: false , plot: 0 , };
 
 
 function doStat(xgr, lll, kkk) {
@@ -55,7 +55,7 @@ function doBoardz(x, kkk, ww=0) {
   const pilY = kkk * 0.3;
   const pilWidth = kkk/40;
   const pilHeight = kkk/20;
-  const popos = ww === 0 ? "Safe Area →" : "Challenge Begins →";
+  const popos = ww === 0 ? "Safe Area ❯❯❯" : "Challenge Begins ❯❯❯";
 
   ctx.fillStyle = "#201000";
   ctx.fillRect(x - pilWidth/2, pilY, pilWidth, pilHeight);
@@ -383,7 +383,7 @@ function crashMrs(xgr, spx) {
 // STATION COLLISION...
 
 function crashStat(xgr) {
-  if (xgr < stat.x - 200 || stat.rtx) return;
+  if (xgr < stat.x - train.width || stat.rtx) return;
 
   stat.rtx = true;
   showPopup("😤 Saving the Checkpoint...! 🚉");
@@ -534,21 +534,21 @@ function update(timestamp) {
   handleSpeed(camx, deltaT, topo, eepo);
 
   doBg(camx, topo, hopo);
-  doArea(camx, topo, eepo+5000, hopo);
+  doArea(camx, topo, eepo + topo*1.5, hopo);
   doItems(camx, topo, hopo);
   doStat(camx, topo, hopo);
 
-  if (camx < topo * 4) doBoardz(topo*2.7 - camx, hopo, 1);
-  if (camx > eepo - topo*3.5) doBoardz(eepo - topo*1.7 - camx, hopo);
+  if (camx < topo * 4.5) doBoardz(topo*2.7 - camx, hopo, 1);
+  if (camx > eepo - topo*4) doBoardz(eepo - topo*1.7 - camx, hopo);
 
   diesel ? doSmoke(camx) : doSparks();
   doTrt(traintime);
   doMrs(camx);
 
-  if (camx < topo * 1.5) doPlot(600 - camx, hopo);
-  if (camx > eepo) doPlot(stat.x + 300 - camx, hopo, 1);
+  if (camx < topo * 2) doPlot(topo/2 - camx, hopo);
+  if (camx > eepo - topo*1.5) doPlot(stat.x + topo/2 - camx, hopo, 1);
 
-  progression(reach, eepo+2000);
+  progression(reach, eepo);
   crashMrs(camx, deltaT);
   crashOb(camx);
   crashStat(camx);
@@ -568,15 +568,15 @@ function reUpdate(allowed, reas, ax, bx, esc) {
     ctx.clearRect(0, 0, topo, hopo);
     
     doBg(camx, topo, hopo);
-    doArea(camx, topo, eepo+5000, hopo);
+    doArea(camx, topo, eepo + topo*1.5, hopo);
     doItems(camx, topo, hopo);
     doStat(camx, topo, hopo);
 
     if (camx < topo * 4) doBoardz(topo*2.7 - camx, hopo, 1);
     if (camx > eepo - topo*3.5) doBoardz(eepo - topo*1.7 - camx, hopo);
     doMrs(camx);
-    if (camx < topo * 1.5) doPlot(600 - camx, hopo);
-    if (camx > eepo) doPlot(stat.x + 300 - camx, hopo, 1);
+    if (camx < topo * 1.5) doPlot(topo/2 - camx, hopo);
+    if (camx > eepo - topo*1.5) doPlot(stat.x + topo/2 - camx, hopo, 1);
 
     doExp(ax, bx, esc);
     allowed--;
