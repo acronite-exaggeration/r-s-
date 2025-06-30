@@ -582,12 +582,12 @@ function genX() {
   const var2 = CW * 3;
   const var3 = CH/10;
   const var4 = CH/14;
-  const l2 = ending - 2000;
+  const l2 = ending - CW*2;
   crystals = [];
   obstacles = [];
   gpBlocks = [];
   
-  for (let i = 0; i < l2/12; i++) {
+  for (let i = 0; i < l2/10; i++) {
     crystals.push({
       x: rand(l2 + 5000),
       y: 0.36 + rand(0.32),
