@@ -130,6 +130,7 @@ function ends() {
   ele('gameCanvasX').classList.remove("blur");
   off('dark');
   off('endu');
+  off('enduBtn');
   setTimeout(() => on('menuxBtn',2), 2000);
 }
 
