@@ -23,7 +23,7 @@ function loadCp() {
   requirement = 50;
   monsterSpeed = monsterBase;
   monsterCount = 0;
-  mono = 0.9;
+  mono = 1;
   gamePaused = false;
   gameRunning = true;
   crash = false;
@@ -363,7 +363,7 @@ function genSmoke(xgr) {
     speedX: rand() - 0.5,
     speedY: -rand(),
     expand: 0.05,
-    color: rand() < 0.5 ? (rand() < 0.5 ? "#000" : "#222") : (rand() < 0.5 ? "#444" : "#666"),
+    color: rand() < 0.5 ? (rand() < 0.5 ? "#111" : "#444") : (rand() < 0.5 ? "#777" : "#aaa"),
   });
 }
 
@@ -466,14 +466,14 @@ function doSparks() {
 
 const expImg = imgload("others/explosion.png");
 const boom = new Audio("explode.mp3");
-let mono = 0.9;
+let mono = 1;
 
 
 function doExp(x, y, es) {
   let fol = es*mono;
   let sol = es*(1-mono);
   ctx.drawImage(expImg, x + sol/2 , y + sol/2 , fol , fol );
-  mono += 0.003;
+  mono += 0.0025;
 }
 
 
@@ -579,7 +579,8 @@ function collects() {
 
 function genX() {
   const var1 = CH/7;
-  const var2 = CW * 3;
+  const varx = train.width + var1 + 30;
+  const var2 = CW*3;
   const var3 = CH/10;
   const var4 = CH/14;
   const l2 = ending - CW*2;
@@ -589,14 +590,14 @@ function genX() {
   
   for (let i = 0; i < l2/10; i++) {
     crystals.push({
-      x: rand(l2 + CW*3.5),
+      x: rand(l2 + CW*3.3),
       y: 0.36 + rand(0.32),
       radius: 1,
       color: cryCol[flor(cryCol.length)],
     });
   }
 
-  for (let i = var2; i < l2; i+= CW*0.27 + var1 + flor(300)) {
+  for (let i = var2; i < l2; i+= varx + flor(300)) {
     const topp = rand() < 0.5;
     const robs = obi[flor(obi.length)];
     const scaler = var1/robs.naturalHeight;
