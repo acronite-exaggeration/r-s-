@@ -33,7 +33,7 @@ function doPlot(x, kkk, p = 0) {
   ctx.fillStyle = "#111";
   ctx.fillRect(x, boardY, boardWidth, boardHeight);
 
-  ctx.strokeStyle = "#fff";
+  ctx.strokeStyle = "#ccc";
   ctx.lineWidth = 4;
   ctx.strokeRect(x, boardY, boardWidth, boardHeight);
 
@@ -55,7 +55,7 @@ function doBoardz(x, kkk, ww=0) {
   const pilY = kkk * 0.3;
   const pilWidth = kkk/40;
   const pilHeight = kkk/20;
-  const popos = ww === 0 ? "Safe Area ❯❯❯" : "Challenge Begins ❯❯❯";
+  const popos = ww === 0 ? "Safe Area  ❯❯❯" : "Challenge Begins  ❯❯❯";
 
   ctx.fillStyle = "#201000";
   ctx.fillRect(x - pilWidth/2, pilY, pilWidth, pilHeight);
@@ -63,7 +63,7 @@ function doBoardz(x, kkk, ww=0) {
   ctx.fillStyle = "#111";
   ctx.fillRect(x - boardWidth/2, boardY, boardWidth, boardHeight);
 
-  ctx.strokeStyle = "#fff";
+  ctx.strokeStyle = "#ccc";
   ctx.lineWidth = 4;
   ctx.strokeRect(x - boardWidth/2, boardY, boardWidth, boardHeight);
 
@@ -332,8 +332,15 @@ function crashOb(xgr) {
     if (
       train.x < obSX + ob.width &&
       train.x + train.width > obSX &&
-      train.top === ob.t
+      train.top === ob.t && !crash
     ) {
+      const mons = rand() < 0.5;
+      monsta = {
+        x: xgr + CW*0.9,
+        y: mons ? k : l,
+        speed: monsterSpeed,
+        mt: mons,
+      };
       crash = true;
       fadeOutMusic();
       boom.play();
@@ -360,8 +367,9 @@ function crashMrs(xgr, spx) {
     if (
       train.x < mrSX + train.height &&
       train.x + train.width > mrSX &&
-      train.top === monsta.mt
+      train.top === monsta.mt && !crash
     ) {
+      monsta.x = xgr + CW*0.9;
       crash = true;
       fadeOutMusic();
       boom.play();
@@ -481,12 +489,13 @@ let timer = 400;
 let kb = 0;
 let lastly = 0;
 let traintime = 0;
+let spawner = 20;
 
 
 function hyper(timez,xgr) {
   if (timez - lasttime > timer) {
     const pyro = Math.abs(speedX);
-    pyro < 4 ? timer = (rand() > 0.5 ? 400 : 700) : (pyro < 7.5 ? timer = 300 : (pyro < 10.5 ? timer = 200 : timer = 100));
+    pyro < 4 ? timer = (rand() > 0.5 ? 400 : 700) : (pyro < 7.5 ? timer = 250 : (pyro < 10.5 ? timer = 160 : timer = 80));
 
     diesel ? genSmoke(xgr) : genSpark(pyro);
     lasttime = timez;
@@ -499,9 +508,10 @@ function hyper(timez,xgr) {
     if (!challenge) return;
     kb++;
 
-    if (kb > 25) {
+    if (kb > spawner) {
       spawnMonster();
       kb = 0;
+      spawner = 20 + flor(12);
     }
   }
 }
@@ -534,19 +544,19 @@ function update(timestamp) {
   handleSpeed(camx, deltaT, topo, eepo);
 
   doBg(camx, topo, hopo);
-  doArea(camx, topo, eepo + topo*1.5, hopo);
+  doArea(camx, topo, eepo + topo*1.7, hopo);
   doItems(camx, topo, hopo);
   doStat(camx, topo, hopo);
 
-  if (camx < topo * 4.5) doBoardz(topo*2.7 - camx, hopo, 1);
-  if (camx > eepo - topo*4) doBoardz(eepo - topo*1.7 - camx, hopo);
+  if (camx < topo * 4) doBoardz(topo*2.7 - camx, hopo, 1);
+  if (camx > eepo - topo*3.5) doBoardz(eepo - topo*1.7 - camx, hopo);
 
   diesel ? doSmoke(camx) : doSparks();
   doTrt(traintime);
   doMrs(camx);
 
-  if (camx < topo * 2) doPlot(topo/2 - camx, hopo);
-  if (camx > eepo - topo*1.5) doPlot(stat.x + topo/2 - camx, hopo, 1);
+  if (camx < topo * 1.7) doPlot(topo/2 - camx, hopo);
+  if (camx > eepo - topo) doPlot(stat.x + topo/2 - camx, hopo, 1);
 
   progression(reach, eepo);
   crashMrs(camx, deltaT);
@@ -568,15 +578,15 @@ function reUpdate(allowed, reas, ax, bx, esc) {
     ctx.clearRect(0, 0, topo, hopo);
     
     doBg(camx, topo, hopo);
-    doArea(camx, topo, eepo + topo*1.5, hopo);
+    doArea(camx, topo, eepo + topo*1.7, hopo);
     doItems(camx, topo, hopo);
     doStat(camx, topo, hopo);
 
     if (camx < topo * 4) doBoardz(topo*2.7 - camx, hopo, 1);
     if (camx > eepo - topo*3.5) doBoardz(eepo - topo*1.7 - camx, hopo);
     doMrs(camx);
-    if (camx < topo * 1.5) doPlot(topo/2 - camx, hopo);
-    if (camx > eepo - topo*1.5) doPlot(stat.x + topo/2 - camx, hopo, 1);
+    if (camx < topo * 1.7) doPlot(topo/2 - camx, hopo);
+    if (camx > eepo - topo) doPlot(stat.x + topo/2 - camx, hopo, 1);
 
     doExp(ax, bx, esc);
     allowed--;
