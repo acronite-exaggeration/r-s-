@@ -53,7 +53,7 @@ function off(id) {
 
 // IMAGE LOADINGS...
 
-let bgImg, trainImg, monsterImg;
+let bgImg, trainImg, trainscale, monsterImg;
 
 const backx = [
   imgload("bgis/backg000.jpg"),
@@ -127,7 +127,7 @@ const about = [
   ["This game was designed and developed by <strong>Acronite Monsta</strong>.", "This is the first ever game that I developed", "All my basics and imagination are here... Enjoy!"],
   ["Brought to you by <strong>Exaggeration</strong> gaming studio...", "Passionate about games, code, and creativity.. Hope you enjoy playing!", "Feel free to share feedback & have fun 🎮"],
   ["Games often play a great role in <strong>Entertainment</strong>", "My Homeland and Nature has no artificial competitors!", "But still games have their own place in each of us...", "<strong>EXAGGERATION</strong>"],
-]
+];
 
 
 let page = 0;
@@ -236,6 +236,8 @@ function usage(imgElement) {
   } else if (skin === 2) {
     trainImg = trainx[rank-1];
     diesel = rank % 2 === 1;
+    trainscale = diesel ? 3.1 : 2.6;
+    train.width = train.height * trainscale;
 
   } else if (skin === 3) {
     monsterImg = monsterx[rank-1];
