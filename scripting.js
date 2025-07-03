@@ -1260,7 +1260,7 @@ function genX() {
   
   for (let i = 0; i < l2/10; i++) {
     crystals.push({
-      x: rand(l2 + CW*3.3),
+      x: rand(ending + CW*2),
       y: 0.36 + rand(0.32),
       radius: 1,
       color: cryCol[flor(cryCol.length)],
@@ -1282,7 +1282,7 @@ function genX() {
     });
   }
 
-  for (let i = var2; i < l2; i+= CW/20 + flor(500)) {
+  for (let i = var2; i < l2; i+= 80 + flor(500)) {
     gpBlocks.push({
       x: i,
       y: 0.42 + flor(0.18),
