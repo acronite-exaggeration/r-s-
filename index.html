@@ -1,3 +1,5 @@
+<!-- EXAGGERATION ================================================================================================= EXAGGERATION -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +21,7 @@
 
 <div id="studioIntro" style="display:none;">
   <h1>EXAGGERATION</h1>
-  <h4>Appear Huge at all Times...</h4>
+  <h4>Expressing in Huge Form...</h4>
 </div>
 
 <div id="menu" style="display:none;">
@@ -33,7 +35,7 @@
 </div>
 
 <div id="settings" class="bords">
-  <div style="display:flex; flex-direction:column; align-items:center; position: absolute; top: 5%; left: 50%; width: 50%; transform: translateX(-50%); gap:15px; background: #333; padding: 20px; border: 10px solid #000; border-radius: 10px; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+  <div class="infoX" style="display:flex; flex-direction:column; align-items:center; gap:15px;">
     <button class="btnXX" style="background-color: #9700c1; border: 5px solid #36005d;" onclick="on('trSkin')">Train Skins</button>
     <button class="btnXX" style="background-color: #0b9963; border: 5px solid #002819;" onclick="on('speed')">Train Speed</button>
     <button class="btnXX" style="background-color: #4b00b5; border: 5px solid #1b023f;" onclick="on('mrSkin')">Monster Skins</button>
@@ -45,48 +47,54 @@
   </div>
 </div>
 
-<div id="bgSkin" class="skinX">
-  <h2 style="font-size: 4rem;">Choose Your Dimension</h2>
-  <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:40px;">
-    <img src="bgis/backg000.jpg" rank="1" skin="1" onclick="usage(this)">
-    <img src="bgis/backg111.jpg" rank="2" skin="1" onclick="usage(this)">
-    <img src="bgis/backg222.jpg" rank="3" skin="1" onclick="usage(this)">
-    <img src="bgis/backg333.jpg" rank="4" skin="1" onclick="usage(this)">
-    <img src="bgis/backg444.jpg" rank="5" skin="1" onclick="usage(this)">
-    <img src="bgis/backg-x.jpg" rank="0" skin="4" onclick="usage(this)">
+<div id="bgSkin" class="bords">
+  <div class="infoX" style="height:75%; overflow-y:auto;">
+    <h2 style="font-size: 4rem;">Choose Your Dimension</h2>
+    <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:40px;">
+      <img src="bgis/backg000.jpg" rank="1" skin="1" onclick="usage(this)">
+      <img src="bgis/backg111.jpg" rank="2" skin="1" onclick="usage(this)">
+      <img src="bgis/backg222.jpg" rank="3" skin="1" onclick="usage(this)">
+      <img src="bgis/backg333.jpg" rank="4" skin="1" onclick="usage(this)">
+      <img src="bgis/backg444.jpg" rank="5" skin="1" onclick="usage(this)">
+      <img src="bgis/backg-x.jpg" rank="0" skin="4" onclick="usage(this)">
+    </div>
+    <button class="inBtn" style="right:2%" onclick="off('bgSkin')">❌</button>
   </div>
-  <button class="inBtn" style="right:2%" onclick="off('bgSkin')">❌</button>
 </div>
 
-<div id="trSkin" class="skinX">
-  <h2 style="font-size: 4rem;">Choose Train Skin</h2>
-  <div style="display:flex; flex-direction: column; gap:30px; align-items:center;">
-    <img src="highs/train-x.png" rank="1" skin="2" onclick="usage(this)" style="width:80%;">
-    <img src="highs/train-e.png" rank="2" skin="2" onclick="usage(this)" style="width:80%;">
-    <img src="highs/train-x111.png" rank="3" skin="2" onclick="usage(this)" style="width:80%;">
-    <img src="highs/train-e111.png" rank="4" skin="2" onclick="usage(this)" style="width:80%;">
-    <img src="highs/train-x222.png" rank="5" skin="2" onclick="usage(this)" style="width:80%;">
-    <img src="highs/train-e222.png" rank="6" skin="2" onclick="usage(this)" style="width:80%;">
+<div id="trSkin" class="bords">
+  <div class="infoX" style="height:75%; overflow-y:auto;">
+    <h2 style="font-size: 4rem;">Choose Train Skin</h2>
+    <div style="display:flex; flex-direction: column; gap:30px; align-items:center;">
+      <img src="highs/train-x.png" rank="1" skin="2" onclick="usage(this)" style="width:80%;">
+      <img src="highs/train-e.png" rank="2" skin="2" onclick="usage(this)" style="width:80%;">
+      <img src="highs/train-x111.png" rank="3" skin="2" onclick="usage(this)" style="width:80%;">
+      <img src="highs/train-e111.png" rank="4" skin="2" onclick="usage(this)" style="width:80%;">
+      <img src="highs/train-x222.png" rank="5" skin="2" onclick="usage(this)" style="width:80%;">
+      <img src="highs/train-e222.png" rank="6" skin="2" onclick="usage(this)" style="width:80%;">
+    </div>
+    <button class="inBtn" style="right:2%" onclick="off('trSkin')">❌</button>
   </div>
-  <button class="inBtn" style="right:2%" onclick="off('trSkin')">❌</button>
 </div>
 
-<div id="mrSkin" class="skinX">
-  <h2 style="font-size: 4rem;">Choose Monster Skin</h2>
-  <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:40px;">
-    <img src="highs/monster000.png" rank="1" skin="3" onclick="usage(this)">
-    <img src="highs/monster111.png" rank="2" skin="3" onclick="usage(this)">
-    <img src="highs/monster222.png" rank="3" skin="3" onclick="usage(this)">
-    <img src="highs/monster333.png" rank="4" skin="3" onclick="usage(this)">
-    <img src="highs/monster444.png" rank="5" skin="3" onclick="usage(this)">
-    <img src="highs/monster-x.png" rank="6" skin="3" onclick="usage(this)">
+<div id="mrSkin" class="bords">
+  <div class="infoX" style="height:75%; overflow-y:auto;">
+    <h2 style="font-size: 4rem;">Choose Monster Skin</h2>
+    <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:40px;">
+      <img src="highs/monster000.png" rank="1" skin="3" onclick="usage(this)">
+      <img src="highs/monster111.png" rank="2" skin="3" onclick="usage(this)">
+      <img src="highs/monster222.png" rank="3" skin="3" onclick="usage(this)">
+      <img src="highs/monster333.png" rank="4" skin="3" onclick="usage(this)">
+      <img src="highs/monster444.png" rank="5" skin="3" onclick="usage(this)">
+      <img src="highs/monster-x.png" rank="6" skin="3" onclick="usage(this)">
+    </div>
+    <button class="inBtn" style="right:2%" onclick="off('mrSkin')">❌</button>
   </div>
-  <button class="inBtn" style="right:2%" onclick="off('mrSkin')">❌</button>
 </div>
 
 <div id="speed" class="bords">
   <div class="infoX" style="color:#2165e3;">
-    <h1>Choose the train speed</h1>
+    <h1>Choose Train Speed</h1>
     <h2>More Speed, means Sharp Reflexes...!</h2>
     <div style="margin-top:20px; display:flex; gap:20px; justify-content:center;">
       <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="editz(1,7)">Slow</button>
@@ -100,9 +108,9 @@
 
 <div id="diff" class="bords">
   <div class="infoX" style="color:#8a38fd;">
-    <h1>Choose the monster difficulty</h1>
-    <h2>You have to face the monster - No Practice Mode!</h2>
-    <h2>Monster troubles more in higher Difficulty modes!</h2>
+    <h1>Choose Monster Difficulty</h1>
+    <h2>You must face the monster - No Practice Mode!</h2>
+    <h2>Monster troubles more in higher Difficulties!</h2>
     <div style="margin-top:20px; display:flex; gap:20px; justify-content:center;">
       <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="editz(5,7)">Easy</button>
       <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="editz(6,7)">Normal</button>
@@ -114,7 +122,7 @@
 </div>
 
 <div id="modal" class="bords">
-  <div class="infoX" style="color:#c1c0c0; gap:10px; position:relative;">
+  <div class="infoX" style="gap:10px; position:relative;">
     <div id="headi"></div>
     <div id="content" style="min-height: 300px; margin-top: 10px;"></div>
     <button id="previous" class="sphXX" style="bottom:20px; left:20px;" onclick="pasting()">⮜</button>
@@ -125,7 +133,7 @@
 
 <div id="reset" class="bords">
   <div class="infoX" style="color:#d00202;">
-    <h1>Reset Game?</h1>
+    <h1>Reset Game...?</h1>
     <h3>Do you want to reset your checkpoint and start fresh?</h3>
     <h3>After reset you cannot recover your saved data...!</h3>
     <h3>Default removes all the selected skins & other settings!</h3>
@@ -134,13 +142,12 @@
       <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="delCp(2)">Default</button>
       <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="delCp(5)">Cancel</button>
     </div>
-    <button class="inBtn" onclick="off('reset')" style="right:2%;">❌</button>
   </div>
 </div>
 
 <div id="fpsc" class="bords">
   <div class="infoX" style="color:#d00202;">
-    <h1>FPS Meter</h1>
+    <h1>FPS - Meter</h1>
     <h3>Want to enable or disable FPS counter?</h3>
     <h3>You will be able to see FPS during gameplay...!</h3>
     <div style="margin-top:20px; display:flex; gap:20px; justify-content:center;">
@@ -169,16 +176,21 @@
   <button class="btnXX" style="background-color: #a90000; border: 5px solid #5d0000;" onclick="gEnd()">End</button>
 </div>
 
+<img id="extraLife" src="others/life.png">
+
 <div id="envy" style="display:none;">
-  <div id="progressContainer">
-    <div id="progressBar"></div>
-  </div>
 
-  <div id="score"></div>
-  <div id="runnerScore"></div>
+  <div id="progi" style="display:none">
+    <div id="progressContainer">
+      <div id="progressBar"></div>
+    </div>
 
-  <div id="trackingContainer">
-    <div id="tracking">🚂</div>
+    <div id="score"></div>
+    <div id="runnerScore"></div>
+
+    <div id="trackingContainer">
+      <div id="tracking">🚂</div>
+    </div>
   </div>
 
   <button class="sphXX" id="lefter" style="bottom:8%; left:8%;">⮜</button>
@@ -212,17 +224,17 @@
   <div id="bg1" class="bg-layer"></div>
   <div id="bg2" class="bg-layer"></div>
   <div id="storyText"></div>
-  <button id="nextBtn" class="btnXX" style="background-color: #9b4600; border: 5px solid #492100; z-index: 1000;">NEXT</button>
+  <button id="nextBtn" class="btnXX" style="background-color: #9b4600; border: 5px solid #492100; z-index: 1000;" onclick="storyNext()">NEXT</button>
   <button id="skipBtn" class="btnXX" style="background-color: #a50000; border: 5px solid #450000; z-index: 1000;" onclick="stoppp()">SKIP</button>
 </div>
 
 <button id="advance" onclick="adv()">ADVANCE</button>
 
-<script src="script11x.js"></script>
 
-<script src="script22x.js"></script>
 
-<script src="script33x.js"></script>
+<script src="scripting.js"></script>
 
 </body>
 </html>
+
+<!-- EXAGGERATION ================================================================================================= EXAGGERATION -->
