@@ -319,7 +319,7 @@ function fadeInMusic(mus = true) {
             proto.volume = 1;
             clearInterval(fide);
         }
-    }, 20);
+    }, 15);
 }
 
 
