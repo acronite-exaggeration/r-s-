@@ -473,6 +473,19 @@ function checkOrientation() {
 }
 
 
+function goFullscreen() {
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+  off('fulBtn');
+}
+
+
 function resiz() {
     setViewportHeight();
     canvas.width =  window.innerWidth;
