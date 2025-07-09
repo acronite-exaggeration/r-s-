@@ -34,11 +34,11 @@ img {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: black;
     color: #ddd;
-    font-size: 2.5rem;
+    font-size: 5vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -46,6 +46,12 @@ img {
     z-index: 99999;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     letter-spacing: 4px;
+    animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { transform: scale(0.9); }
+    to { transform: scale(1); }
 }
 
 #menu {
@@ -62,20 +68,26 @@ img {
 
 .menuBtn {
     position: absolute;
-    left: 8%;
-    top: 15%;
+    left: 8vw;
+    top: 15vh;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 2vh;
 }
 
 .btnXX {
     padding: 6px 6px;
-    font-size: 8vh;
+    font-size: 5vh;
     border-radius: 10px;
     color: #eee;
     cursor: pointer;
     transition: all 0.3s ease;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
 }
 
 .btnXX:hover {
@@ -86,12 +98,12 @@ img {
 #advance {
     display: none;
     position: absolute;
-    font-size: 3rem;
+    font-size: 6vh;
     font-weight: 700;
-    bottom: 40%;
-    left: 50%;
-    width: 22%;
-    height: 12%;
+    bottom: 40vh;
+    left: 50vw;
+    width: 22vw;
+    height: 12vh;
     transform: translate(-50%, -50%);
     padding: 5px 5px;
     border: 8px solid #000000;
@@ -110,7 +122,7 @@ img {
     padding: 10px 20px;
     margin-top: 10px;
     border-radius: 12px;
-    font-size: 2.3rem;
+    font-size: 5vh;
     font-family: sans-serif;
     opacity: 0;
     transition: opacity 1s ease;
@@ -122,12 +134,12 @@ img {
 
 #score {
     position: fixed;
-    top: 1rem;
-    left: 1rem;
+    top: 2vh;
+    left: 1vw;
     padding: 7px 7px;
     border-radius: 12px;
     color: rgb(255, 0, 0);
-    font-size: 2.5rem;
+    font-size: 5vh;
     font-weight: 600;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background: rgba(0, 0, 0, 0.7);
@@ -135,10 +147,10 @@ img {
 
 #progressContainer {
     position: fixed;
-    top: 6rem;
-    left: 2%;
-    width: 16%;
-    height: 5%;
+    top: 12vh;
+    left: 1vw;
+    width: 16vw;
+    height: 5vh;
     overflow: hidden;
     background-color: #5b5a5a;
     border-radius: 100px;
@@ -154,11 +166,11 @@ img {
 
 #runnerScore {
     position: absolute;
-    top: 1rem;
-    left: 50%;
+    top: 2vh;
+    left: 50vw;
     padding: 7px 7px;
     transform: translateX(-50%);
-    font-size: 2.5rem;
+    font-size: 5vh;
     font-weight: 600;
     border-radius: 12px;
     background: rgba(0, 0, 0, 0.7);
@@ -169,20 +181,20 @@ img {
 
 #trackingContainer {
     position: fixed;
-    top: 17%;
-    left: 50%;
+    top: 17vh;
+    left: 50vw;
     transform: translateX(-50%);
-    width: 30%;
-    height: 1%;
+    width: 30vw;
+    height: 1vh;
     background-color: #ff0000;
     border-radius: 5px;
-    border: 5px solid #000;
+    border: 4px solid #000;
     z-index: 9999;
 }
 
 #tracking {
     position: absolute;
-    font-size: 3rem;
+    font-size: 6vh;
     top: 0;
     left: 0;
     transform: ScaleX(-1) translate(50%,-50%);
@@ -193,16 +205,22 @@ img {
 .sphXX {
     position: absolute;
     display: block;
-    width: 7.5rem;
-    height: 7.5rem;
+    width: 15vh;
+    height: 15vh;
     border: none;
     border-radius: 50%;
     background-color: #000000;
     color: #ddd;
-    font-size: 5rem;
+    font-size: 10vh;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
 }
 
 .sphXX:hover {
@@ -236,11 +254,11 @@ img {
 
 #sidebar {
     position: absolute;
-    top: 10%;
-    left: 50%;
+    top: 10vh;
+    left: 50vw;
     display: none;
     flex-direction: column;
-    gap: 30px;
+    gap: 2vh;
     padding: 20px;
     z-index: 999;
 }
@@ -255,8 +273,8 @@ img {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     z-index: 999;
     display: none;
@@ -267,8 +285,8 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: linear-gradient(45deg, #430b22, #204004, #0c5050, #15064b);
     z-index: 99999;
     justify-content: center;
@@ -276,16 +294,16 @@ img {
 }
 
 .infoX {
-    top: 10%;
-    left: 50%;
-    width: 80%;
+    top: 10vh;
+    left: 50vw;
+    width: 80vw;
     color: #bbb;
     transform: translateX(-50%);
     transition: all 0.3 ease;
     position: absolute;
     text-align: center;
     background: #222;
-    font-size: 2rem;
+    font-size: 4vh;
     padding: 20px;
     border: 10px solid #000;
     border-radius: 10px;
@@ -295,7 +313,7 @@ img {
 .inBtn {
     position: absolute;
     top: 4%;
-    font-size: 4rem;
+    font-size: 8vh;
     background: transparent;
     border: none;
     border-radius: 100%;
@@ -313,8 +331,8 @@ img {
     z-index: 9999999;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: #000000ee;
     justify-content: center;
     align-items: center;
@@ -324,7 +342,7 @@ img {
 
 .rotateText {
     color: #ddd;
-    font-size: 2.5rem;
+    font-size: 5vh;
     font-family: sans-serif;
     line-height: 1.5;
 }
@@ -333,16 +351,16 @@ img {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: linear-gradient(90deg, #771b1b, #7b5e14, #137413, #0f457f);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    gap: 20px;
-    padding: 40px;
+    gap: 2vh;
+    padding: 1vh;
     z-index: 99;
     border: 30px solid black;
     box-sizing: border-box;
@@ -350,7 +368,8 @@ img {
 
 .bg-layer {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     transition: opacity 1.5s ease;
@@ -362,7 +381,7 @@ img {
 
 #storyText {
     white-space: pre-wrap;
-    font-size: 3rem;
+    font-size: 6vh;
     font-weight: 600;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     max-width: 90%;
@@ -375,10 +394,10 @@ img {
 #extraLife {
   position: absolute;
   display: none;
-  top: 6rem;
-  left: 22%;
-  width: 3rem;
-  height: 3rem;
+  top: 12vh;
+  left: 22vw;
+  width: 6vh;
+  height: 6vh;
   transition: opacity 0.5s ease;
   opacity: 1;
   pointer-events: none;
