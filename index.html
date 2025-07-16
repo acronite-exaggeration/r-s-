@@ -19,12 +19,12 @@
     <div class="rotateText">Please rotate your device<br>to Landscape mode</div>
 </div>
 
+<button id="fulBtn" class="inBtn" style="right:2%; z-index:10000000; opacity:0.5; transition:all 0.3s ease, opacity 0.7s ease;" onclick="goFullscreen()">📺</button>
+
 <div id="studioIntro" style="display:none;">
     <h1>EXAGGERATION</h1>
     <h4>More than games, they are Exaggerations</h4>
 </div>
-
-<button id="fulBtn" class="inBtn" style="right:2%; z-index:10000000; opacity:0.5;" onclick="goFullscreen()">📺</button>
 
 <div id="menu" style="display:none;">
     <div id="menuxBtn" class="menuBtn" style="display:flex;">
@@ -37,7 +37,7 @@
 </div>
 
 <div id="settings" class="bords">
-    <div class="infoX" style="display:flex; flex-direction:column; align-items:center; gap:15px;">
+    <div class="infoX" style="display:flex; flex-direction:column; align-items:center; gap:2vh;">
         <button class="btnXX" style="background-color: #9700c1; border: 5px solid #36005d;" onclick="on('trSkin')">Train Skins</button>
         <button class="btnXX" style="background-color: #0b9963; border: 5px solid #002819;" onclick="on('speed')">Train Speed</button>
         <button class="btnXX" style="background-color: #4b00b5; border: 5px solid #1b023f;" onclick="on('mrSkin')">Monster Skins</button>
@@ -51,8 +51,8 @@
 
 <div id="bgSkin" class="bords">
     <div class="infoX" style="height:75%; overflow-y:auto;">
-        <h2 style="font-size: 4rem;">Choose Your Dimension</h2>
-        <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:40px;">
+        <h2 style="font-size: 8vh;">Choose Your Dimension</h2>
+        <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:5vh;">
             <img src="bgis/backg000.jpg" rank="1" skin="1" onclick="usage(this)">
             <img src="bgis/backg111.jpg" rank="2" skin="1" onclick="usage(this)">
             <img src="bgis/backg222.jpg" rank="3" skin="1" onclick="usage(this)">
@@ -66,8 +66,8 @@
 
 <div id="trSkin" class="bords">
     <div class="infoX" style="height:75%; overflow-y:auto;">
-        <h2 style="font-size: 4rem;">Choose Train Skin</h2>
-        <div style="display:flex; flex-direction: column; gap:30px; align-items:center;">
+        <h2 style="font-size: 8vh;">Choose Train Skin</h2>
+        <div style="display:flex; flex-direction: column; gap:5vh; align-items:center;">
             <img src="highs/train-x.png" rank="1" skin="2" onclick="usage(this)" style="width:80%;">
             <img src="highs/train-e.png" rank="2" skin="2" onclick="usage(this)" style="width:80%;">
             <img src="highs/train-x111.png" rank="3" skin="2" onclick="usage(this)" style="width:80%;">
@@ -81,8 +81,8 @@
 
 <div id="mrSkin" class="bords">
     <div class="infoX" style="height:75%; overflow-y:auto;">
-        <h2 style="font-size: 4rem;">Choose Monster Skin</h2>
-        <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:40px;">
+        <h2 style="font-size: 8vh;">Choose Monster Skin</h2>
+        <div style="display:flex; flex-wrap: wrap; justify-content:center; gap:5%; row-gap:5vh;">
             <img src="highs/monster000.png" rank="1" skin="3" onclick="usage(this)">
             <img src="highs/monster111.png" rank="2" skin="3" onclick="usage(this)">
             <img src="highs/monster222.png" rank="3" skin="3" onclick="usage(this)">
@@ -97,8 +97,8 @@
 <div id="speed" class="bords">
     <div class="infoX" style="color:#2165e3;">
         <h1>Choose Train Speed</h1>
-        <h2>More Speed, means Sharp Reflexes...!</h2>
-        <div style="margin-top:20px; display:flex; gap:20px; justify-content:center;">
+        <h3>More Speed, means Sharp Reflexes...!</h3>
+        <div style="margin-top:3vh; display:flex; gap:20vh; justify-content:center;">
             <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="editz(1,7)">Slow</button>
             <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="editz(2,7)">Medium</button>
             <button class="btnXX" style="background:#cd6d00; border: 5px solid #3c2000;" onclick="editz(3,7)">Fast</button>
@@ -111,8 +111,8 @@
 <div id="diff" class="bords">
     <div class="infoX" style="color:#8a38fd;">
         <h1>Choose Monster Difficulty</h1>
-        <h2>You must face the monster - No Practice Mode!</h2>
-        <h2>Monster troubles more in higher Difficulties!</h2>
+        <h3>You must face the monster - No Practice Mode!</h3>
+        <h3>Monster troubles more in higher Difficulties!</h3>
         <div style="margin-top:20px; display:flex; gap:20px; justify-content:center;">
             <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="editz(5,7)">Easy</button>
             <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="editz(6,7)">Normal</button>
@@ -124,9 +124,9 @@
 </div>
 
 <div id="modal" class="bords">
-    <div class="infoX" style="gap:10px; position:relative;">
+    <div class="infoX" style="gap:10px; position:relative; min-height:70vh;">
         <div id="headi"></div>
-        <div id="content" style="min-height: 300px; margin-top: 10px;"></div>
+        <div id="content" style="margin-top:10px;"></div>
         <button id="previous" class="sphXX" style="bottom:20px; left:20px;" onclick="pasting()"><img src="iconics/a-left.png" style="width:67%; transform:translateY(10%);"></button>
         <button id="next" class="sphXX" style="bottom:20px; right:20px;" onclick="nexting()"><img src="iconics/a-right.png" style="width:67%; transform:translateY(10%);"></button>
         <button class="inBtn" onclick="closing('modal')" style="right:2%;">❌</button>
@@ -142,8 +142,8 @@
         <div style="margin-top:20px; display:flex; gap:20px; justify-content:center;">
             <button class="btnXX" style="background:#a93d2a; border: 5px solid #562400;" onclick="delCp(1)">Reset</button>
             <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="delCp(2)">Default</button>
-            <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="delCp(5)">Cancel</button>
         </div>
+        <button class="inBtn" onclick="delCp(5)" style="right:2%;">❌</button>
     </div>
 </div>
 
@@ -171,7 +171,7 @@
     </div>
 </div>
 
-<div id="gameOver" style="display:none; flex-direction: column; font-size: 2rem; position: absolute; top:0; left:0; width:100%; height:100%; align-items:center; gap:15px; padding-top:10%; background:rgb(0, 0, 0); color:rgb(184, 0, 0); font-family: sans-serif;">
+<div id="gameOver">
     <div id="gameReason">GAME OVER</div>
     <button class="btnXX" style="background-color: #d7991d; border: 5px solid #8d6802;" onclick="ends()">Menu</button>
     <button id="continueBtn" class="btnXX" style="background-color: #007000; border: 5px solid #004400;" onclick="conCp()"></button>
@@ -179,6 +179,8 @@
 </div>
 
 <img id="extraLife" src="others/life.png">
+
+<div id="fpsx"></div>
 
 <div id="envy" style="display:none;">
 
