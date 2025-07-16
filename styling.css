@@ -44,7 +44,7 @@ img {
     justify-content: center;
     align-items: center;
     z-index: 99999;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui;
     letter-spacing: 4px;
     animation: fadeIn 1.5s ease-in-out forwards;
 }
@@ -58,7 +58,8 @@ img {
     position: absolute;
     width: 100vw;
     height: calc(var(--vh, 1vh) * 100);
-    background: url('bgis/menux.jpg') center/cover no-repeat;
+    background: url('bgis/menux.jpg') no-repeat;
+    background-size: 100vw 100vh;
     background-blend-mode: overlay;
     display: flex;
     flex-direction: column;
@@ -76,7 +77,7 @@ img {
 }
 
 .btnXX {
-    padding: 6px 6px;
+    padding: 1vh 1vh;
     font-size: 5vh;
     border-radius: 10px;
     color: #eee;
@@ -105,13 +106,13 @@ img {
     width: 22vw;
     height: 12vh;
     transform: translate(-50%, -50%);
-    padding: 5px 5px;
+    padding: 1vh 1vh;
     border: 8px solid #000000;
     border-radius: 10px;
     z-index: 99999;
     background-color: #ffae00;
     color: rgb(0, 0, 0);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui;
     transition: opacity 0.3 ease;
     cursor: pointer;
 }
@@ -119,8 +120,8 @@ img {
 .Popup {
     background: rgba(0, 0, 0, 0.7);
     color: #ddd;
-    padding: 10px 20px;
-    margin-top: 10px;
+    padding: 1vh 2vh;
+    margin-top: 1vh;
     border-radius: 12px;
     font-size: 5vh;
     font-family: sans-serif;
@@ -130,18 +131,19 @@ img {
     text-align: center;
     width: 50vw;
     max-width: 80vw;
+    gap: 2vh;
 }
 
 #score {
     position: fixed;
     top: 2vh;
     left: 1vw;
-    padding: 7px 7px;
+    padding: 1vh 1vh;
     border-radius: 12px;
     color: rgb(255, 0, 0);
     font-size: 5vh;
     font-weight: 600;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui;
     background: rgba(0, 0, 0, 0.7);
 }
 
@@ -154,7 +156,7 @@ img {
     overflow: hidden;
     background-color: #5b5a5a;
     border-radius: 100px;
-    border: 8px solid rgb(0, 0, 0);
+    border: 7px solid rgb(0, 0, 0);
 }
 
 #progressBar {
@@ -168,7 +170,7 @@ img {
     position: absolute;
     top: 2vh;
     left: 50vw;
-    padding: 7px 7px;
+    padding: 1vh 1vh;
     transform: translateX(-50%);
     font-size: 5vh;
     font-weight: 600;
@@ -176,7 +178,7 @@ img {
     background: rgba(0, 0, 0, 0.7);
     color: rgb(255, 221, 0);
     z-index: 10;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui;
 }
 
 #trackingContainer {
@@ -187,7 +189,7 @@ img {
     width: 30vw;
     height: 1vh;
     background-color: #ff0000;
-    border-radius: 5px;
+    border-radius: 7px;
     border: 4px solid #000;
     z-index: 9999;
 }
@@ -200,6 +202,35 @@ img {
     transform: ScaleX(-1) translate(50%,-50%);
     transition: left 0.1s linear;
     z-index: 10000;
+}
+
+#fpsx {
+    position: absolute;
+    display: none;
+    font-size: 3vh;
+    top: 1vh;
+    right: 1vw;
+    color: #eee;
+    z-index: 10000;
+    font-weight: 600;
+    font-family: system-ui;
+}
+
+#gameOver {
+    display:none;
+    flex-direction: column;
+    font-size: 4vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    gap: 2vh;
+    padding-top: 10vh;
+    background: #000;
+    color: rgb(184, 0, 0);
+    font-family: system-ui;
 }
 
 .sphXX {
@@ -242,8 +273,8 @@ img {
         color: #ddd;
         width: 100%;
         height: 100%;
-        padding: 50px;
-        font-size: 2rem;
+        padding: 4vh;
+        font-size: 5vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -259,7 +290,7 @@ img {
     display: none;
     flex-direction: column;
     gap: 2vh;
-    padding: 20px;
+    padding: 2vh;
     z-index: 999;
 }
 
@@ -304,10 +335,10 @@ img {
     text-align: center;
     background: #222;
     font-size: 4vh;
-    padding: 20px;
+    padding: 1vh;
     border: 10px solid #000;
     border-radius: 10px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui;
 }
 
 .inBtn {
@@ -337,7 +368,7 @@ img {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20px;
+    padding: 2vh;
 }
 
 .rotateText {
@@ -383,10 +414,10 @@ img {
     white-space: pre-wrap;
     font-size: 6vh;
     font-weight: 600;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui;
     max-width: 90%;
     line-height: 2;
-    margin-bottom: 30px;
+    margin-bottom: 3vh;
     z-index: 999;
     transition: color 2s ease;
 }
