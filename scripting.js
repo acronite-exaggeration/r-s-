@@ -29,9 +29,9 @@ function on(id, t) {
         el.style.display = t ? "flex" : "block";
 
         requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            el.style.opacity = 1;
-        });
+            requestAnimationFrame(() => {
+                el.style.opacity = 1;
+            });
         });
     },300);
 }
@@ -482,7 +482,6 @@ function goFullscreen() {
   } else if (elem.msRequestFullscreen) {
     elem.msRequestFullscreen();
   }
-  off('fulBtn');
 }
 
 
@@ -558,6 +557,22 @@ window.addEventListener("resize", () => {
     }, 100);
 });
 
+
+document.addEventListener('fullscreenchange', () => {
+    const isFull = document.fullscreenElement !== null;
+    if (isFull) {
+        off('fulBtn');
+    } else {
+        const ed = ele('fulBtn');
+        ed.style.opacity = 0;
+        ed.style.display = 'block';
+        requestAnimationFrame(() => {
+            ed.style.opacity = 0.5;
+        })
+    }
+});
+
+
 ['bgData','trData','mrData'].forEach(dtt => {
     const dtd = JSON.parse(gett(dtt));
     if (!dtd) return;
@@ -576,6 +591,7 @@ ele('sideBy').addEventListener("click", () => {
     ele('gameCanvasX').classList.toggle("blur");
     on('sidebar',1);
     on('dark');
+    off('fpsx');
     gamePaused = true;
     if (musicOn) fadeOutMusic();
 });
@@ -583,6 +599,7 @@ ele('sideBy').addEventListener("click", () => {
 
 function taskResume() {
     off('dark');
+    if (isfps) on('fpsx');
     off('sidebar');
     ele('gameCanvasX').classList.remove("blur");
     on('envy');
@@ -653,6 +670,7 @@ function loadCp() {
     offpro = false;
     genX();
     setLife(extralife);
+    if (isfps) on('fpsx');
     const sData = gett('trainGameCheckpoint');
 
     if (sData) {
@@ -777,7 +795,7 @@ function showPopup(msg = "Popup!", dura = 2500) {
         const div = document.createElement('div');
         div.id = 'popupContainer';
         div.style.position = 'fixed';
-        div.style.top = '30px';
+        div.style.top = '10vh';
         div.style.left = '50%';
         div.style.transform = 'translateX(-50%)';
         div.style.zIndex = '9999999';
@@ -903,7 +921,7 @@ function adv() {
 
 function electricBurst() {
     const centerX = train.x + train.width / 2;
-    const centerY = train.top ? k + train.height / 2 : l + train.height / 2;
+    const centerY = (train.top ? k : l) + train.height/2;
 
     let scale = 0;
     let opacity = 1.5;
@@ -977,9 +995,10 @@ function lifer() {
     localStorage.setItem('lifex', 'false');
     setLife(extralife);
     on('envy');
+    flash();
     setTimeout(() => {
         showPopup("🔥 Resurrection... 🔥");
-    },1000);
+    },800);
 }
 
 
@@ -1001,7 +1020,7 @@ const smokeParticles = [];
 
 function genSmoke(xgr) {
     smokeParticles.push({
-        x: xgr + train.width / 2,
+        x: xgr + train.width/2,
         y: train.top ? k : l,
         scale: 0.5 + rand(0.5),
         opacity: 1,
@@ -1032,7 +1051,7 @@ function doSmoke(xgr) {
             ctx.translate(p.x - xgr, p.y);
             ctx.rotate(p.rotation);
             const size = 64 * p.scale;
-            ctx.drawImage(smokeImg, -size / 2, -size / 2, size, size);
+            ctx.drawImage(smokeImg, -size/2, -size/2, size, size);
             ctx.restore();
             ctx.globalAlpha = 1;
         }
@@ -1094,19 +1113,20 @@ let exup = 0.002 * editx;
 let exuping = true;
 
 
-function doExp(es, dd=0) {
-    let fol = es*mono;
-    let sol = es*(1-mono);
-    const y = train.top ? k : l;
-    ctx.drawImage(expImg, train.x + sol/2 , y - train.width/2 + sol/2 , fol , fol );
+function doExp(es, dd = 0) {
+    const fol = es * mono;
+    const cx = train.x + train.width*0.6 - fol/2;
+    const cy = (train.top ? k : l) + train.height*0.8 - fol/2;
     
+    ctx.drawImage(expImg, cx, cy, fol, fol);
+
     if (dd === 0) {
         mono += exup;
     } else {
         if (exuping) {
             mono += exup;
         } else {
-            mono -= exup*5;
+            mono -= exup * 5;
         }
     }
 }
@@ -1118,27 +1138,21 @@ function doExp(es, dd=0) {
 // FPS BLOCK ============================================================================================================================================
 
 let isfps = gett('isfpsc') || true;
-let fps = 0;
 let frames = 0;
 let lastFpsUpdate = 0;
 
 
-function doFPS(timestamp, xgr) {
-    const e = editx;
+function doFPS(timef) {
     frames++;
-    const elapsed = timestamp - lastFpsUpdate;
+    const elapsed = timef - lastFpsUpdate;
 
-    if (elapsed >= 250) {
-        fps = ((frames * 1000) / elapsed).toFixed(1);
+    if (elapsed >= 300) {
+        const fps = ((frames * 1000) / elapsed).toFixed(1);
         frames = 0;
-        lastFpsUpdate = timestamp;
+        lastFpsUpdate = timef;
+        ele('fpsx').innerText = "FPS: " + fps;
     }
-
-    ctx.fillStyle = "#fff";
-    ctx.font = `${25 * e}px monospace`;
-    ctx.fillText("FPS:" + fps, xgr - 130 * e, 30 * e);
 }
-
 
 
 function showFPS() {
@@ -1155,10 +1169,10 @@ function showFPS() {
 function hideFPS() {
     if (isfps) {
         isfps = false;
+        localStorage.setItem('isfpsc',isfps);
         showPopup("FPS Meter is Disabled now...😎");
     } else {
         showPopup("Already Disabled... Time for the Gameplay..🔥");
-        localStorage.setItem('isfpsc',isfps);
     }
 }
 
@@ -1678,12 +1692,10 @@ function crashOb(xgr) {
             const obhh = ob.t ? k : l;
 
             if (!extralife) {
-                fadeOutMusic();
+                if (musicOn) fadeOutMusic();
                 gamePaused = true;
-
-                
+                off('fpsx');
                 reUpdate(180, 1);
-
                 const msg = cpop[flor(2)];
                 setTimeout(() => showPopup(msg), 1200);
             } else {
@@ -1731,9 +1743,10 @@ function crashMrs(xgr, spx) {
         monsta.speed = 0;
 
         if (!extralife) {
-            fadeOutMusic();
+            if (musicOn) fadeOutMusic();
             gamePaused = true;
             reUpdate(180, 2);
+            off('fpsx');
             const msg = cpop[flor(2)];
             setTimeout(() => showPopup(msg), 1200);
         } else {
@@ -2018,7 +2031,7 @@ function update(timestamp) {
     crashMrs(camx, deltaT);
     crashOb(camx);
     crashStat(camx);
-    if (isfps) doFPS(timestamp, topo);
+    if (isfps) doFPS(timestamp);
 
     if (stuck) doExp(hopo/2, 1);
 
