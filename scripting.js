@@ -474,7 +474,7 @@ function checkOrientation() {
 
 
 function goFullscreen() {
-  const elem = document.documentElement;
+  const elem = document.body;
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.webkitRequestFullscreen) {
@@ -560,10 +560,13 @@ window.addEventListener("resize", () => {
 
 document.addEventListener('fullscreenchange', () => {
     const isFull = document.fullscreenElement !== null;
+    const ed = ele('fulBtn');
     if (isFull) {
-        off('fulBtn');
+        ed.style.opacity = 0;
+        setTimeout(() => {
+            ed.style.display = 'none';
+        }, 800);
     } else {
-        const ed = ele('fulBtn');
         ed.style.opacity = 0;
         ed.style.display = 'block';
         requestAnimationFrame(() => {
