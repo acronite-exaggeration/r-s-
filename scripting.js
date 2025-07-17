@@ -482,7 +482,32 @@ function goFullscreen() {
   } else if (elem.msRequestFullscreen) {
     elem.msRequestFullscreen();
   }
+
+  requestAnimationFrame(setViewportHeight);
 }
+
+
+function fullx(opex = true) {
+    const ed = ele('fulBtn');
+
+    if (opex) {
+        ed.style.transition = 'none';
+        requestAnimationFrame(() => {
+            ed.style.opacity = 0;
+            ed.style.transition = 'all 0.3s ease, opacity 0.7s ease';
+            ed.style.display = 'block';
+            requestAnimationFrame(() => {
+                ed.style.opacity = 0.5;
+            })
+        })
+    } else {
+        ed.style.opacity = 0;
+        setTimeout(() => {
+            ed.style.display = 'none';
+        }, 800);
+    }
+}
+fullx();
 
 
 function resiz() {
@@ -560,18 +585,10 @@ window.addEventListener("resize", () => {
 
 document.addEventListener('fullscreenchange', () => {
     const isFull = document.fullscreenElement !== null;
-    const ed = ele('fulBtn');
     if (isFull) {
-        ed.style.opacity = 0;
-        setTimeout(() => {
-            ed.style.display = 'none';
-        }, 800);
+        fullx(false)
     } else {
-        ed.style.opacity = 0;
-        ed.style.display = 'block';
-        requestAnimationFrame(() => {
-            ed.style.opacity = 0.5;
-        })
+        fullx()
     }
 });
 
