@@ -556,8 +556,26 @@ y ? editz(+y) : editz(6);
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 
+function waitUntilNoRotateWarning() {
+  return new Promise(resolve => {
+    const check = () => {
+      const warning = ele("rotateWarning"); // or your actual ID
+      const isHidden = !warning || warning.style.display === "none";
+      if (isHidden) {
+        resolve();
+      } else {
+        setTimeout(check, 300); // check again in 300ms
+      }
+    };
+    check();
+  });
+}
+
+
 window.addEventListener("load", async () => {
     resiz();
+    await waitUntilNoRotateWarning();
+    
     await wait(1500);
 
     on('studioIntro', 2);
