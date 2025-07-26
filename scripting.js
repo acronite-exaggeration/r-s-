@@ -2148,10 +2148,14 @@ window.addEventListener("keyup", (e) => {
 ele("lefter").addEventListener("pointerdown",() => lefto = true);
 
 ele("lefter").addEventListener("pointerup", () => lefto = false);
+ele("lefter").addEventListener("pointerleave", () => lefto = false);
+ele("lefter").addEventListener("pointercancel", () => lefto = false);
 
 ele("righter").addEventListener("pointerdown", () => righto = true);
 
 ele("righter").addEventListener("pointerup", () => righto = false);
+ele("righter").addEventListener("pointerleave", () => righto = false);
+ele("righter").addEventListener("pointercancel", () => righto = false);
 
 ele("switcher").addEventListener("click", () => swicher());
 
