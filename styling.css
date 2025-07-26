@@ -14,13 +14,13 @@ html, body {
 html:-webkit-full-screen,
 body:-webkit-full-screen {
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
 }
 
 body:fullscreen {
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
 }
 
@@ -48,7 +48,7 @@ img {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     background-color: black;
     color: #ddd;
     font-size: 5vh;
@@ -237,7 +237,7 @@ img {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     align-items: center;
     gap: 2vh;
     padding-top: 10vh;
@@ -294,7 +294,7 @@ img {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     background: rgba(0, 0, 0, 0.8);
     z-index: 999;
     display: none;
@@ -306,7 +306,7 @@ img {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     background: linear-gradient(45deg, #430b22, #204004, #0c5050, #15064b);
     z-index: 99999;
     justify-content: center;
@@ -352,7 +352,7 @@ img {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     background-color: #000000ee;
     justify-content: center;
     align-items: center;
@@ -372,7 +372,7 @@ img {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     background: linear-gradient(90deg, #771b1b, #7b5e14, #137413, #0f457f);
     display: flex;
     flex-direction: column;
