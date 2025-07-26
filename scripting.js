@@ -469,7 +469,10 @@ function setViewportHeight() {
 function checkOrientation() {
     const isPortrait = window.innerHeight > window.innerWidth;
     ele('rotateWarning').style.display = isPortrait ? 'flex' : 'none';
-    if (gameRunning) gamePaused = isPortrait;
+    if (gameRunning) {
+        gamePaused = isPortrait;
+        if (!gamePaused) update();
+    }
 }
 
 
