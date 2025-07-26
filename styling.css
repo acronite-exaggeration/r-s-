@@ -283,6 +283,14 @@ img {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
 }
 
+.sphXX img {
+    width: 67%;
+    height: 67%;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
 #sidebar {
     position: absolute;
     top: 10vh;
