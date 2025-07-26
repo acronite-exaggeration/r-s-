@@ -2,6 +2,17 @@
 
 :root {--vh: 1vh;}
 
+button, .btnXX, .sphXX {
+    outline: none;
+    -webkit-tap-highlight-color: transparent; /* Removes tap highlight */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+
 html, body {
     margin: 0;
     padding: 0;
