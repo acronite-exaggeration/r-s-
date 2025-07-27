@@ -471,7 +471,7 @@ function checkOrientation() {
     ele('rotateWarning').style.display = isPortrait ? 'flex' : 'none';
     if (gameRunning) {
         gamePaused = isPortrait;
-        if (!gameRunning) {
+        if (!gamePaused) {
             if (!uploop) update();
         }
     }
