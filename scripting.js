@@ -535,6 +535,8 @@ let train = {
 
 
 function klupdater() {
+    train.height = CH * 0.17;
+    train.width = train.height * trainscale;
     const a = CH * 0.42;
     const b = CH * 0.64;
     k = a - train.height;
