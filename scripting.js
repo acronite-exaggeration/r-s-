@@ -620,6 +620,8 @@ document.addEventListener('fullscreenchange', () => {
     usage(dtd);
 });
 
+klupdater();
+
 
 
 
