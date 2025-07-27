@@ -342,7 +342,7 @@ let line = 0;
 let interl;
 let stord = false;
 const st = ele("storyText");
-const cols = ['#85ff85', '#ffd979', '#ff6464', '#63aeff', '#9476ff'];
+const cols = ['#85ff85', '#ffd979', '#ff6464', '#63aeff', '#9476feff'];
 
 const storiez = [
     "The year is 2076. A few years ago, something tragic happened... No one knows the full truth. Many believe it was a space attack.",
@@ -471,7 +471,9 @@ function checkOrientation() {
     ele('rotateWarning').style.display = isPortrait ? 'flex' : 'none';
     if (gameRunning) {
         gamePaused = isPortrait;
-        if (!gamePaused) update();
+        if (!gameRunning) {
+            if (!uploop) update();
+        }
     }
 }
 
@@ -490,10 +492,15 @@ function goFullscreen() {
 }
 
 
-function fullx(opex = true) {
+function fullx(opex) {
     const ed = ele('fulBtn');
 
     if (opex) {
+        ed.style.opacity = 0;
+        setTimeout(() => {
+            ed.style.display = 'none';
+        }, 800);
+    } else {
         ed.style.transition = 'none';
         requestAnimationFrame(() => {
             ed.style.opacity = 0;
@@ -503,14 +510,9 @@ function fullx(opex = true) {
                 ed.style.opacity = 0.5;
             })
         })
-    } else {
-        ed.style.opacity = 0;
-        setTimeout(() => {
-            ed.style.display = 'none';
-        }, 800);
     }
 }
-fullx();
+fullx(false);
 
 
 function resiz() {
@@ -557,25 +559,25 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 
 
 function waitUntilNoRotateWarning() {
-  return new Promise(resolve => {
-    const check = () => {
-      const warning = ele("rotateWarning"); // or your actual ID
-      const isHidden = !warning || warning.style.display === "none";
-      if (isHidden) {
-        resolve();
-      } else {
-        setTimeout(check, 300); // check again in 300ms
-      }
-    };
-    check();
-  });
+    return new Promise(resolve => {
+        const check = () => {
+            const warning = ele("rotateWarning");
+            const isHidden = !warning || warning.style.display === "none";
+            if (isHidden) {
+                resolve();
+            } else {
+                setTimeout(check, 100);
+            }
+        };
+        check();
+    });
 }
 
 
 window.addEventListener("load", async () => {
     resiz();
     await waitUntilNoRotateWarning();
-    
+
     await wait(1500);
 
     on('studioIntro', 2);
@@ -606,11 +608,7 @@ window.addEventListener("resize", () => {
 
 document.addEventListener('fullscreenchange', () => {
     const isFull = document.fullscreenElement !== null;
-    if (isFull) {
-        fullx(false)
-    } else {
-        fullx()
-    }
+    fullx(isFull);
 });
 
 
@@ -2018,6 +2016,8 @@ function hyper(timez, xgr) {
 
 // GAME LOOPS ============================================================================================================================================
 
+let uploop;
+
 function update(timestamp) {
     if (gamePaused || !gameRunning) return;
 
@@ -2076,7 +2076,7 @@ function update(timestamp) {
 
     if (stuck) doExp(hopo/2, 1);
 
-    requestAnimationFrame(update);
+    uploop = requestAnimationFrame(update);
 }
 
 
