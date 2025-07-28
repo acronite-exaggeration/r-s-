@@ -222,7 +222,8 @@ function editz(ed, pup=false) {
 
 let diesel = false;
 let change = false;
-let bgImg, trainImg, trainscale, monsterImg;
+let bgImg, trainImg, monsterImg;
+let trainscale = 3;
 
 
 function usage(imgElement) {
@@ -448,17 +449,7 @@ function storyNext() {
 
 
 
-
-// CANVAS BLOCK ============================================================================================================================================
-
-const canvas = ele("gameCanvasX");
-const ctx = canvas.getContext("2d");
-let resizeTimer = null;
-let ending = 70000 + rand(30000);
-let gameRunning = false;
-let gamePaused = false;
-let CW, CH, k, l, editx;
-
+// SCALING BLOCK ============================================================================================================================================
 
 function setViewportHeight() {
     const vh = window.innerHeight * 0.01;
@@ -472,7 +463,9 @@ function checkOrientation() {
     if (gameRunning) {
         gamePaused = isPortrait;
         if (!gamePaused) {
-            if (!uploop) update();
+            cancelAnimationFrame(uploop);
+            cancelAnimationFrame(doloop);
+            update();
         }
     }
 }
@@ -513,6 +506,20 @@ function fullx(opex) {
     }
 }
 fullx(false);
+
+
+
+
+
+// CANVAS BLOCK ============================================================================================================================================
+
+const canvas = ele("gameCanvasX");
+const ctx = canvas.getContext("2d");
+let resizeTimer = null;
+let ending = 70000 + rand(30000);
+let gameRunning = false;
+let gamePaused = false;
+let CW, CH, k, l, editx;
 
 
 function resiz() {
@@ -714,6 +721,7 @@ function loadCp() {
     genX();
     setLife(extralife);
     if (isfps) on('fpsx');
+
     const sData = gett('trainGameCheckpoint');
 
     if (sData) {
@@ -1234,7 +1242,6 @@ function progression(xgr, abc) {
     if (!challenge) return;
 
     ele("progressBar").style.width = `${(gpGot/requirement) * 100}` + "%";
-
     ele('score').textContent = `Graphene: ${gpGot}/${requirement}`;
 
     ele('runnerScore').innerText = `Score: ${run + Math.floor(xgr/50)} || XP: ${epo + exp}`;
@@ -1425,13 +1432,13 @@ function doStat(xgr, lll, kkk) {
     const statR = kkk * 0.7;
 
     if (xgr < lll * 1.5) {
-        ctx.drawImage(statUp, -xgr - 10, 0, 1500, statY);
-        ctx.drawImage(statDown, -xgr -10, statR, 1500, statE);
+        ctx.drawImage(statUp, -xgr - 10, 0, lll*1.1, statY);
+        ctx.drawImage(statDown, -xgr -10, statR, lll*1.1, statE);
     }
 
     if (statX < lll * 1.5) {
-        ctx.drawImage(statUp, statX, 0, 1500, statY);
-        ctx.drawImage(statDown, statX, statR, 1500, statE);
+        ctx.drawImage(statUp, statX, 0, lll*1.1, statY);
+        ctx.drawImage(statDown, statX, statR, lll*1.1, statE);
     }
 }
 
@@ -1537,11 +1544,12 @@ let bobx = 0;
 
 function doTrt(timez) {
     if (crash) return;
+    const ed = editx;
 
     bobx += 0.15;
     hopx += 0.13;
-    trainBob = Math.sin(bobx)*5;
-    const trx = train.x + Math.sin(hopx)*3;
+    trainBob = Math.sin(bobx) * 5 * ed;
+    const trx = train.x + Math.sin(hopx) * 3 * ed;
     let baseY = train.top ? k : l;
 
     if (swich) {
@@ -1679,10 +1687,11 @@ function doMrs(xgr) {
     if (!monsta) return;
     mobx += 0.15;
     sway += 0.13;
+    const ed = editx;
 
     const size = train.height;
-    const screenX = monsta.x - xgr + Math.sin(sway)*5;
-    const screenY = monsta.y + Math.sin(mobx)*5;
+    const screenX = monsta.x - xgr + Math.sin(sway) * 5 * ed;
+    const screenY = monsta.y + Math.sin(mobx) * 5 * ed;
 
     for (let i = 0; i < size; i += 2) {
         const color = rand(3);
@@ -1692,7 +1701,7 @@ function doMrs(xgr) {
         const flameWidth = i < size/2 ? 20 + i/2 + rand(70) : 50 + (size - i)/2 + rand(70);
 
         ctx.fillStyle = flameColor;
-        ctx.fillRect(screenX + size / 3, screenY + i, flameWidth, 2);
+        ctx.fillRect(screenX + size / 3, screenY + i, flameWidth*editx, 2);
     }
 
     ctx.globalAlpha = 0.3;
@@ -1737,6 +1746,7 @@ function crashOb(xgr) {
             if (!extralife) {
                 if (musicOn) fadeOutMusic();
                 gamePaused = true;
+                gameRunning = false;
                 off('fpsx');
                 reUpdate(180, 1);
                 const msg = cpop[flor(2)];
@@ -1788,6 +1798,7 @@ function crashMrs(xgr, spx) {
         if (!extralife) {
             if (musicOn) fadeOutMusic();
             gamePaused = true;
+            gameRunning = false;
             reUpdate(180, 2);
             off('fpsx');
             const msg = cpop[flor(2)];
@@ -1848,6 +1859,7 @@ function crashStat(xgr) {
 
     setTimeout(() => {
         ending = 70000 + rand(30000);
+        ending *= editx;
         loadCp();
         acc = previousAcc;
         flash();
@@ -2020,7 +2032,7 @@ function hyper(timez, xgr) {
 
 // GAME LOOPS ============================================================================================================================================
 
-let uploop;
+let uploop, doloop;
 
 function update(timestamp) {
     if (gamePaused || !gameRunning) return;
@@ -2117,7 +2129,7 @@ function reUpdate(allowed, reas) {
         doExp(hopo/2);
         allowed--;
 
-        requestAnimationFrame(() => reUpdate(allowed, reas));
+        doloop = requestAnimationFrame(() => reUpdate(allowed, reas));
     } else {
         setTimeout(() => gOver(reas), 250);
     }
@@ -2210,11 +2222,15 @@ function startGame() {
 
     setTimeout(() => showPopup(help[i]), 500);
 
+    ending *= editx;
+    stat.x = ending;
+
     setTimeout(() => {
         loadCp();
         off('dark');
         on('gameCanvasX');
         on('envy');
+        off('progi');
         if (musicOn) fadeInMusic();
         update();
         flash();
