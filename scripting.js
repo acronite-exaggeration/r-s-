@@ -686,7 +686,7 @@ function resumePause() {
 
 function saveCp() {
     const cpData = {
-        rrr: run + Math.floor((reach - CW*9) / 50),
+        rrr: run + Math.floor((reach - CW*9) / (50 * editx)),
         xp: exp + epo,
         org: requirement,
         gt: gpGot,
@@ -1101,7 +1101,7 @@ function doSmoke(xgr) {
             ctx.globalAlpha = p.opacity;
             ctx.translate(p.x - xgr, p.y);
             ctx.rotate(p.rotation);
-            const size = 64 * p.scale;
+            const size = 64 * p.scale * editx;
             ctx.drawImage(smokeImg, -size/2, -size/2, size, size);
             ctx.restore();
             ctx.globalAlpha = 1;
@@ -1140,7 +1140,7 @@ function doSparks() {
         ctx.translate(s.x , s.y);
         ctx.rotate(s.rotate);
 
-        const size = 250 * s.scale;
+        const size = 250 * s.scale * editx;
         ctx.drawImage(sparkImg, -size, -size, size, size);
 
         ctx.restore();
@@ -1244,7 +1244,7 @@ function progression(xgr, abc) {
     ele("progressBar").style.width = `${(gpGot/requirement) * 100}` + "%";
     ele('score').textContent = `Graphene: ${gpGot}/${requirement}`;
 
-    ele('runnerScore').innerText = `Score: ${run + Math.floor(xgr/50)} || XP: ${epo + exp}`;
+    ele('runnerScore').innerText = `Score: ${run + Math.floor(xgr/(50 * editx))} || XP: ${epo + exp}`;
 
     const trackWidth = ele('trackingContainer').clientWidth;
     const percent = Math.min(1, Math.max(0, xgr/abc));
@@ -1474,33 +1474,34 @@ function doPlot(x, kkk, p = 0) {
 
 // AREA MAINTAIN FUNCTION ============================================================================================================================================
 
-function doArea(xgr, canvasWidth, worldWidth, canvasHeight) {
-    const groundTop = canvasHeight * 0.35;
-    const groundHeight = canvasHeight * 0.35;
-    const trackU = canvasHeight * 0.05;
-    const trackD = canvasHeight * 0.08;
-    const barGap = 30;
-    const baseY = canvasHeight * 0.7;
-    const shadowH = canvasHeight * 0.075;
+function doArea(xgr, kkk, bbb, lll) {
+    const ed = editx;
+    const groundTop = lll * 0.35;
+    const groundHeight = lll * 0.35;
+    const trackU = lll * 0.05;
+    const trackD = lll * 0.08;
+    const barGap = 30 * ed;
+    const baseY = lll * 0.7;
+    const shadowH = lll * 0.075;
 
     ctx.fillStyle = "#201000";
-    ctx.fillRect(0, groundTop, canvasWidth, groundHeight);
+    ctx.fillRect(0, groundTop, kkk, groundHeight);
 
     ctx.fillStyle = "#818A8B";
-    for (let i = 0; i < worldWidth; i += barGap) {
+    for (let i = 0; i < bbb; i += barGap) {
         const barX = i - xgr;
-        if (barX >= -30 && barX <= canvasWidth + 30) {
-            const barW = 10;
-            const adjust = canvasHeight / 100;
+        if (barX >= -30 && barX <= kkk + 30) {
+            const barW = 10 * ed;
+            const adjust = lll / 100;
             ctx.fillRect(barX, groundTop + trackU - adjust, barW, trackU);
             ctx.fillRect(barX, groundTop + groundHeight - trackD - adjust, barW, trackU);
         }
     }
 
     ctx.fillStyle = "#000";
-    for (let i = 0; i < worldWidth; i += canvasWidth / 2) {
+    for (let i = 0; i < bbb; i += kkk / 2) {
         const screenX = i - xgr;
-        if (screenX >= -60 && screenX <= canvasWidth + 60) {
+        if (screenX >= -60 && screenX <= kkk + 60) {
             ctx.fillRect(screenX, baseY, 40, shadowH);
             ctx.fillRect(screenX - 10, baseY + shadowH, 60, shadowH);
             ctx.fillRect(screenX - 20, baseY + shadowH * 2, 80, shadowH);
@@ -1521,7 +1522,7 @@ function doArea(xgr, canvasWidth, worldWidth, canvasHeight) {
 
     for (let y of lineOffsets) {
         ctx.moveTo(0, y);
-        ctx.lineTo(canvasWidth, y);
+        ctx.lineTo(kkk, y);
     }
 
     ctx.stroke();
