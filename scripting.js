@@ -1510,7 +1510,7 @@ function doArea(xgr, kkk, bbb, lll) {
     }
 
     ctx.strokeStyle = "#42220b";
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 5 * editx;
     ctx.beginPath();
 
     const lineOffsets = [
@@ -1563,12 +1563,12 @@ function doTrt(timez) {
         }
 
         ctx.fillStyle = "#5dade2";
-        const barXStart = trx - train.width / 10;
-        const barSpacing = 12;
-        const barHeight = 100;
+        const barXStart = trx - train.width/10;
+        const barSpacing = 12 * ed;
+        const barHeight = 100 * ed;
 
         for (let i = 0; i < train.width * 1.2; i += barSpacing) {
-            ctx.fillRect(barXStart + i, baseY + trainBob, 4, barHeight);
+            ctx.fillRect(barXStart + i, baseY + trainBob, 4 * ed, barHeight);
         }
     }
 
