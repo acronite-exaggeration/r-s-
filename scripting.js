@@ -1948,8 +1948,6 @@ let offpro = false;
 function distanceHandler(kkk, lll) {
     const d1 = lll * 4.7;
     const d2 = kkk - d1;
-    const d3 = lll * 4.3;
-    const d4 = kkk - d3;
 
     if (!challenge && reach < d2) {
         if (reach > d1) {
@@ -1963,12 +1961,12 @@ function distanceHandler(kkk, lll) {
         }
     }
 
-    if (!onpro && reach > d3) {
+    if (!onpro && reach > d1) {
         on('progi');
         onpro = true;
     }
 
-    if (!offpro && reach > d4) {
+    if (!offpro && reach > d2) {
         off('progi');
         offpro = true;
     }
@@ -1999,7 +1997,7 @@ function hyper(timez, xgr) {
             genSmoke(xgr);
         } else {
             genSpark();
-            timer *= 1.5;
+            timer *= 1.4;
         }
 
         lasttime = timez;
