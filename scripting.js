@@ -1510,7 +1510,7 @@ function doArea(xgr, kkk, bbb, lll) {
     }
 
     ctx.strokeStyle = "#42220b";
-    ctx.lineWidth = 5 * editx;
+    ctx.lineWidth = 5 * ed;
     ctx.beginPath();
 
     const lineOffsets = [
@@ -1702,7 +1702,7 @@ function doMrs(xgr) {
         const flameWidth = i < size/2 ? 20 + i/2 + rand(70) : 50 + (size - i)/2 + rand(70);
 
         ctx.fillStyle = flameColor;
-        ctx.fillRect(screenX + size / 3, screenY + i, flameWidth*editx, 2);
+        ctx.fillRect(screenX + size / 3, screenY + i, flameWidth*ed, 2);
     }
 
     ctx.globalAlpha = 0.3;
@@ -1859,8 +1859,7 @@ function crashStat(xgr) {
     requestAnimationFrame(slowDownTrain);
 
     setTimeout(() => {
-        ending = 70000 + rand(30000);
-        ending *= editx;
+        ending = (70000 + rand(30000)) * editx;
         loadCp();
         acc = previousAcc;
         flash();
@@ -2203,6 +2202,8 @@ ele("switcher").addEventListener("click", () => swicher());
 
 // FINAL BLOCK ============================================================================================================================================
 
+ending *= editx;
+
 function startGame() {
   
     const help = [
@@ -2222,8 +2223,6 @@ function startGame() {
     if (change) climate();
 
     setTimeout(() => showPopup(help[i]), 500);
-
-    ending *= editx;
     stat.x = ending;
 
     setTimeout(() => {
