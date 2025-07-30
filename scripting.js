@@ -1027,6 +1027,32 @@ function flash(f = 1) {
 
 
 
+// SHAKE EFFECT ============================================================================================================================================
+
+function shake() {
+    let a = 0;
+    let goat = true;
+    const b = cameraX;
+    const edx = editx;
+
+    function xyz() {
+        cameraX = b + Math.sin(a) * 3 * edx;
+        a += 0.5;
+        
+        if (goat) requestAnimationFrame(xyz);
+    }
+
+    xyz();
+
+    setTimeout(() => {
+        goat = false;
+    }, 700);
+}
+
+
+
+
+
 // EXTRA LIFE BLOCK ============================================================================================================================================
 
 
@@ -1070,14 +1096,15 @@ const smokeParticles = [];
 
 
 function genSmoke(xgr) {
+    const edx = editx;
     smokeParticles.push({
         x: xgr + train.width/2,
         y: train.top ? k : l,
         scale: 0.5 + rand(0.5),
         opacity: 1,
-        speedX: rand() - 0.5,
-        speedY: -rand(0.7) - 0.5,
-        grow: 0.005 + rand(0.005),
+        speedX: (rand() - 0.5) * edx,
+        speedY: (-rand(0.7) - 0.5) * edx,
+        grow: (0.005 + rand(0.005)) * edx,
         rotation: rand(Math.PI * 2),
         spin: rand(0.02) - 0.01,
     });
@@ -1086,6 +1113,7 @@ function genSmoke(xgr) {
 
 function doSmoke(xgr) {
     if (stuck) return;
+
     for (let i = smokeParticles.length - 1; i >= 0; i--) {
         const p = smokeParticles[i];
         p.x += p.speedX;
@@ -1101,7 +1129,7 @@ function doSmoke(xgr) {
             ctx.globalAlpha = p.opacity;
             ctx.translate(p.x - xgr, p.y);
             ctx.rotate(p.rotation);
-            const size = 64 * p.scale * editx;
+            const size = 64 * p.scale;
             ctx.drawImage(smokeImg, -size/2, -size/2, size, size);
             ctx.restore();
             ctx.globalAlpha = 1;
@@ -1123,7 +1151,7 @@ function genSpark() {
     electricSparks.push({
         x: train.x + train.width/2,
         y: train.top ? k : l,
-        scale: 0.5 + rand(0.5),
+        scale: (0.5 + rand(0.5)) * editx,
         rotate: rand() - 0.5,
         opacity: 1,
     });
@@ -1140,7 +1168,7 @@ function doSparks() {
         ctx.translate(s.x , s.y);
         ctx.rotate(s.rotate);
 
-        const size = 250 * s.scale * editx;
+        const size = 250 * s.scale;
         ctx.drawImage(sparkImg, -size, -size, size, size);
 
         ctx.restore();
@@ -1742,7 +1770,7 @@ function crashOb(xgr) {
                 mt: mons,
             };
 
-            const obhh = ob.t ? k : l;
+            shake();
 
             if (!extralife) {
                 if (musicOn) fadeOutMusic();
@@ -1795,6 +1823,8 @@ function crashMrs(xgr, spx) {
 
         monsta.x = xgr + CW * 0.9;
         monsta.speed = 0;
+
+        shake();
 
         if (!extralife) {
             if (musicOn) fadeOutMusic();
