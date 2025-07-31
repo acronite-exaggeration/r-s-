@@ -4,14 +4,13 @@
 
 button, .btnXX, .sphXX {
     outline: none;
-    -webkit-tap-highlight-color: transparent; /* Removes tap highlight */
+    -webkit-tap-highlight-color: transparent;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     touch-action: manipulation;
 }
-
 
 html, body {
     margin: 0;
@@ -107,12 +106,7 @@ img {
     color: #eee;
     cursor: pointer;
     transition: all 0.3s ease;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
     -webkit-touch-callout: none;
-    touch-action: manipulation;
 }
 
 .btnXX:hover {
@@ -233,7 +227,7 @@ img {
     display: none;
     font-size: 3vh;
     top: 1vh;
-    right: 1vw;
+    right: 2vw;
     color: #eee;
     z-index: 10000;
     font-weight: 600;
@@ -270,12 +264,6 @@ img {
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-    touch-action: manipulation;
 }
 
 .sphXX:hover {
@@ -288,7 +276,6 @@ img {
     height: 67%;
     pointer-events: none;
     -webkit-user-drag: none;
-    user-drag: none;
 }
 
 #sidebar {
