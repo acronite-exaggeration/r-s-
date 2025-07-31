@@ -190,21 +190,25 @@ function closing(id) {
 
 let trainMax, acc, fri;
 let mup, monsterBase, monsterMax;
+let difi, tops;
 
 
 function editz(ed, pup=false) {
     const pops =["Slow...🐢", "Medium...😎", "Fast...💪", "Extreme...⚡","Easy...✌️", "Medium...😎", "Hard...😈", "Extreme...☠️"];
-    const data = [7, 10, 13.5, 18, [5,1], [6,1.2], [7,1.75], [8,2]];
+    const data = [[8,0.5], [11,0.65], [15,0.8], [20,1], [5,1], [6,1.2], [7,1.75], [8,2]];
     let a, b;
 
     if (ed < 5) {
-        trainMax = data[ed-1] * editx;
+        const dt = data[ed-1];
+        trainMax = dt[0] * editx;
         acc = trainMax * 2.5;
         fri = trainMax * 1.6;
+        tops = dt[1];
         a = "tr";
         b = "Train Speed is " + pops[ed-1];
     } else {
         [monsterBase, mup] = data[ed - 1].map(x => x * editx);
+        difi = ed - 5;
         monsterMax = monsterBase * 2;
         a = "mrs";
         b = "Monster Difficulty is " + pops[ed-1];
@@ -643,6 +647,7 @@ ele('sideBy').addEventListener("click", () => {
     on('dark');
     off('fpsx');
     gamePaused = true;
+    gameRunning = false;
     if (musicOn) fadeOutMusic();
 });
 
@@ -654,6 +659,7 @@ function taskResume() {
     ele('gameCanvasX').classList.remove("blur");
     on('envy');
     gamePaused = false;
+    gameRunning = true;
     if (musicOn) fadeInMusic();
     update();
     setLife(extralife);
@@ -666,7 +672,7 @@ function taskResume() {
 // RESUME - PAUSE FUNCTION ============================================================================================================================================
 
 function resumePause() {
-    if (!gameRunning) return;
+    gameRunning = !gameRunning;
     gamePaused = !gamePaused;
     ele("pauser").textContent = gamePaused ? "⏸" : "▶";
 
@@ -901,7 +907,7 @@ if (change) climate();
 function changer(xgr) {
     if (xgr >= ski) {
         climate();
-        ski += 20000 + rand(7000);
+        ski += (20000 + rand(7000)) * editx;
     }
 }
 
@@ -1097,6 +1103,7 @@ const smokeParticles = [];
 
 function genSmoke(xgr) {
     const edx = editx;
+
     smokeParticles.push({
         x: xgr + train.width/2,
         y: train.top ? k : l,
@@ -1332,21 +1339,23 @@ function collects() {
 function genX() {
     const var1 = CH/7;
     const varx = train.width + var1 + CW/35;
-    const var2 = CW*5;
+    const var2 = CW * 5;
     const var3 = CH/10;
     const var4 = CH/14;
-    const l2 = ending - CW*5;
+    const l2 = ending - CW * 5;
+    const ups = CW * (0.3 - difi/10);
+
     crystals = [];
     obstacles = [];
     gpBlocks = [];
     signData = [];
 
-    lifeX1 = CW + flor(CW*3.5);
+    lifeX1 = CW + flor(CW * 3.5);
     lifeX2 = l2 + CW/2 + flor(CW * 3.5);
     lifeY = 0.42 + flor(0.18);
 
-    [CW*2, ending - CW*3.5].forEach(dist => {
-        for (let i = 0; i < CW*2; i += CH/2 + flor(CH/2)) {
+    [CW * 2, ending - CW * 3.5].forEach(dist => {
+        for (let i = 0; i < CW * 2; i += CH/2 + flor(CH/2)) {
             signData.push({
                 x: dist + i,
                 skin: flor(2),
@@ -1363,7 +1372,7 @@ function genX() {
         });
     }
 
-    for (let i = var2; i < l2; i+= varx + flor(300)) {
+    for (let i = var2; i < l2; i+= varx + flor(300 * editx)) {
         const topp = rand() < 0.5;
         const robs = obi[flor(obi.length)];
         const scaler = var1/robs.naturalHeight;
@@ -1378,7 +1387,7 @@ function genX() {
         });
     }
 
-    for (let i = var2; i < l2; i+= CW/10 + flor(CW*0.4)) {
+    for (let i = var2; i < l2; i += ((CW/10 + flor(CW*0.4)) + ups) * tops ) {
         gpBlocks.push({
             x: i,
             y: 0.42 + flor(0.18),
@@ -1529,11 +1538,12 @@ function doArea(xgr, kkk, bbb, lll) {
     ctx.fillStyle = "#000";
     for (let i = 0; i < bbb; i += kkk / 2) {
         const screenX = i - xgr;
+        const rpg = ed * 10;
         if (screenX >= -60 && screenX <= kkk + 60) {
-            ctx.fillRect(screenX, baseY, 40, shadowH);
-            ctx.fillRect(screenX - 10, baseY + shadowH, 60, shadowH);
-            ctx.fillRect(screenX - 20, baseY + shadowH * 2, 80, shadowH);
-            ctx.fillRect(screenX - 30, baseY + shadowH * 3, 100, shadowH);
+            ctx.fillRect(screenX, baseY, rpg * 4, shadowH);
+            ctx.fillRect(screenX - rpg, baseY + shadowH, rpg * 6, shadowH);
+            ctx.fillRect(screenX - rpg * 2, baseY + shadowH * 2, rpg * 8, shadowH);
+            ctx.fillRect(screenX - rpg * 3, baseY + shadowH * 3, rpg * 10, shadowH);
         }
     }
 
@@ -1655,7 +1665,7 @@ function doItems(xgr, lll, kkk) {
 
         if (gp.got && gp.animating) {
             gp.alpha -= 0.03;
-            gp.dy -= 1;
+            gp.dy -= editx;
             if (gp.alpha <= 0) {
                 gp.alpha = 0;
                 gp.animating = false;
@@ -1701,7 +1711,7 @@ function spawnMonster() {
         const mons = rand() < 0.5;
 
         monsta = {
-            x: cameraX + CW + 150,
+            x: cameraX + CW + 100,
             y: mons ? k : l,
             speed: monsterSpeed,
             mt: mons,
@@ -1725,17 +1735,15 @@ function doMrs(xgr) {
     for (let i = 0; i < size; i += 2) {
         const color = rand(3);
 
-        const flameColor = color < 1 ? "#ff6502" : (color < 2 ? "#ffe802" : "#000");
+        const flameColor = color < 1 ? "#ff0202ff" : (color < 2 ? "#ffe802" : "#000");
 
         const flameWidth = i < size/2 ? 20 + i/2 + rand(70) : 50 + (size - i)/2 + rand(70);
 
         ctx.fillStyle = flameColor;
-        ctx.fillRect(screenX + size / 3, screenY + i, flameWidth*ed, 2);
+        ctx.fillRect(screenX + size/3, screenY + i, flameWidth * ed, 2 * ed);
     }
 
-    ctx.globalAlpha = 0.3;
-    ctx.drawImage(monsterImg, screenX + 25 + flor(20), screenY, size, size);
-    ctx.globalAlpha = 1.0;
+    
     ctx.drawImage(monsterImg, screenX, screenY, size, size);
 }
 
@@ -1758,7 +1766,7 @@ function crashOb(xgr) {
 
         if (collided) {
             crash = true;
-            const prevChallenge = challenge;
+            const prevo = challenge;
             challenge = false;
             off('envy');
 
@@ -1789,7 +1797,7 @@ function crashOb(xgr) {
                     exuping = false;
                     setTimeout(() => {
                         lifer();
-                        challenge = prevChallenge;
+                        challenge = prevo;
                     }, 1500);
                 }, 1500);
             }
@@ -1817,7 +1825,7 @@ function crashMrs(xgr, spx) {
 
     if (collided) {
         crash = true;
-        const prevChallenge = challenge;
+        const prevo = challenge;
         challenge = false;
         off('envy');
 
@@ -1842,7 +1850,7 @@ function crashMrs(xgr, spx) {
                 exuping = false;
                 setTimeout(() => {
                     lifer();
-                    challenge = prevChallenge;
+                    challenge = prevo;
                 }, 1500);
             }, 1500);
         }
@@ -1867,31 +1875,30 @@ function crashStat(xgr) {
     stat.rtx = true;
     showPopup("😤 Saving the Checkpoint...! 🚉");
     saveCp();
-    monsta = null;
 
-    const previousAcc = acc;
+    const Acc = acc;
     acc = 0;
-    kb = Math.max(0, kb - 10);
 
-    const deceleration = 0.2;
-
+    const dcc = 0.2 * editx;
     let slowingDown = true;
+
     const slowDownTrain = () => {
         if (speedX <= 0) {
             speedX = 0;
             slowingDown = false;
         } else {
-            speedX -= deceleration;
+            speedX -= dcc;
             if (speedX < 0) speedX = 0;
         }
         if (slowingDown) requestAnimationFrame(slowDownTrain);
     };
+
     requestAnimationFrame(slowDownTrain);
 
     setTimeout(() => {
         ending = (70000 + rand(30000)) * editx;
         loadCp();
-        acc = previousAcc;
+        acc = Acc;
         flash();
 
         setTimeout(() => {
@@ -1914,6 +1921,7 @@ let speedX = 0;
 let remind = 0;
 let reach = 0;
 let braver = true;
+let braverr = true;
 let lasting = 0;
 let stuck = false;
 
@@ -1934,9 +1942,9 @@ function handleSpeed(xgr, dt) {
 
         if (xgr > 0) {
             speedX = Math.max(speedX - acc * dt, -trainMax);
-            }
+        }
 
-            if (xgr <= reach - 1000 || xgr <= border) {
+        if (xgr <= reach - 1000 || xgr <= border) {
             if (speedX !== 0) speedX = 0;
 
             if (braver) {
@@ -1957,9 +1965,10 @@ function handleSpeed(xgr, dt) {
         }
     }
 
-    if (remind >= 2000) {
-        remind -= 300;
+    if (braverr && remind >= 2000 * dt * 60) {
+        braverr = false;
         showPopup(rand() > 0.5 ? "🔥 It's time to move ahead..." : "🔥 Let's move on Buddy...");
+        setTimeout(() => { braverr = true }, 5000);
     }
 }
 
@@ -2015,12 +2024,12 @@ function hyper(timez, xgr) {
     const dt = timez - lasttime;
 
     if (dt > timer) {
-        const pyro = Math.min(18, Math.abs(speedX));
+        const pyro = Math.min(20, Math.abs(speedX));
 
         if (pyro < 4) {
             timer = 500 + rand(300);
         } else {
-            timer = 70 + (18 - pyro)*25 + rand(20);
+            timer = 70 + (20 - pyro)*25 + rand(20);
         }
 
         if (diesel) {
@@ -2037,7 +2046,7 @@ function hyper(timez, xgr) {
 
     if (crystalDt > 400) {
         for (let i = 0; i < crystals.length; i++) {
-            crystals[i].radius = 2 + flor(5);
+            crystals[i].radius = (2 + flor(5)) * editx;
         }
 
         lastly = timez;
@@ -2075,7 +2084,7 @@ function update(timestamp) {
     const eepo = ending;
     const camx = cameraX;
 
-    if (swich) traintime += 16 / (60 * deltaT);
+    if (swich) traintime += 16/(60 * deltaT);
 
     ctx.clearRect(0, 0, topo, hopo);
 
@@ -2084,19 +2093,19 @@ function update(timestamp) {
     handleSpeed(camx, deltaT);
 
     doBg(camx, topo, hopo);
-    doArea(camx, topo, eepo + topo*1.7, hopo);
+    doArea(camx, topo, eepo + topo * 1.7, hopo);
     doItems(camx, topo, hopo);
     doStat(camx, topo, hopo);
     if (!extralife) doLife(camx, topo, eepo, hopo);
     distanceHandler(eepo, topo);
 
     if (camx < topo * 6) {
-        doBoardz(topo*4.4 - camx, hopo, 1);
+        doBoardz(topo * 4.4 - camx, hopo, 1);
         doSign(camx, hopo);
     }
 
     if (camx > eepo - topo * 6) {
-        doBoardz(eepo - topo*4.4 - camx, hopo);
+        doBoardz(eepo - topo * 4.4 - camx, hopo);
         doSign(camx, hopo);
     }
 
@@ -2112,7 +2121,7 @@ function update(timestamp) {
     if (camx < topo * 1.7) doPlot(topo/2 - camx, hopo);
     if (camx > eepo - topo) doPlot(stat.x + topo/2 - camx, hopo, 1);
 
-    progression(reach - topo*4.5, eepo - topo*9);
+    progression(reach - topo * 4.5, eepo - topo * 9);
     crashMrs(camx, deltaT);
     crashOb(camx);
     crashStat(camx);
@@ -2134,18 +2143,18 @@ function reUpdate(allowed, reas) {
         ctx.clearRect(0, 0, topo, hopo);
         
         doBg(camx, topo, hopo);
-        doArea(camx, topo, eepo + topo*1.7, hopo);
+        doArea(camx, topo, eepo + topo * 1.7, hopo);
         doItems(camx, topo, hopo);
         doStat(camx, topo, hopo);
         if (!extralife) doLife(camx, topo, eepo, hopo);
 
         if (camx < topo * 6) {
-            doBoardz(topo*4.4 - camx, hopo, 1);
+            doBoardz(topo * 4.4 - camx, hopo, 1);
             doSign(camx, hopo);
         }
 
         if (camx > eepo - topo * 6) {
-            doBoardz(eepo - topo*4.4 - camx, hopo);
+            doBoardz(eepo - topo * 4.4 - camx, hopo);
             doSign(camx, hopo);
         }
 
