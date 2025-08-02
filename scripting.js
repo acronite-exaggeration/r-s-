@@ -607,6 +607,7 @@ window.addEventListener("load", async () => {
     await wait(1500);
 
     on('menu', 2);
+    ending *= editx;
 });
 
 
@@ -977,7 +978,7 @@ function adv() {
 // ELECTRIC BURST EFFECT ============================================================================================================================================
 
 function electricBurst() {
-    const centerX = train.x + train.width / 2;
+    const centerX = train.x + train.width/2;
     const centerY = (train.top ? k : l) + train.height/2;
 
     let scale = 0;
@@ -990,7 +991,7 @@ function electricBurst() {
         ctx.globalAlpha = opacity;
 
         const size = CH * 0.7 * scale;
-        ctx.drawImage(esburstImg, -size / 2, -size / 2, size, size);
+        ctx.drawImage(esburstImg, -size/2, -size/2, size, size);
 
         ctx.restore();
 
@@ -1043,7 +1044,7 @@ function shake() {
 
     function xyz() {
         cameraX = b + Math.sin(a) * 3 * edx;
-        a += 0.5;
+        a++;
         
         if (goat) requestAnimationFrame(xyz);
     }
@@ -1087,7 +1088,7 @@ function lifer() {
 
 function doLife(xgr, kkk, lll, bbb) {
     const lifeYY = lifeY * bbb;
-    const sizi = 90 * editx;
+    const sizi = bbb * 0.15;
     if (xgr < kkk*7) ctx.drawImage(lifeImg, lifeX1 - xgr, lifeYY, sizi, sizi);
     if (xgr > lll - kkk*7) ctx.drawImage(lifeImg, lifeX2 - xgr, lifeYY, sizi, sizi);
 }
@@ -1107,27 +1108,27 @@ function genSmoke(xgr) {
     smokeParticles.push({
         x: xgr + train.width/2,
         y: train.top ? k : l,
-        scale: 0.5 + rand(0.5),
+        scale: (0.5 + rand(0.5)) * edx,
         opacity: 1,
         speedX: (rand() - 0.5) * edx,
         speedY: (-rand(0.7) - 0.5) * edx,
-        grow: (0.005 + rand(0.005)) * edx,
+        grow: (0.004 + rand(0.004)) * edx,
         rotation: rand(Math.PI * 2),
         spin: rand(0.02) - 0.01,
     });
 }
 
 
-function doSmoke(xgr) {
+function doSmoke(xgr, tx) {
     if (stuck) return;
 
     for (let i = smokeParticles.length - 1; i >= 0; i--) {
         const p = smokeParticles[i];
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.scale += p.grow;
-        p.rotation += p.spin;
-        p.opacity -= 0.007;
+        p.x += p.speedX * tx;
+        p.y += p.speedY * tx;
+        p.scale += p.grow * tx;
+        p.rotation += p.spin * tx;
+        p.opacity -= 0.007 * tx;
 
         if (p.opacity <= 0) {
             smokeParticles.splice(i, 1);
@@ -1165,7 +1166,7 @@ function genSpark() {
 }
 
 
-function doSparks() {
+function doSparks(tx) {
     if (stuck) return;
     for (let i = electricSparks.length - 1; i >= 0; i--) {
         const s = electricSparks[i];
@@ -1179,11 +1180,9 @@ function doSparks() {
         ctx.drawImage(sparkImg, -size, -size, size, size);
 
         ctx.restore();
+        s.opacity -= 0.4 * tx;
 
-        s.opacity -= 0.4;
-        if (s.opacity <= 0) {
-            electricSparks.splice(i, 1);
-        }
+        if (s.opacity <= 0) electricSparks.splice(i, 1);
     }
 }
 
@@ -1199,7 +1198,7 @@ let exup = 0.002 * editx;
 let exuping = true;
 
 
-function doExp(es, dd = 0) {
+function doExp(es, ks, dd = 0) {
     const fol = es * mono;
     const cx = train.x + train.width*0.6 - fol/2;
     const cy = (train.top ? k : l) + train.height*0.8 - fol/2;
@@ -1207,12 +1206,12 @@ function doExp(es, dd = 0) {
     ctx.drawImage(expImg, cx, cy, fol, fol);
 
     if (dd === 0) {
-        mono += exup;
+        mono += exup * ks;
     } else {
         if (exuping) {
-            mono += exup;
+            mono += exup * ks;
         } else {
-            mono -= exup * 5;
+            mono -= exup * 5 * ks;
         }
     }
 }
@@ -1581,14 +1580,14 @@ let hopx = 0;
 let bobx = 0;
 
 
-function doTrt(timez) {
+function doTrt(timez, tx) {
     if (crash) return;
     const ed = editx;
 
     bobx += 0.15;
     hopx += 0.13;
-    trainBob = Math.sin(bobx) * 5 * ed;
-    const trx = train.x + Math.sin(hopx) * 3 * ed;
+    trainBob = Math.sin(bobx) * 5 * ed * tx;
+    const trx = train.x + Math.sin(hopx) * 3 * ed * tx;
     let baseY = train.top ? k : l;
 
     if (swich) {
@@ -1722,15 +1721,15 @@ function spawnMonster() {
 }
 
 
-function doMrs(xgr) {
+function doMrs(xgr, tx) {
     if (!monsta) return;
     mobx += 0.15;
     sway += 0.13;
     const ed = editx;
 
     const size = train.height;
-    const screenX = monsta.x - xgr + Math.sin(sway) * 5 * ed;
-    const screenY = monsta.y + Math.sin(mobx) * 5 * ed;
+    const screenX = monsta.x - xgr + Math.sin(sway) * 5 * ed * tx;
+    const screenY = monsta.y + Math.sin(mobx) * 5 * ed * tx;
 
     for (let i = 0; i < size; i += 2) {
         const color = rand(3);
@@ -1785,9 +1784,16 @@ function crashOb(xgr) {
                 gamePaused = true;
                 gameRunning = false;
                 off('fpsx');
-                reUpdate(180, 1);
+                reas = 1;
+                reUpdate();
                 const msg = cpop[flor(2)];
-                setTimeout(() => showPopup(msg), 1200);
+
+                setTimeout(() => {
+                    showPopup(msg);
+                    setTimeout(() => {
+                        allowed = false;
+                    }, 2000);
+                }, 1200);
             } else {
                 stuck = true;
                 obstacles.splice(i, 1);
@@ -1838,10 +1844,18 @@ function crashMrs(xgr, spx) {
             if (musicOn) fadeOutMusic();
             gamePaused = true;
             gameRunning = false;
-            reUpdate(180, 2);
+            reas = 2;
+            reUpdate();
             off('fpsx');
             const msg = cpop[flor(2)];
-            setTimeout(() => showPopup(msg), 1200);
+
+            setTimeout(() => {
+                showPopup(msg);
+                setTimeout(() => {
+                    allowed = false;
+                }, 2000);
+            }, 1200);
+
         } else {
             stuck = true;
             for (let i = 0; i < 3; i++) showPopup("🔥 EXTRA LIFE 🔥");
@@ -2023,7 +2037,7 @@ let spawner = 20;
 function hyper(timez, xgr) {
     const dt = timez - lasttime;
 
-    if (dt > timer) {
+    if (dt > timer && !stuck) {
         const pyro = Math.min(20, Math.abs(speedX));
 
         if (pyro < 4) {
@@ -2110,13 +2124,13 @@ function update(timestamp) {
     }
 
     if (diesel) {
-        doSmoke(camx);
+        doSmoke(camx, deltaT * 60);
     } else {
-        doSparks();
+        doSparks(deltaT * 60);
     }
 
-    doTrt(traintime);
-    doMrs(camx);
+    doTrt(traintime, deltaT * 60);
+    doMrs(camx, deltaT * 60);
 
     if (camx < topo * 1.7) doPlot(topo/2 - camx, hopo);
     if (camx > eepo - topo) doPlot(stat.x + topo/2 - camx, hopo, 1);
@@ -2127,15 +2141,25 @@ function update(timestamp) {
     crashStat(camx);
     if (isfps) doFPS(timestamp);
 
-    if (stuck) doExp(hopo/2, 1);
+    if (stuck) doExp(hopo/2, deltaT * 60, 1);
 
     uploop = requestAnimationFrame(update);
 }
 
 
 
-function reUpdate(allowed, reas) {
-    if (allowed > 0) {
+let relasting = 0;
+let allowed = true;
+let reas;
+
+
+function reUpdate(timestamp) {
+    if (allowed) {
+
+        let deltaT = (timestamp - relasting)/1000;
+        if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 0.016;
+        relasting = timestamp;
+
         const topo = CW;
         const hopo = CH;
         const eepo = ending;
@@ -2158,17 +2182,19 @@ function reUpdate(allowed, reas) {
             doSign(camx, hopo);
         }
 
-        doMrs(camx);
+        doMrs(camx, deltaT * 60);
 
         if (camx < topo * 1.7) doPlot(topo/2 - camx, hopo);
         if (camx > eepo - topo) doPlot(stat.x + topo/2 - camx, hopo, 1);
 
-        doExp(hopo/2);
-        allowed--;
+        doExp(hopo/2, deltaT * 60);
 
-        doloop = requestAnimationFrame(() => reUpdate(allowed, reas));
+        doloop = requestAnimationFrame(reUpdate);
     } else {
-        setTimeout(() => gOver(reas), 250);
+        setTimeout(() => {
+            gOver(reas);
+            allowed = true;
+        }, 250);
     }
 }
 
@@ -2238,8 +2264,6 @@ ele("switcher").addEventListener("click", () => swicher());
 
 
 // FINAL BLOCK ============================================================================================================================================
-
-ending *= editx;
 
 function startGame() {
   
