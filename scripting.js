@@ -455,6 +455,8 @@ function storyNext() {
 
 // SCALING BLOCK ============================================================================================================================================
 
+let playX = true;
+
 function setViewportHeight() {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -464,12 +466,14 @@ function setViewportHeight() {
 function checkOrientation() {
     const isPortrait = window.innerHeight > window.innerWidth;
     ele('rotateWarning').style.display = isPortrait ? 'flex' : 'none';
-    if (gameRunning) {
+    if (gameRunning && playX) {
         gamePaused = isPortrait;
         if (!gamePaused) {
-            cancelAnimationFrame(uploop);
-            cancelAnimationFrame(doloop);
-            update();
+            requestAnimationFrame(() => {
+                if (uploop) cancelAnimationFrame(uploop);
+                if (doloop) cancelAnimationFrame(doloop);
+                update();
+            })
         }
     }
 }
@@ -520,7 +524,6 @@ fullx(false);
 const canvas = ele("gameCanvasX");
 const ctx = canvas.getContext("2d");
 let resizeTimer = null;
-let ending = 70000 + rand(30000);
 let gameRunning = false;
 let gamePaused = false;
 let CW, CH, k, l, editx;
@@ -552,7 +555,12 @@ function klupdater() {
     const b = CH * 0.64;
     k = a - train.height;
     l = b - train.height;
-    editx = CW/1300;
+
+    if (CW > CH) {
+        editx = CW/1300;
+    } else {
+        editx = CH/1300;
+    }
 }
 klupdater();
 
@@ -607,7 +615,6 @@ window.addEventListener("load", async () => {
     await wait(1500);
 
     on('menu', 2);
-    ending *= editx;
 });
 
 
@@ -648,7 +655,7 @@ ele('sideBy').addEventListener("click", () => {
     on('dark');
     off('fpsx');
     gamePaused = true;
-    gameRunning = false;
+    playX = false;
     if (musicOn) fadeOutMusic();
 });
 
@@ -660,10 +667,20 @@ function taskResume() {
     ele('gameCanvasX').classList.remove("blur");
     on('envy');
     gamePaused = false;
-    gameRunning = true;
+    playX = true;
     if (musicOn) fadeInMusic();
     update();
     setLife(extralife);
+
+    if (flashAF) {
+        cancelAnimationFrame(flashAF);
+        requestAnimationFrame(flash);
+    }
+
+    if (burstAF) {
+        cancelAnimationFrame(burstAF);
+        requestAnimationFrame(electricBurst);
+    }
 }
 
 
@@ -673,7 +690,9 @@ function taskResume() {
 // RESUME - PAUSE FUNCTION ============================================================================================================================================
 
 function resumePause() {
-    gameRunning = !gameRunning;
+    if (!gameRunning || stuck) return;
+
+    playX = !playX;
     gamePaused = !gamePaused;
     ele("pauser").textContent = gamePaused ? "⏸" : "▶";
 
@@ -682,6 +701,16 @@ function resumePause() {
     } else {
         if (musicOn) fadeInMusic();
         update();
+
+        if (flashAF) {
+            cancelAnimationFrame(flashAF);
+            requestAnimationFrame(flash);
+        }
+        
+        if (burstAF) {
+            cancelAnimationFrame(burstAF);
+            requestAnimationFrame(electricBurst);
+        }
     }
 }
 
@@ -977,29 +1006,40 @@ function adv() {
 
 // ELECTRIC BURST EFFECT ============================================================================================================================================
 
+let burstAF;
+
 function electricBurst() {
     const centerX = train.x + train.width/2;
     const centerY = (train.top ? k : l) + train.height/2;
+    let scaleE = 0;
+    let opacityE = 1.5;
+    let lastE = 0;
 
-    let scale = 0;
-    let opacity = 1.5;
+    function animate(timestamp) {
+        if (!gameRunning || stuck) return;
 
-    function animate() {
-        ctx.save();
-        ctx.translate(centerX, centerY);
-        ctx.rotate(scale);
-        ctx.globalAlpha = opacity;
+        if (!gamePaused) {
 
-        const size = CH * 0.7 * scale;
-        ctx.drawImage(esburstImg, -size/2, -size/2, size, size);
+            let deltaT = (timestamp - lastE)/1000 * 1.2;
+            if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 0.2;
+            lastE = timestamp;
 
-        ctx.restore();
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(scaleE);
+            ctx.globalAlpha = opacityE;
 
-        scale += 0.02;
-        opacity -= 0.02;
+            const size = CH * 0.7 * scaleE;
+            ctx.drawImage(esburstImg, -size/2, -size/2, size, size);
 
-        if (opacity > 0) {
-            requestAnimationFrame(animate);
+            ctx.restore();
+
+            scaleE += deltaT;
+            opacityE -= deltaT;
+        }
+
+        if (opacityE > 0) {
+            burstAF = requestAnimationFrame(animate);
         }
     }
 
@@ -1012,18 +1052,30 @@ function electricBurst() {
 
 // FLASH EFFECT ============================================================================================================================================
 
+let flashAF;
+
 function flash(f = 1) {
-    let flashOpacity = 0.75;
-    let reduction = 0.009;
     const var1 = CW;
     const var2 = CH;
+    let opacityF = 0.75;
+    let reduction = 0.009;
+    let lastF = 0;
 
-    function flas() {
-        if (flashOpacity > 0) {
-            ctx.fillStyle = f === 1 ? `rgba(255, 255, 255, ${flashOpacity})`: `rgba(0, 0, 0, ${flashOpacity})`;
-            ctx.fillRect(0, 0, var1, var2);
-            flashOpacity -= reduction;
-            requestAnimationFrame(flas);
+    function flas(timestamp) {
+
+        let deltaT = (timestamp - lastF)/1000 * 60;
+        if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 1;
+        lastF = timestamp;
+
+        if (opacityF > 0) {
+            console.log(opacityF);
+            if (playX) {
+                ctx.fillStyle = f === 1 ? `rgba(255, 255, 255, ${opacityF})`: `rgba(0, 0, 0, ${opacityF})`;
+                ctx.fillRect(0, 0, var1, var2);
+                opacityF -= reduction * deltaT;
+            }
+
+            flashAF = requestAnimationFrame(flas);
         }
     }
 
@@ -1044,7 +1096,7 @@ function shake() {
 
     function xyz() {
         cameraX = b + Math.sin(a) * 3 * edx;
-        a++;
+        a += 0.8;
         
         if (goat) requestAnimationFrame(xyz);
     }
@@ -1080,6 +1132,7 @@ function lifer() {
     setLife(extralife);
     on('envy');
     flash();
+    electricBurst();
     setTimeout(() => {
         showPopup("🔥 Resurrection... 🔥");
     },800);
@@ -1458,6 +1511,7 @@ function doSign(xgr, kkk) {
 
 // STATION BLOCK ============================================================================================================================================
 
+let ending = (70000 + rand(30000)) * editx;
 const stat = { x: ending , rtx: false , plot: 0 , };
 
 
@@ -1584,10 +1638,10 @@ function doTrt(timez, tx) {
     if (crash) return;
     const ed = editx;
 
-    bobx += 0.15;
-    hopx += 0.13;
-    trainBob = Math.sin(bobx) * 5 * ed * tx;
-    const trx = train.x + Math.sin(hopx) * 3 * ed * tx;
+    bobx += 0.15 * tx;
+    hopx += 0.13 * tx;
+    trainBob = Math.sin(bobx) * 5 * ed;
+    const trx = train.x + Math.sin(hopx) * 3 * ed;
     let baseY = train.top ? k : l;
 
     if (swich) {
@@ -1723,8 +1777,8 @@ function spawnMonster() {
 
 function doMrs(xgr, tx) {
     if (!monsta) return;
-    mobx += 0.15;
-    sway += 0.13;
+    mobx += 0.15 * tx;
+    sway += 0.13 * tx;
     const ed = editx;
 
     const size = train.height;
