@@ -62,6 +62,7 @@ const statUp = imgload("others/statup.jpg");
 const statDown = imgload("others/statdown.jpg");
 const expImg = imgload("others/explosion.png");
 const esburstImg = imgload("others/e-spark-burst.png");
+const hvburstImg = imgload("others/heavy-burst.png");
 
 const offImgs = [
     imgload("others/cross.png"),
@@ -195,7 +196,7 @@ let difi, tops;
 
 function editz(ed, pup=false) {
     const pops =["Slow...🐢", "Medium...😎", "Fast...💪", "Extreme...⚡","Easy...✌️", "Medium...😎", "Hard...😈", "Extreme...☠️"];
-    const data = [[8,0.5], [11,0.65], [15,0.8], [20,1], [5,1], [6,1.2], [7,1.75], [8,2]];
+    const data = [[8,2.4], [11,1.7], [15,1.2], [20,1], [5,1], [6,1.2], [7,1.75], [8,2]];
     let a, b;
 
     if (ed < 5) {
@@ -672,15 +673,8 @@ function taskResume() {
     update();
     setLife(extralife);
 
-    if (flashAF) {
-        cancelAnimationFrame(flashAF);
-        requestAnimationFrame(flash);
-    }
-
-    if (burstAF) {
-        cancelAnimationFrame(burstAF);
-        requestAnimationFrame(electricBurst);
-    }
+    if (flashing) flash();
+    if (bursting) electricBurst();
 }
 
 
@@ -692,9 +686,9 @@ function taskResume() {
 function resumePause() {
     if (!gameRunning || stuck) return;
 
-    playX = !playX;
     gamePaused = !gamePaused;
     ele("pauser").textContent = gamePaused ? "⏸" : "▶";
+    playX = !gamePaused;
 
     if (gamePaused) {
         if (musicOn) fadeOutMusic();
@@ -702,15 +696,8 @@ function resumePause() {
         if (musicOn) fadeInMusic();
         update();
 
-        if (flashAF) {
-            cancelAnimationFrame(flashAF);
-            requestAnimationFrame(flash);
-        }
-        
-        if (burstAF) {
-            cancelAnimationFrame(burstAF);
-            requestAnimationFrame(electricBurst);
-        }
+        if (flashing) flash();
+        if (bursting) electricBurst();
     }
 }
 
@@ -1006,40 +993,45 @@ function adv() {
 
 // ELECTRIC BURST EFFECT ============================================================================================================================================
 
-let burstAF;
+let bursting = false;
+let scaleE = 0;
+let lastE = 0;
+let opacityE = 1.5;
 
-function electricBurst() {
+function electricBurst(krg = 1) {
     const centerX = train.x + train.width/2;
     const centerY = (train.top ? k : l) + train.height/2;
-    let scaleE = 0;
-    let opacityE = 1.5;
-    let lastE = 0;
+
+    const imge = krg === 1 ? esburstImg : hvburstImg;
 
     function animate(timestamp) {
-        if (!gameRunning || stuck) return;
+        if (!playX) return;
 
-        if (!gamePaused) {
+        let deltaT = (timestamp - lastE)/1000 * 1.2;
+        if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 0.2;
+        lastE = timestamp;
 
-            let deltaT = (timestamp - lastE)/1000 * 1.2;
-            if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 0.2;
-            lastE = timestamp;
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(scaleE);
+        ctx.globalAlpha = opacityE;
 
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(scaleE);
-            ctx.globalAlpha = opacityE;
+        const size = CH * 0.8 * scaleE;
+        ctx.drawImage(imge, -size/2, -size/2, size, size);
 
-            const size = CH * 0.7 * scaleE;
-            ctx.drawImage(esburstImg, -size/2, -size/2, size, size);
+        ctx.restore();
 
-            ctx.restore();
-
-            scaleE += deltaT;
-            opacityE -= deltaT;
-        }
+        scaleE += deltaT;
+        opacityE -= deltaT;
+        bursting = true;
 
         if (opacityE > 0) {
-            burstAF = requestAnimationFrame(animate);
+            requestAnimationFrame(animate);
+        } else {
+            bursting = false;
+            scaleE = 0;
+            lastE = 0;
+            opacityE = 1.5;
         }
     }
 
@@ -1052,30 +1044,34 @@ function electricBurst() {
 
 // FLASH EFFECT ============================================================================================================================================
 
-let flashAF;
+let flashing = false;
+let opacityF = 0.75;
+let lastF = 0;
+
 
 function flash(f = 1) {
     const var1 = CW;
     const var2 = CH;
-    let opacityF = 0.75;
-    let reduction = 0.009;
-    let lastF = 0;
+    const reduction = 0.009;
 
     function flas(timestamp) {
+        if (!playX) return;
 
         let deltaT = (timestamp - lastF)/1000 * 60;
         if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 1;
         lastF = timestamp;
 
         if (opacityF > 0) {
-            console.log(opacityF);
-            if (playX) {
-                ctx.fillStyle = f === 1 ? `rgba(255, 255, 255, ${opacityF})`: `rgba(0, 0, 0, ${opacityF})`;
-                ctx.fillRect(0, 0, var1, var2);
-                opacityF -= reduction * deltaT;
-            }
+            flashing = true;
+            ctx.fillStyle = f === 1 ? `rgba(255, 255, 255, ${opacityF})`: `rgba(0, 0, 0, ${opacityF})`;
+            ctx.fillRect(0, 0, var1, var2);
+            opacityF -= reduction * deltaT;
 
-            flashAF = requestAnimationFrame(flas);
+            requestAnimationFrame(flas);
+        } else {
+            flashing = false;
+            opacityF = 0.75;
+            lastF = 0;
         }
     }
 
@@ -1132,7 +1128,6 @@ function lifer() {
     setLife(extralife);
     on('envy');
     flash();
-    electricBurst();
     setTimeout(() => {
         showPopup("🔥 Resurrection... 🔥");
     },800);
@@ -1247,7 +1242,7 @@ function doSparks(tx) {
 
 const boom = new Audio("explode.mp3");
 let mono = 1;
-let exup = 0.002 * editx;
+let exup = 0.0025 * editx;
 let exuping = true;
 
 
@@ -1395,7 +1390,7 @@ function genX() {
     const var3 = CH/10;
     const var4 = CH/14;
     const l2 = ending - CW * 5;
-    const ups = CW * (0.3 - difi/10);
+    const ups = CW * (0.4 - difi/10);
 
     crystals = [];
     obstacles = [];
@@ -1439,7 +1434,7 @@ function genX() {
         });
     }
 
-    for (let i = var2; i < l2; i += ((CW/10 + flor(CW*0.4)) + ups) * tops ) {
+    for (let i = var2; i < l2; i += (flor(CW*0.4) + ups)/tops ) {
         gpBlocks.push({
             x: i,
             y: 0.42 + flor(0.18),
@@ -1833,6 +1828,10 @@ function crashOb(xgr) {
 
             shake();
 
+            setTimeout(() => {
+                electricBurst(5);
+            }, 20);
+
             if (!extralife) {
                 if (musicOn) fadeOutMusic();
                 gamePaused = true;
@@ -1863,7 +1862,6 @@ function crashOb(xgr) {
             }
 
             boom.play();
-            flash();
             break;
         }
     }
@@ -1893,6 +1891,10 @@ function crashMrs(xgr, spx) {
         monsta.speed = 0;
 
         shake();
+
+        setTimeout(() => {
+            electricBurst(5);
+        }, 20);
 
         if (!extralife) {
             if (musicOn) fadeOutMusic();
@@ -1924,7 +1926,6 @@ function crashMrs(xgr, spx) {
         }
 
         boom.play();
-        flash();
 
     } else if (monsta.x < -100 || monsta.x < xgr - 500) {
         monsta = null;
@@ -2195,7 +2196,7 @@ function update(timestamp) {
     crashStat(camx);
     if (isfps) doFPS(timestamp);
 
-    if (stuck) doExp(hopo/2, deltaT * 60, 1);
+    if (stuck) doExp(hopo/2.5, deltaT * 60, 1);
 
     uploop = requestAnimationFrame(update);
 }
@@ -2241,7 +2242,7 @@ function reUpdate(timestamp) {
         if (camx < topo * 1.7) doPlot(topo/2 - camx, hopo);
         if (camx > eepo - topo) doPlot(stat.x + topo/2 - camx, hopo, 1);
 
-        doExp(hopo/2, deltaT * 60);
+        doExp(hopo/2.5, deltaT * 60);
 
         doloop = requestAnimationFrame(reUpdate);
     } else {
