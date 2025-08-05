@@ -55,56 +55,56 @@ function off(id) {
 // IMAGE LOADINGS ============================================================================================================================================
 
 const lifeImg = imgload("others/life.png");
-const smokeImg = imgload("others/smoke.png");
-const sparkImg = imgload("others/sparkx.png");
-const gpImg = imgload("others/graphene.png");
+const smokeImg = imgload("others/smoke.webp");
+const sparkImg = imgload("others/sparkx.webp");
+const gpImg = imgload("others/graphene.webp");
 const statUp = imgload("others/statup.jpg");
 const statDown = imgload("others/statdown.jpg");
-const expImg = imgload("others/explosion.png");
-const esburstImg = imgload("others/e-spark-burst.png");
-const hvburstImg = imgload("others/heavy-burst.png");
+const expImg = imgload("others/explosion.webp");
+const esburstImg = imgload("others/e-spark-burst.webp");
+const hvburstImg = imgload("others/heavy-burst.webp");
 
 const offImgs = [
     imgload("others/cross.png"),
-    imgload("others/burst.png"),
+    imgload("others/burst.webp"),
 ]
 
 const backx = [
-    imgload("bgis/backg000.jpg"),
-    imgload("bgis/backg111.jpg"),
-    imgload("bgis/backg222.jpg"),
-    imgload("bgis/backg333.jpg"),
-    imgload("bgis/backg444.jpg"),
+    imgload("bgis/backg000.webp"),
+    imgload("bgis/backg111.webp"),
+    imgload("bgis/backg222.webp"),
+    imgload("bgis/backg333.webp"),
+    imgload("bgis/backg444.webp"),
 ];
 
 
 const trainx = [
-    imgload("prototypes/loco000.png"),
-    imgload("prototypes/loco111.png"),
-    imgload("prototypes/loco222.png"),
-    imgload("prototypes/loco333.png"),
-    imgload("prototypes/loco444.png"),
-    imgload("prototypes/loco555.png"),
+    imgload("prototypes/loco000.webp"),
+    imgload("prototypes/loco111.webp"),
+    imgload("prototypes/loco222.webp"),
+    imgload("prototypes/loco333.webp"),
+    imgload("prototypes/loco444.webp"),
+    imgload("prototypes/loco555.webp"),
 ];
 
 
 const monsterx = [
-    imgload("prototypes/proto000.png"),
-    imgload("prototypes/proto111.png"),
-    imgload("prototypes/proto222.png"),
-    imgload("prototypes/proto333.png"),
-    imgload("prototypes/proto444.png"),
-    imgload("prototypes/proto555.png"),
+    imgload("prototypes/proto000.webp"),
+    imgload("prototypes/proto111.webp"),
+    imgload("prototypes/proto222.webp"),
+    imgload("prototypes/proto333.webp"),
+    imgload("prototypes/proto444.webp"),
+    imgload("prototypes/proto555.webp"),
 ];
 
 
 const obi = [
-    imgload("others/barrel.png"),
-    imgload("others/barrelx.png"),
+    imgload("others/barrel.webp"),
+    imgload("others/barrelx.webp"),
     imgload("others/crate.jpg"),
-    imgload("others/rock.png"),
-    imgload("others/scrap.png"),
-    imgload("others/scrapx.png"),
+    imgload("others/rock.webp"),
+    imgload("others/scrap.webp"),
+    imgload("others/scrapx.webp"),
 ];
 
 
@@ -785,7 +785,6 @@ function delCp(ddd) {
         allImgs.forEach(im => im.classList.remove("selecta"));
         
     } else {
-        showPopup("😤...Hmm...Progress!");
         off('reset');
     }
 }
@@ -1848,7 +1847,7 @@ function crashOb(xgr) {
             } else {
                 stuck = true;
                 obstacles.splice(i, 1);
-                for (let j = 0; j < 3; j++) showPopup("🔥 EXTRA LIFE 🔥");
+                showPopup("🔥 EXTRA LIFE 🔥");
 
                 setTimeout(() => {
                     exuping = false;
@@ -1912,7 +1911,7 @@ function crashMrs(xgr, spx) {
 
         } else {
             stuck = true;
-            for (let i = 0; i < 3; i++) showPopup("🔥 EXTRA LIFE 🔥");
+            showPopup("🔥 EXTRA LIFE 🔥");
 
             setTimeout(() => {
                 exuping = false;
