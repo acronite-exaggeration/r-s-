@@ -56,7 +56,7 @@ function off(id) {
 
 const lifeImg = imgload("others/life.png");
 const smokeImg = imgload("others/smoke.png");
-const sparkImg = imgload("others/spark.png");
+const sparkImg = imgload("others/sparkx.png");
 const gpImg = imgload("others/graphene.png");
 const statUp = imgload("others/statup.jpg");
 const statDown = imgload("others/statdown.jpg");
@@ -196,14 +196,14 @@ let difi, tops;
 
 function editz(ed, pup=false) {
     const pops =["Slow...🐢", "Medium...😎", "Fast...💪", "Extreme...⚡","Easy...✌️", "Medium...😎", "Hard...😈", "Extreme...☠️"];
-    const data = [[8,2.4], [11,1.7], [15,1.2], [20,1], [5,1], [6,1.2], [7,1.75], [8,2]];
+    const data = [[8,2], [11,1.7], [15,1.3], [20,1], [5,1], [6,1.2], [8,2], [10,3.4]];
     let a, b;
 
     if (ed < 5) {
         const dt = data[ed-1];
         trainMax = dt[0] * editx;
-        acc = trainMax * 2.5;
-        fri = trainMax * 1.6;
+        acc = trainMax/24;
+        fri = trainMax/38;
         tops = dt[1];
         a = "tr";
         b = "Train Speed is " + pops[ed-1];
@@ -674,7 +674,7 @@ function taskResume() {
     setLife(extralife);
 
     if (flashing) flash();
-    if (bursting) electricBurst();
+    if (bursting) xgrBurst();
 }
 
 
@@ -697,7 +697,7 @@ function resumePause() {
         update();
 
         if (flashing) flash();
-        if (bursting) electricBurst();
+        if (bursting) xgrBurst();
     }
 }
 
@@ -976,7 +976,9 @@ function adv() {
         gpGot -= requirement;
         epo++;
         requirement += 1 + flor(4);
-        electricBurst();
+        setTimeout(() => {
+            xgrBurst();
+        }, 20);
         setTimeout(() => {
             showPopup("🔥 Used ADVANCE!");
             showPopup("🔥 XP Boosted!");
@@ -998,7 +1000,7 @@ let scaleE = 0;
 let lastE = 0;
 let opacityE = 1.5;
 
-function electricBurst(krg = 1) {
+function xgrBurst(krg = 1) {
     const centerX = train.x + train.width/2;
     const centerY = (train.top ? k : l) + train.height/2;
 
@@ -1253,14 +1255,10 @@ function doExp(es, ks, dd = 0) {
     
     ctx.drawImage(expImg, cx, cy, fol, fol);
 
-    if (dd === 0) {
+    if (dd === 0 || exuping) {
         mono += exup * ks;
     } else {
-        if (exuping) {
-            mono += exup * ks;
-        } else {
-            mono -= exup * 5 * ks;
-        }
+        mono -= exup * 5 * ks;
     }
 }
 
@@ -1390,7 +1388,7 @@ function genX() {
     const var3 = CH/10;
     const var4 = CH/14;
     const l2 = ending - CW * 5;
-    const ups = CW * (0.4 - difi/10);
+    const ups = CW * (0.3 - difi/20);
 
     crystals = [];
     obstacles = [];
@@ -1434,7 +1432,7 @@ function genX() {
         });
     }
 
-    for (let i = var2; i < l2; i += (flor(CW*0.4) + ups)/tops ) {
+    for (let i = var2; i < l2; i += (flor(CW/4) + ups)/tops ) {
         gpBlocks.push({
             x: i,
             y: 0.42 + flor(0.18),
@@ -1829,7 +1827,7 @@ function crashOb(xgr) {
             shake();
 
             setTimeout(() => {
-                electricBurst(5);
+                xgrBurst(5);
             }, 20);
 
             if (!extralife) {
@@ -1876,7 +1874,7 @@ function crashOb(xgr) {
 function crashMrs(xgr, spx) {
     if (!monsta || crash) return;
 
-    monsta.x -= monsta.speed * spx * 60;
+    monsta.x -= monsta.speed * spx;
     const mrSX = monsta.x - xgr;
 
     const collided = train.x < mrSX + train.height && train.x + train.width > mrSX && train.top === monsta.mt;
@@ -1893,7 +1891,7 @@ function crashMrs(xgr, spx) {
         shake();
 
         setTimeout(() => {
-            electricBurst(5);
+            xgrBurst(5);
         }, 20);
 
         if (!extralife) {
@@ -2034,7 +2032,7 @@ function handleSpeed(xgr, dt) {
         }
     }
 
-    if (braverr && remind >= 2000 * dt * 60) {
+    if (braverr && remind >= 2000 * dt) {
         braverr = false;
         showPopup(rand() > 0.5 ? "🔥 It's time to move ahead..." : "🔥 Let's move on Buddy...");
         setTimeout(() => { braverr = true }, 5000);
@@ -2143,8 +2141,8 @@ let uploop, doloop;
 function update(timestamp) {
     if (gamePaused || !gameRunning) return;
 
-    let deltaT = (timestamp - lasting)/1000;
-    if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 0.016;
+    let deltaT = (timestamp - lasting)/1000 * 60;
+    if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 1;
     lasting = timestamp;
 
     cameraX += speedX;
@@ -2153,7 +2151,7 @@ function update(timestamp) {
     const eepo = ending;
     const camx = cameraX;
 
-    if (swich) traintime += 16/(60 * deltaT);
+    if (swich) traintime += 16/(deltaT);
 
     ctx.clearRect(0, 0, topo, hopo);
 
@@ -2179,13 +2177,13 @@ function update(timestamp) {
     }
 
     if (diesel) {
-        doSmoke(camx, deltaT * 60);
+        doSmoke(camx, deltaT);
     } else {
-        doSparks(deltaT * 60);
+        doSparks(deltaT);
     }
 
-    doTrt(traintime, deltaT * 60);
-    doMrs(camx, deltaT * 60);
+    doTrt(traintime, deltaT);
+    doMrs(camx, deltaT);
 
     if (camx < topo * 1.7) doPlot(topo/2 - camx, hopo);
     if (camx > eepo - topo) doPlot(stat.x + topo/2 - camx, hopo, 1);
@@ -2196,7 +2194,7 @@ function update(timestamp) {
     crashStat(camx);
     if (isfps) doFPS(timestamp);
 
-    if (stuck) doExp(hopo/2.5, deltaT * 60, 1);
+    if (stuck) doExp(hopo/2.5, deltaT, 1);
 
     uploop = requestAnimationFrame(update);
 }
