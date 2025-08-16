@@ -559,10 +559,13 @@ function klupdater() {
 
     if (CW > CH) {
         editx = CW/1300;
+        showPopup(editx);
+        showPopup('CW');
     } else {
         editx = CH/1300;
+        showPopup(editx);
+        showPopup('CH');
     }
-    showPopup(editx);
 }
 klupdater();
 
@@ -2364,5 +2367,6 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
 
 
