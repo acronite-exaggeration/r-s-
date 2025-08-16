@@ -562,7 +562,7 @@ function klupdater() {
     } else {
         editx = CH/1300;
     }
-    console.log(editx);
+    showPopup(editx);
 }
 klupdater();
 
@@ -2364,4 +2364,5 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
 
