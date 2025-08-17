@@ -532,11 +532,13 @@ let CW, CH, k, l, editx;
 
 function resiz() {
     setViewportHeight();
-    canvas.width =  window.innerWidth;
-    canvas.height = window.innerHeight;
-    CW = canvas.width;
-    CH = canvas.height;
-    checkOrientation();
+    requestAnimationFrame(() => {
+        canvas.width =  window.innerWidth;
+        canvas.height = window.innerHeight;
+        CW = canvas.width;
+        CH = canvas.height;
+        checkOrientation();
+    });
 }
 resiz();
 
@@ -2368,6 +2370,7 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
 
 
 
