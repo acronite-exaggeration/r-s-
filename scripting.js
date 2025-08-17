@@ -569,7 +569,6 @@ function klupdater() {
     showPopup(CH);
     showPopup(editx);
 }
-klupdater();
 
 
 
@@ -629,7 +628,7 @@ window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
         resiz();
-        klupdater();
+        requestAnimationFrame(klupdater);
     }, 100);
 });
 
@@ -2369,6 +2368,7 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
 
 
 
