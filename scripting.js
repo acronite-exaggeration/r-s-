@@ -575,14 +575,6 @@ function klupdater() {
 
 // TASKS BLOCK ============================================================================================================================================
 
-resiz();
-const [x,y] = [gett('trEdit'), gett('mrsEdit')];
-
-x ? editz(+x) : editz(2);
-
-y ? editz(+y) : editz(6);
-
-
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 
@@ -622,6 +614,12 @@ window.addEventListener("load", async () => {
     await wait(1500);
 
     on('menu', 2);
+    const [x,y] = [gett('trEdit'), gett('mrsEdit')];
+
+    x ? editz(+x) : editz(2);
+
+    y ? editz(+y) : editz(6);
+
 });
 
 
@@ -2372,4 +2370,5 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
 
