@@ -539,7 +539,6 @@ function resiz() {
     klupdater();
     checkOrientation();
 }
-resiz();
 
 
 let train = {
@@ -560,15 +559,11 @@ function klupdater() {
 
     if (CW > CH) {
         editx = CW/1300;
-        showPopup('CW');
-    } else {
-        editx = CH/1300;
-        showPopup('CH');
+        showPopup(editx);
     }
 
     showPopup(CW);
     showPopup(CH);
-    showPopup(editx);
 }
 
 
@@ -577,11 +572,13 @@ function klupdater() {
 
 // TASKS BLOCK ============================================================================================================================================
 
+resiz();
 const [x,y] = [gett('trEdit'), gett('mrsEdit')];
 
 x ? editz(+x) : editz(2);
 
 y ? editz(+y) : editz(6);
+
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
