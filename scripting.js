@@ -537,16 +537,16 @@ function resiz() {
         canvas.height = window.innerHeight;
         CW = canvas.width;
         CH = canvas.height;
+        klupdater();
         checkOrientation();
     });
 }
-resiz();
 
 
 let train = {
     x: 60,
-    width: CW * 0.23,
-    height: CH * 0.17,
+    width: 100,
+    height: 300,
     top: true,
 };
 
@@ -630,7 +630,6 @@ window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
         resiz();
-        requestAnimationFrame(klupdater);
     }, 100);
 });
 
@@ -2370,6 +2369,7 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
 
 
 
