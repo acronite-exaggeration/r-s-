@@ -538,6 +538,9 @@ function resiz() {
     CH = canvas.height;
     klupdater();
     checkOrientation();
+
+    showPopup('WH ' + window.innerHeight.toString());
+    showPopup('WW ' + window.innerWidth.toString());
 }
 
 
@@ -559,11 +562,11 @@ function klupdater() {
 
     if (CW > CH) {
         editx = CW/1300;
-        showPopup(editx);
+        showPopup('editx ' + editx.toString());
     }
 
-    showPopup(CW);
-    showPopup(CH);
+    showPopup('CW ' + CW.toString());
+    showPopup('CH ' + CH.toString());
 }
 
 
@@ -2369,3 +2372,4 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
