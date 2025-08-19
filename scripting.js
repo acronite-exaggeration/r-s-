@@ -532,15 +532,14 @@ let CW, CH, k, l, editx;
 
 function resiz() {
     setViewportHeight();
-    requestAnimationFrame(() => {
-        canvas.width =  window.innerWidth;
-        canvas.height = window.innerHeight;
-        CW = canvas.width;
-        CH = canvas.height;
-        klupdater();
-        checkOrientation();
-    });
+    canvas.width =  window.innerWidth;
+    canvas.height = window.innerHeight;
+    CW = canvas.width;
+    CH = canvas.height;
+    klupdater();
+    checkOrientation();
 }
+resiz();
 
 
 let train = {
@@ -1249,11 +1248,11 @@ function doSparks(tx) {
 
 const boom = new Audio("explode.mp3");
 let mono = 1;
-let exup = 0.0025 * editx;
 let exuping = true;
 
 
 function doExp(es, ks, dd = 0) {
+    const exup = es/117000 * ks;
     const fol = es * mono;
     const cx = train.x + train.width*0.6 - fol/2;
     const cy = (train.top ? k : l) + train.height*0.8 - fol/2;
@@ -1261,9 +1260,9 @@ function doExp(es, ks, dd = 0) {
     ctx.drawImage(expImg, cx, cy, fol, fol);
 
     if (dd === 0 || exuping) {
-        mono += exup * ks;
+        mono += exup;
     } else {
-        mono -= exup * 5 * ks;
+        mono -= exup * 5;
     }
 }
 
@@ -1350,7 +1349,7 @@ function collects() {
     for (const gp of gpBlocks) {
         const screenX = gp.x - cameraX;
 
-        if (!gp.got && screenX >= 0 && screenX <= CW) {
+        if (!gp.got && screenX >= -gp.width && screenX <= CW) {
             gp.got = true;
             gp.animating = true;
             gp.alpha = 1;
@@ -1387,6 +1386,9 @@ function collects() {
 // GENERATOR BLOCK ============================================================================================================================================
 
 function genX() {
+    ending = endx * editx;
+    stat.x = ending;
+
     const var1 = CH/7;
     const varx = train.width + var1 + CW/35;
     const var2 = CW * 5;
@@ -1509,7 +1511,8 @@ function doSign(xgr, kkk) {
 
 // STATION BLOCK ============================================================================================================================================
 
-let ending = (70000 + rand(30000)) * editx;
+let endx = 70000 + rand(30000);
+let ending = endx;
 const stat = { x: ending , rtx: false , plot: 0 , };
 
 
@@ -1968,7 +1971,7 @@ function crashStat(xgr) {
     requestAnimationFrame(slowDownTrain);
 
     setTimeout(() => {
-        ending = (70000 + rand(30000)) * editx;
+        endx = 70000 + rand(30000);
         loadCp();
         acc = Acc;
         flash();
@@ -2094,14 +2097,15 @@ let spawner = 20;
 
 function hyper(timez, xgr) {
     const dt = timez - lasttime;
+    const ed = editx;
 
     if (dt > timer && !stuck) {
-        const pyro = Math.min(20, Math.abs(speedX));
+        const pyro = Math.min(20 * ed, Math.abs(speedX));
 
-        if (pyro < 4) {
+        if (pyro < 4*ed) {
             timer = 500 + rand(300);
         } else {
-            timer = 70 + (20 - pyro)*25 + rand(20);
+            timer = 70 + (20 - pyro/ed)*25 + rand(30);
         }
 
         if (diesel) {
@@ -2118,7 +2122,7 @@ function hyper(timez, xgr) {
 
     if (crystalDt > 400) {
         for (let i = 0; i < crystals.length; i++) {
-            crystals[i].radius = (2 + flor(5)) * editx;
+            crystals[i].radius = (2 + flor(5)) * ed;
         }
 
         lastly = timez;
@@ -2342,7 +2346,6 @@ function startGame() {
     if (change) climate();
 
     setTimeout(() => showPopup(help[i]), 500);
-    stat.x = ending;
 
     setTimeout(() => {
         loadCp();
@@ -2369,10 +2372,3 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
-
-
-
-
-
-
-
