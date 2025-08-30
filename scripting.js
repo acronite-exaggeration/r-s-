@@ -560,7 +560,11 @@ function klupdater() {
     const b = CH * 0.64;
     k = a - train.height;
     l = b - train.height;
-    if (CW > CH) editx = CW/1300;
+    if (CW > CH) {
+        editx = CW/1300;
+    } else {
+        editx = CH/1300;
+    }
 }
 
 
@@ -2366,3 +2370,4 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
