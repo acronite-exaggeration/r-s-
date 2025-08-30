@@ -532,8 +532,12 @@ let CW, CH, k, l, editx;
 
 function resiz() {
     setViewportHeight();
-    canvas.width =  window.innerWidth;
-    canvas.height = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     CW = canvas.width;
     CH = canvas.height;
     klupdater();
@@ -2370,5 +2374,6 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
+
 
 
