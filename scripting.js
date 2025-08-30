@@ -542,9 +542,6 @@ function resiz() {
     CH = canvas.height;
     klupdater();
     checkOrientation();
-
-    showPopup('WH ' + window.innerHeight.toString());
-    showPopup('WW ' + window.innerWidth.toString());
 }
 
 
@@ -563,14 +560,7 @@ function klupdater() {
     const b = CH * 0.64;
     k = a - train.height;
     l = b - train.height;
-
-    if (CW > CH) {
-        editx = CW/1300;
-        showPopup('editx ' + editx.toString());
-    }
-
-    showPopup('CW ' + CW.toString());
-    showPopup('CH ' + CH.toString());
+    if (CW > CH) editx = CW/1300;
 }
 
 
@@ -578,6 +568,14 @@ function klupdater() {
 
 
 // TASKS BLOCK ============================================================================================================================================
+
+resiz();
+const [x,y] = [gett('trEdit'), gett('mrsEdit')];
+
+x ? editz(+x) : editz(2);
+
+y ? editz(+y) : editz(6);
+
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
@@ -618,12 +616,6 @@ window.addEventListener("load", async () => {
     await wait(1500);
 
     on('menu', 2);
-    const [x,y] = [gett('trEdit'), gett('mrsEdit')];
-
-    x ? editz(+x) : editz(2);
-
-    y ? editz(+y) : editz(6);
-
 });
 
 
@@ -2374,6 +2366,3 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
-
-
-
