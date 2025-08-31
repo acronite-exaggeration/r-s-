@@ -480,15 +480,24 @@ function checkOrientation() {
 }
 
 
-function goFullscreen() {
-  const elem = document.body;
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  }
+async function goFullscreen() {
+    const elem = document.body;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+
+    if (screen.orientation && screen.orientation.lock) {
+        try {
+            await screen.orientation.lock("landscape");
+            console.log("Orientation locked to landscape");
+        } catch (err) {
+            console.warn("Orientation lock failed:", err);
+        }
+    }
 
   requestAnimationFrame(setViewportHeight);
 }
@@ -542,6 +551,9 @@ function resiz() {
     CH = canvas.height;
     klupdater();
     checkOrientation();
+
+    x ? editz(+x) : editz(2);
+    y ? editz(+y) : editz(6);
 }
 
 
@@ -573,13 +585,7 @@ function klupdater() {
 
 // TASKS BLOCK ============================================================================================================================================
 
-resiz();
 const [x,y] = [gett('trEdit'), gett('mrsEdit')];
-
-x ? editz(+x) : editz(2);
-
-y ? editz(+y) : editz(6);
-
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
@@ -2370,4 +2376,3 @@ ele("startBtn").addEventListener("click", () => {
 });
 
 // EXAGGERATION ============================================================================================================================================
-
