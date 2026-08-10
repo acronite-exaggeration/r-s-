@@ -2150,6 +2150,11 @@ function hyper(timez, xgr) {
 // GAME LOOPS ============================================================================================================================================
 
 let uploop, doloop;
+let xxx = 0;
+
+setInterval(() => {
+    console.log(xxx, speedX);
+}, 1000);
 
 function update(timestamp) {
     if (gamePaused || !gameRunning) return;
@@ -2171,9 +2176,6 @@ function update(timestamp) {
     if (change) changer(reach);
     hyper(timestamp,camx);
     handleSpeed(camx, deltaT);
-
-    console.log(speedX);
-    console.log(deltaT);
 
     doBg(camx, topo, hopo);
     doArea(camx, topo, eepo + topo * 1.7, hopo);
