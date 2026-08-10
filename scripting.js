@@ -2153,7 +2153,8 @@ let uploop, doloop;
 let xxx = 0;
 
 setInterval(() => {
-    console.log(xxx, speedX);
+    showPopup(xxx);
+    showPopup(speedX);
 }, 1000);
 
 function update(timestamp) {
