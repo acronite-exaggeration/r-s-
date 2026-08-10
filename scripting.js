@@ -577,6 +577,8 @@ function klupdater() {
     } else {
         editx = CH/1300;
     }
+
+    showPopup(editx);
 }
 
 
