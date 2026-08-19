@@ -1388,9 +1388,7 @@ function collects() {
 
 
 // GENERATOR BLOCK ============================================================================================================================================
-setInterval(() => {
-    showPopup(`xgr ${CW} xgr ${CH} xgr ${speedX} xgr`);
-}, 1000);
+
 function genX() {
     ending = endx * editx;
     stat.x = ending;
@@ -1422,7 +1420,6 @@ function genX() {
     })
 
     for (let i = 0; i < ending/10; i++) {
-        return;
         crystals.push({
             x: rand(ending + CW*2),
             y: 0.36 + rand(0.32),
