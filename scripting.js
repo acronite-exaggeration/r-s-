@@ -2016,14 +2016,14 @@ function handleSpeed(xgr, dt) {
 
     if (righto) {
         remind = 0;
-        speedX = Math.min(speedX + acc * dt, trainMax);
+        speedX = Math.min(speedX + acc * dt, trainMax * dt);
         if (xgr > reach) reach = xgr;
 
     } else if (lefto) {
         remind = 0;
 
         if (xgr > 0) {
-            speedX = Math.max(speedX - acc * dt, -trainMax);
+            speedX = Math.max(speedX - acc * dt, -trainMax * dt);
         }
 
         if (xgr <= reach - 1000 || xgr <= border) {
