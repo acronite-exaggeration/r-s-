@@ -2354,6 +2354,8 @@ ele("coll").addEventListener("pointerdown", (e) => {
     collects();
 });
 
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
 
 
 
