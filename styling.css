@@ -1,5 +1,15 @@
 /* EXAGGERATION ============================================================================ EXAGGERATION */
 
+/* Prevent text selection and long-press context menu on all game elements */
+* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;   /* Disable the link preview / callout on long press */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+}
+
 :root {--vh: 1vh;}
 
 button, .btnXX, .sphXX {
@@ -10,6 +20,14 @@ button, .btnXX, .sphXX {
     -ms-user-select: none;
     user-select: none;
     touch-action: manipulation;
+}
+
+/* Buttons and interactive elements should block touch actions completely */
+button, .btnXX, .sphXX, img, canvas, div, span, h1, h2, h3, h4 {
+    touch-action: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
 }
 
 html, body {
