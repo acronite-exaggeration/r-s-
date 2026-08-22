@@ -2312,19 +2312,47 @@ window.addEventListener("keyup", (e) => {
 
 // MOBILE CONTROLS ============================================================================================================================================
 
-ele("lefter").addEventListener("pointerdown",() => lefto = true);
+// Directional buttons – track held state
+const leftBtn = ele("lefter");
+const rightBtn = ele("righter");
 
-ele("lefter").addEventListener("pointerup", () => lefto = false);
-ele("lefter").addEventListener("pointerleave", () => lefto = false);
-ele("lefter").addEventListener("pointercancel", () => lefto = false);
+function setupHoldButton(el, onStart, onEnd) {
+    el.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        el.setPointerCapture(e.pointerId);
+        onStart();
+    });
+    el.addEventListener("pointerup", (e) => {
+        el.releasePointerCapture(e.pointerId);
+        onEnd();
+    });
+    el.addEventListener("pointercancel", (e) => {
+        el.releasePointerCapture(e.pointerId);
+        onEnd();
+    });
+    // Also handle pointerleave if the pointer moves off the element while held
+    el.addEventListener("pointerleave", (e) => {
+        // Only release if this element has capture for this pointer
+        if (el.hasPointerCapture(e.pointerId)) {
+            el.releasePointerCapture(e.pointerId);
+            onEnd();
+        }
+    });
+}
 
-ele("righter").addEventListener("pointerdown", () => righto = true);
+setupHoldButton(leftBtn, () => { lefto = true; }, () => { lefto = false; });
+setupHoldButton(rightBtn, () => { righto = true; }, () => { righto = false; });
 
-ele("righter").addEventListener("pointerup", () => righto = false);
-ele("righter").addEventListener("pointerleave", () => righto = false);
-ele("righter").addEventListener("pointercancel", () => righto = false);
+// Switcher – single tap
+ele("switcher").addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    swicher();
+});
 
-ele("switcher").addEventListener("click", () => swicher());
+ele("coll").addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    collects();
+});
 
 
 
