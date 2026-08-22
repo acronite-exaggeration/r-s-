@@ -431,10 +431,7 @@ img {
   z-index: 100000;
 }
 
-.sphXX, .btnXX, button {
-    touch-action: none !important;
-    -webkit-touch-callout: none;
-}
+
 
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
