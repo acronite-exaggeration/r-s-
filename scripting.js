@@ -167,7 +167,6 @@ const storyMusic=ele("videoMusic");
 const sound=new Audio("shift.mp3");
 const treat=new Audio("treasure.mp3");
 let musicOn=true,fide,hide;
-
 function fadeOutMusic(m=true){
 if(fide)clearInterval(fide);
 const music=m?gameMusic:storyMusic;
@@ -1147,7 +1146,7 @@ ctx.drawImage(gpImg,blockX,screenY,gp.width,gp.height);
 }
 }
 const monsterRoar=new Audio("roarx.mp3");
-let monsta=null,monsterCount=0,monsterSpeed=monsterBase,mobx=0,sway=0;
+let monsta=null,monsterCount=0,monsterSpeed=0,mobx=0,sway=0;
 function spawnMonster(){
 if(!monsta){
 monsterSpeed=monsterBase+monsterCount;
