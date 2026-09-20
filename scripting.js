@@ -1415,10 +1415,10 @@ const stat = { x: ending , rtx: false , plot: 0 };
 function doStat(xgr, cww, chh) {
     const [statX, statY, statE, statR] = [stat.x - xgr, chh * 0.35, chh * 0.3, chh * 0.7];
 
-    [xgr, statX].forEach(x => {
+    [-xgr -5, statX].forEach(x => {
         if (x < cww * 1.5) {
-            ctx.drawImage(statUp, -x - 10, 0, cww * 1.1, statY);
-            ctx.drawImage(statDown, -x -10, statR, cww * 1.1, statE);
+            ctx.drawImage(statUp, x, 0, cww * 1.1, statY);
+            ctx.drawImage(statDown, x, statR, cww * 1.1, statE);
         }
     })
 }
