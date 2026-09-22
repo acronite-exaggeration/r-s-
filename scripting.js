@@ -508,6 +508,7 @@ const canvas = ele("gameCanvasX");
 const ctx = canvas.getContext("2d");
 let [gameRunning, gamePaused] = [false, false];
 let CW, CH, k, l, editx, resizeTimer;
+let train = { x: 60 , width: 100 , height: 300 , top: true };
 
 
 function resiz() {
@@ -527,9 +528,6 @@ function resiz() {
     x ? editz(+x) : editz(2);
     y ? editz(+y) : editz(6);
 }
-
-
-let train = { x: 60 , width: 100 , height: 300 , top: true };
 
 
 function klupdater() {
@@ -596,6 +594,7 @@ document.addEventListener('fullscreenchange', () => {
     fullx(isFull);
 });
 
+
 setTimeout(() => {
     ['bgData','trData','mrData'].forEach(x => {
         const y = JSON.parse(gett(x));
@@ -634,7 +633,7 @@ function taskResume() {
     setLife(extralife);
 
     if (flashing) flash();
-    if (bursting) xgrBurst();
+    if (bursting) xgrBurst(1);
 }
 
 
@@ -657,8 +656,46 @@ function resumePause() {
         update();
 
         if (flashing) flash();
-        if (bursting) xgrBurst();
+        if (bursting) xgrBurst(1);
     }
+}
+
+
+
+
+
+// _______________________________________ STATS & ACHIEVEMENTS BLOCK _______________________________________
+
+function openStats() {
+    stats();
+    on('stats');
+}
+
+
+function stats() {
+    const statxx = ele('statxx');
+    const difNames = ["Easy...✌️", "Medium...😎", "Hard...😈", "Extreme...☠️"];
+    const dcol = ["#4ba94f", "#8ea94b", "#a97d4b", "#a94b4b"];
+    let html = "";
+
+    for (let i = 0; i < 4; i++) {
+        const data = gett(`trainGameCheckpoint_${i}`);
+        const cp = data ? JSON.parse(data) : null;
+
+        const dt = cp ? `<h5>🚂 Runner Score : ${cp.rrr}</h5>
+            <h5>🎯 Graphene : ${cp.gt}</h5>
+            <h5>⭐ XP : ${cp.xp}</h5>
+            <h5>📍 Platform : ${cp.pt}</h5>` :
+            `<h5>-</h5><h5>-</h5><h5>💾 No Checkpoint</h5><h5>-</h5>`;
+
+        html += `
+            <div style="min-width:40vw;text-align:center;color:${dcol[i]}">
+                <h3>Difficulty ${difNames[i]}</h3>
+                ${dt}
+            </div>
+        `;
+    }
+    statxx.innerHTML = html;
 }
 
 
@@ -667,15 +704,21 @@ function resumePause() {
 
 // _______________________________________ CHECKPOINT BLOCK _______________________________________
 
+const cpKey = () => `trainGameCheckpoint_${difi}`;
+
+const existCp = () => gett(cpKey()) !== null;
+
+
 function saveCp() {
     const cpData = {
+        difficulty: difi,
         rrr: run + Math.floor((reach - CW * 10.4)/(50 * editx)),
         xp: exp + epo,
         org: requirement,
         gt: gpGot,
         pt: stat.plot + 1
     };
-    localStorage.setItem('trainGameCheckpoint', JSON.stringify(cpData));
+    localStorage.setItem(`trainGameCheckpoint_${difi}`, JSON.stringify(cpData));
 }
 
 
@@ -684,30 +727,35 @@ function loadCp() {
     [showAdvance, gamePaused, crash, challenge, onpro, offpro] = [false, false, false, false, false, false];
     [monsterSpeed, requirement, mono, monsta, gameRunning] = [monsterBase, 50, 1, null, true];
     ski = (18000 + rand(7000)) * editx;
+    smokeParticles.length = 0;
     genX();
     setLife(extralife);
     if (isfps) on('fpsx');
-    const sData = gett('trainGameCheckpoint');
+    const sData = gett(cpKey());
 
     if (sData) {
         const cpp = JSON.parse(sData);
-        run = cpp.rrr;
-        exp = cpp.xp;
-        requirement = cpp.org;
-        gpGot = cpp.gt || 0;
-        stat.plot = cpp.pt;
-        stat.rtx = false;
+        if (cpp.difficulty === difi) {
+            run = cpp.rrr;
+            exp = cpp.xp;
+            requirement = cpp.org;
+            gpGot = cpp.gt || 0;
+            stat.plot = cpp.pt;
+            stat.rtx = false;
+        }
     }
 }
 
 
-const existCp = () => gett("trainGameCheckpoint") !== null;
-
-
 function delCp(ddd) {
     if (ddd === 1) {
-        showPopup(existCp() ? "😎 Checkpoint removed succesfully...!" : "😤 No checkpoint exists...!");
-        if (existCp()) localStorage.removeItem('trainGameCheckpoint');
+        const hasCp = [0,1,2,3].some(n => gett(`trainGameCheckpoint_${n}`) !== null);
+        showPopup(hasCp ? "😎 Checkpoint removed succesfully...!" : "😤 No checkpoint exists...!");
+        if (hasCp) {
+            for (let i = 0; i < 4; i++) {
+                localStorage.removeItem(`trainGameCheckpoint_${i}`);
+            }
+        }
 
     } else if (ddd === 2) {
         ["bgData", "trData", "mrData", "trEdit", "mrsEdit", "isfpsc"].forEach(id => localStorage.removeItem(id));
@@ -719,7 +767,7 @@ function delCp(ddd) {
         allImgs.forEach(im => im.classList.remove("selecta"));
         
     } else {
-        off('reset');
+        off('reset','default');
     }
 }
 
@@ -730,21 +778,14 @@ function delCp(ddd) {
 // _______________________________________ GAME OVER BLOCK _______________________________________
 
 let q;
-const query = [
-    "🔥 Why these obstacles...Hmm...",
-    "🔥 Im gonna burst all these obstacles...",
-    "🔥 Why only me - ***********",
-    "🔥 You will pay for this... Monster",
-    "🔥 Damn... This monster",
-    "🔥 What the Hell - ************"
-];
+const query = ["🔥 Why these obstacles... Hmm...", "🔥 Why only me - ***********", "🔥 Damn... This monster", "🔥 What the Hell - ************"];
 
 
 function gOver(rg) {
     off('gameCanvasX', 'envy');
     setLife(false);
     ele('gameReason').innerHTML = `<h2>GAME OVER : ${rg ? 'THE TRAIN DONE COLLISION' : 'MONSTER DESTROYED THE TRAIN'}</h2>`;
-    q = flor(3) + (rg ? 0 : 3);
+    q = flor(2) + (rg ? 0 : 2);
     ele('continueBtn').innerText = existCp() ? "Continue" : "Restart";
     on(1, 'gameOver');
     started = false;
@@ -894,7 +935,7 @@ function adv() {
         epo++;
         requirement += 1 + flor(4);
         gpgp = true;
-        setTimeout(() => xgrBurst() , 20);
+        setTimeout(() => xgrBurst(1) , 20);
         setTimeout(() => {
             ["🔥 Used ADVANCE!", "🔥 XP Boosted!", "--- Monster Slowed Down ---"].forEach(p => showPopup(p));
         }, 1000);
@@ -912,9 +953,9 @@ function adv() {
 let [bursting, scaleE, lastE, opacityE] = [false, 0, 0, 1.5];
 
 
-function xgrBurst(krg = 1) {
-    const [cx, cy, e] = [train.x + train.width/2 , (train.top ? k : l) + train.height/2 , editx];
-    const imge = krg === 1 ? esburstImg : hvburstImg;
+function xgrBurst(krg) {
+    const [cx, cy, e] = [train.x + train.width * (krg ? 0.5 : 0.65) , (train.top ? k : l) + train.height/2 , editx];
+    const imge = krg ? esburstImg : hvburstImg;
 
     function animate(timestamp) {
         if (!playX) return;
@@ -954,19 +995,18 @@ function xgrBurst(krg = 1) {
 let [flashing, opacityF, lastF] = [false, 0.75, 0];
 
 
-function flash(f = 1) {
+function flash(f) {
     const [cww, chh, red] = [CW, CH, 0.009];
 
     function flas(timestamp) {
         if (!playX) return;
-
         let deltaT = (timestamp - lastF)/16.7;
         if (isNaN(deltaT) || !isFinite(deltaT)) deltaT = 1;
         lastF = timestamp;
 
         if (opacityF > 0) {
             flashing = true;
-            ctx.fillStyle = f === 1 ? `rgba(255, 255, 255, ${opacityF})` : `rgba(0, 0, 0, ${opacityF})`;
+            ctx.fillStyle = f ? `rgba(0, 0, 0, ${opacityF})` : `rgba(255, 255, 255, ${opacityF})`;
             ctx.fillRect(0, 0, cww, chh);
             opacityF -= red * deltaT;
             requestAnimationFrame(flas);
@@ -986,11 +1026,11 @@ function flash(f = 1) {
 
 function shake() {
     let [a, b] = [0, true];
-    const [x, e] = [cameraX, editx];
+    const [x, e] = [cameraX, 5 * editx];
 
     function xyz() {
-        cameraX = x + Math.sin(a) * 3 * e;
-        a += 0.8;
+        cameraX = x + Math.sin(a) * e;
+        a += 0.78;
         if (b) requestAnimationFrame(xyz);
     }
 
@@ -1004,15 +1044,13 @@ function shake() {
 
 // _______________________________________ EXTRA LIFE BLOCK _______________________________________
 
-let extralife = gett('lifex') ? gett('lifex') === 'true' : true;
-let lifeX1, lifeY, lifeX2;
+let lifeX, lifeY, extralife = false;
 
 const setLife = active => active ? on('extraLife') : off('extraLife');
 
 
 function lifer() {
     [monsta, extralife, crash, stuck, exuping, mono] = [null, false, false, false, true, 1];
-    localStorage.setItem('lifex', 'false');
     setLife(extralife);
     on('envy');
     flash();
@@ -1023,8 +1061,7 @@ function lifer() {
 function doLife(xgr, cww, end, chh) {
     const lifeYY = lifeY * chh;
     const sizi = chh * 0.15;
-    if (xgr < cww * 7) ctx.drawImage(lifeImg, lifeX1 - xgr, lifeYY, sizi, sizi);
-    if (xgr > end - cww * 7) ctx.drawImage(lifeImg, lifeX2 - xgr, lifeYY, sizi, sizi);
+    if (xgr < cww * 7) ctx.drawImage(lifeImg, lifeX - xgr, lifeYY, sizi, sizi);
 }
 
 
@@ -1052,24 +1089,26 @@ function genSmoke(xgr, e) {
 
 
 function doSmoke(xgr, dt) {
-    if (stuck) return;
-
     for (let i = smokeParticles.length - 1; i >= 0; i--) {
         const p = smokeParticles[i];
-        p.x += p.speedX * dt;
-        p.y += p.speedY * dt;
-        p.scale += p.grow * dt;
-        p.rotation += p.spin * dt;
         p.opacity -= dt/100;
+        const size = 64 * p.scale;
+        if (p.x - xgr < -size) {
+            smokeParticles.splice(i, 1);
+            continue;
+        }
 
         if (p.opacity <= 0) {
             smokeParticles.splice(i, 1);
         } else {
+            p.x += p.speedX * dt;
+            p.y += p.speedY * dt;
+            p.scale += p.grow * dt;
+            p.rotation += p.spin * dt;
             ctx.save();
             ctx.globalAlpha = p.opacity;
             ctx.translate(p.x - xgr, p.y);
             ctx.rotate(p.rotation);
-            const size = 64 * p.scale;
             ctx.drawImage(smokeImg, -size/2, -size/2, size, size);
             ctx.restore();
             ctx.globalAlpha = 1;
@@ -1083,39 +1122,31 @@ function doSmoke(xgr, dt) {
 
 // _______________________________________ SPARK EFFECT _______________________________________
 
-const electricSparks = [];
-
+let electricSpark = null;
 
 function genSpark(e) {
-    electricSparks.length = 0;
-    electricSparks.push({
-        x: train.x + train.width/2,
+    electricSpark = {
+        x: train.x + train.width / 2,
         y: train.top ? k : l,
         scale: (0.5 + rand(0.5)) * e,
         rotate: rand() - 0.5,
         opacity: 1
-    });
+    };
 }
 
-
 function doSparks(dt) {
-    if (stuck) return;
-    for (let i = electricSparks.length - 1; i >= 0; i--) {
-        const s = electricSparks[i];
+    if (!electricSpark) return;
+    const s = electricSpark;
+    ctx.save();
+    ctx.globalAlpha = s.opacity;
+    ctx.translate(s.x, s.y);
+    ctx.rotate(s.rotate);
+    const size = 250 * s.scale;
+    ctx.drawImage(sparkImg, -size, -size, size, size);
+    ctx.restore();
 
-        ctx.save();
-        ctx.globalAlpha = s.opacity;
-        ctx.translate(s.x , s.y);
-        ctx.rotate(s.rotate);
-
-        const size = 250 * s.scale;
-        ctx.drawImage(sparkImg, -size, -size, size, size);
-
-        ctx.restore();
-        s.opacity -= 0.4 * dt;
-
-        if (s.opacity <= 0) electricSparks.splice(i, 1);
-    }
+    s.opacity -= 0.4 * dt;
+    if (s.opacity <= 0) electricSpark = null;
 }
 
 
@@ -1132,8 +1163,8 @@ let exuping = true;
 function doExp(chh, dt) {
     const exup = chh/110000 * dt;
     const size = chh * mono;
-    const cx = train.x + train.width * 0.6 - size/2;
-    const cy = (train.top ? k : l) + train.height * 0.8 - size/2;
+    const cx = train.x + train.width * 0.65 - size/2;
+    const cy = (train.top ? k : l) + train.height/2 - size/2;
     ctx.drawImage(expImg, cx, cy, size, size);
     mono += exup * (exuping ? 1 : -4);
 }
@@ -1154,7 +1185,7 @@ function doFPS(dt) {
     const pass = dt - lastfpx;
 
     if (pass >= 300) {
-        const fps = ((frames * 1000) / pass).toFixed();
+        const fps = ((frames * 1000)/pass).toFixed();
         frames = 0;
         lastfpx = dt;
         ele('fpsx').innerText = `FPS: ${fps}`;
@@ -1234,14 +1265,9 @@ function collects() {
     }
 
     if (!extralife) {
-        const checkLife = (lifeX) => {
-            const lx = lifeX - cameraX;
-            return lx >= 0 && lx <= CW && lifeY >= 0 && lifeY <= CH;
-        };
-
-        if (checkLife(lifeX1) || checkLife(lifeX2)) {
+        const lx = lifeX - cameraX;
+        if (lx >= 0 && lx <= CW && lifeY >= 0 && lifeY <= CH) {
             extralife = true;
-            localStorage.setItem('lifex', 'true');
             setLife(extralife);
             collected = true;
         }
@@ -1268,7 +1294,7 @@ function genX() {
 
     const [start, end] = [ CW * 6 , ending - CW * 5 ];
     crystals = [];obstacles = [];gpBlocks = [];signData = [];
-    [lifeX1, lifeX2, lifeY] = [ CW + flor(CW * 3.5) , end + CW/2 + flor(CW * 3.5) , 0.42 + rand(0.18) ];
+    [lifeX, lifeY] = [ CW + flor(CW * 3.5) , 0.42 + rand(0.18) ];
     
     [CW * 1.5, ending - CW * 4].forEach(dist => {
         for (let i = 0; i < CW * 3.5; i += CH/3 + flor(CH/2)) {
@@ -1287,13 +1313,13 @@ function genX() {
 
     [generate, lastOb, lastCleanup] = [start, start, cameraX];
     generateChunk(start);
-    generate = Math.min(start + CW * 10, end);
+    generate = Math.min(start + CW * 8, end);
 }
 
 
 function generateChunk(chunkStart) {
-    const [h1, h2, h3, d_ob, ups] = [ CH/7 , CH/10 , CH/14 , train.width + CH/7 + CW/30 , CW * (0.3 - difi * 0.07) ];
-    const chunkEnd = Math.min(chunkStart + CW * 10, ending - CW * 5);
+    const [h1, h2, h3, d_ob, ups] = [ CH/7 , CH/10 , CH/14 , train.width + CW/8 , CW * (0.3 - difi * 0.07) ];
+    const chunkEnd = Math.min(chunkStart + CW * 8, ending - CW * 5);
     if (chunkStart >= chunkEnd) return;
     const qq = (chunkEnd + CW * 5.5 < ending) ? 0 : CW * 7;
     const crystalCount = Math.floor((chunkEnd + qq - chunkStart)/10);
@@ -1320,7 +1346,7 @@ function generateChunk(chunkStart) {
         });
     }
 
-    for (let i = lastOb; i < chunkEnd; i += d_ob + flor(300 * editx)) {
+    for (let i = lastOb; i < chunkEnd; i += d_ob + flor(CW/5)) {
         const robs = obi[flor(obi.length)];
         const scaler = h1/robs.naturalHeight;
         const scaleww = robs.naturalWidth * scaler;
@@ -1334,14 +1360,14 @@ function generateChunk(chunkStart) {
             t: rand() < 0.5
         });
     }
-    lastOb += d_ob + flor(300 * editx);
+    lastOb += d_ob + flor(CW/5);
 }
 
 
 function worldStream(xgr, cww, end) {
-    if (xgr + cww * 8 > generate) {
+    if (xgr + cww * 6 > generate) {
         generateChunk(generate);
-        generate = Math.min(generate + cww * 10, end - cww * 5);
+        generate = Math.min(generate + cww * 8, end - cww * 5);
     }
 
     if (xgr - lastCleanup >= cww * 3) {
@@ -1413,14 +1439,17 @@ const stat = { x: ending , rtx: false , plot: 0 };
 
 
 function doStat(xgr, cww, chh) {
-    const [statX, statY, statE, statR] = [stat.x - xgr, chh * 0.35, chh * 0.3, chh * 0.7];
+    const [x, statX, statY, statE, statR] = [-xgr -5, stat.x - xgr -10, chh * 0.35, chh * 0.3, chh * 0.7];
 
-    [-xgr -5, statX].forEach(x => {
-        if (x < cww * 1.5) {
-            ctx.drawImage(statUp, x, 0, cww * 1.1, statY);
-            ctx.drawImage(statDown, x, statR, cww * 1.1, statE);
-        }
-    })
+    if (x > -cww * 1.5) {
+        ctx.drawImage(statUp, x, 0, cww * 1.1, statY);
+        ctx.drawImage(statDown, x, statR, cww * 1.1, statE);
+    }
+
+    if (statX < cww * 1.5) {
+        ctx.drawImage(statUp, statX, 0, cww * 1.1, statY);
+        ctx.drawImage(statDown, statX, statR, cww * 1.1, statE);
+    }
 }
 
 
@@ -1660,8 +1689,6 @@ function doMrs(xgr, dt) {
 
 // _______________________________________ OBSTACLE COLLISION _______________________________________
 
-const cpop = ["😅 OOpsie HOpsie Doo...!", "Rail Shifter Crahed 😅...!"];
-
 function crashOb(xgr) {
     if (crash) return;
 
@@ -1680,7 +1707,7 @@ function crashOb(xgr) {
             const mons = rand() < 0.5;
             monsta = { x: xgr + CW * 0.9 , y: mons ? k : l , speed: 0 , mt: mons };
             shake();
-            setTimeout(() => xgrBurst(5) , 20);
+            setTimeout(() => xgrBurst() , 20);
 
             if (!extralife) {
                 if (musicOn) fadeOutMusic(1);
@@ -1689,15 +1716,12 @@ function crashOb(xgr) {
                 off('fpsx');
                 reas = 1;
                 reUpdate();
-                const msg = cpop[flor(2)];
+                setTimeout(() => { allowed = false } , 3200);
 
-                setTimeout(() => {
-                    showPopup(msg);
-                    setTimeout(() => { allowed = false } , 2000);
-                }, 1200);
             } else {
                 stuck = true;
                 obstacles.splice(i, 1);
+                smokeParticles.length = 0;
                 showPopup("🔥 EXTRA LIFE 🔥");
 
                 setTimeout(() => {
@@ -1737,7 +1761,7 @@ function crashMrs(xgr, dt) {
         monsta.x = xgr + CW * 0.9;
         monsta.speed = 0;
         shake();
-        setTimeout(() => xgrBurst(5) , 20);
+        setTimeout(() => xgrBurst() , 20);
 
         if (!extralife) {
             if (musicOn) fadeOutMusic(1);
@@ -1746,15 +1770,11 @@ function crashMrs(xgr, dt) {
             reas = null;
             reUpdate();
             off('fpsx');
-            const msg = cpop[flor(2)];
-
-            setTimeout(() => {
-                showPopup(msg);
-                setTimeout(() => { allowed = false } , 2000);
-            }, 1200);
+            setTimeout(() => { allowed = false } , 3200);
 
         } else {
             stuck = true;
+            smokeParticles.length = 0;
             showPopup("🔥 EXTRA LIFE 🔥");
 
             setTimeout(() => {
@@ -1958,7 +1978,7 @@ function update(timestamp) {
     doBg(camx, cww, chh);
     doArea(camx, cww, end + cww * 1.7, chh);
     doItems(camx, cww, chh, deltaT);
-    doStat(camx, cww, chh);
+    if (camx < cww * 1.5 || camx > end - cww * 1.5) doStat(camx, cww, chh);
     if (!extralife) doLife(camx, cww, end, chh);
     distanceHandler(end, cww);
 
@@ -2003,7 +2023,6 @@ function reUpdate(timestamp) {
         doBg(camx, cww, chh);
         doArea(camx, cww, end + cww * 1.7, chh);
         doItems(camx, cww, chh, deltaT);
-        doStat(camx, cww, chh);
         doMrs(camx, deltaT);
         doExp(chh/2.5, deltaT);
 
@@ -2148,6 +2167,7 @@ ele("startBtn").addEventListener("click", () => {
         gameMusic.currentTime ='0';
         startGame();
         setTimeout(() => showPopup("🔥 Time for the Torgue 🔥") , 4500);
+        setTimeout(() => showPopup("🔥 Mortal Metal Torgue 🔥") , 10000);
     } else {
         showPopup("Please Choose All the Skins for the GamePlay First...!");
     }
