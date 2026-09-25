@@ -32,22 +32,27 @@
 
 <div id="menu" style="display:none;">
     <div id="menuxBtn" class="menuBtn" style="display:flex;">
-        <button id="startBtn" class="btnXX" style="background-color: #007000; border: 5px solid #004400;">GamePlay</button>
-        <button class="btnXX" style="background-color: #002f86; border: 5px solid #002465;" onclick="opening()">Instructions</button>
-        <button class="btnXX" style="background-color: #a90000; border: 5px solid #5d0000;" onclick="storyyy()">Story</button>
-        <button class="btnXX" style="background-color: #d7711d; border: 5px solid #8d4002;" onclick="opening(false)">About</button>
-        <button class="btnXX" style="background-color: #4800cf; border: 5px solid #190156;" onclick="on('settings')">Settings</button>
+        <button id="startBtn" class="btnXX" style="background-color: #007000; border: 1vh solid #004400;">GamePlay</button>
+        <button class="btnXX" style="background-color: #002f86; border: 1vh solid #002465;" onclick="opening()">Instructions</button>
+        <button class="btnXX" style="background-color: #a90000; border: 1vh solid #5d0000;" onclick="storyyy()">Story</button>
+        <button class="btnXX" style="background-color: #d7711d; border: 1vh solid #8d4002;" onclick="opening(false)">About</button>
+        <button class="btnXX" style="background-color: #4800cf; border: 1vh solid #190156;" onclick="on('settings')">Settings</button>
     </div>
 </div>
 
 <div id="settings" class="bords">
     <div class="infoX" style="display:flex; flex-direction:column; align-items:center; gap:2vh;">
-        <button class="btnXX" style="background-color: #9700c1; border: 5px solid #36005d;" onclick="on('trSkin')">Train Skins</button>
-        <button class="btnXX" style="background-color: #0b9963; border: 5px solid #002819;" onclick="on('speed')">Train Speed</button>
-        <button class="btnXX" style="background-color: #4b00b5; border: 5px solid #1b023f;" onclick="on('mrSkin')">Monster Skins</button>
-        <button class="btnXX" style="background-color: #000cb5; border: 5px solid #02023f;" onclick="on('diff')">Monster Difficulty</button>
-        <button class="btnXX" style="background-color: #83990b; border: 5px solid #1d2800;" onclick="on('bgSkin')">Dimension</button>
-        <button class="btnXX" style="background-color: #990b0b; border: 5px solid #420000;" onclick="on('fpsc')">FPS Meter</button>
+        <button class="btnXX" style="background-color: #83990b; border: 1vh solid #1d2800;" onclick="on('bgSkin')">Dimension</button>
+        <button class="btnXX" style="background-color: #9700c1; border: 1vh solid #36005d;" onclick="on('trSkin')">Train Skins</button>
+        <button class="btnXX" style="background-color: #4b00b5; border: 1vh solid #1b023f;" onclick="on('mrSkin')">Monster Skins</button>
+        <button class="btnXX" style="background-color: #0b9963; border: 1vh solid #002819;" onclick="on('speed')">Train Speed</button>
+        <button class="btnXX" style="background-color: #000cb5; border: 1vh solid #02023f;" onclick="on('diff')">Monster Difficulty</button>
+        <div class="fpsSetting" style="display:flex; flex-direction:row; gap:5vw;">
+            <h3 style="color:rgb(255, 75, 75);">FPS Meter</h3>
+            <div class="selectorSlider">
+                <input id="fpsSlider" class="selectorRange" type="range" min="0" max="1" step="1" value="1">
+            </div>
+        </div>
         <button class="inBtn" style="left:2%;" onclick="on('reset')">⚠️</button>
         <button class="inBtn" style="left:2%; top:80%;" onclick="on('default')">♻️</button>
         <button class="inBtn" style="right:2%;" onclick="off('settings')">❌</button>
@@ -102,11 +107,15 @@
     <div class="infoX" style="color:#2165e3;">
         <h1>Choose Train Speed</h1>
         <h3>More Speed, means Sharp Reflexes...!</h3>
-        <div style="margin-top:3vh; display:flex; gap:2vw; justify-content:center;">
-            <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="editz(1,7)">Slow</button>
-            <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="editz(2,7)">Medium</button>
-            <button class="btnXX" style="background:#cd6d00; border: 5px solid #3c2000;" onclick="editz(3,7)">Fast</button>
-            <button class="btnXX" style="background:#7f0000; border: 5px solid #3c0000;" onclick="editz(4,7)">Extreme</button>
+        <h1 id="spd"></h1>
+        <div class="selectorSlider">
+            <input type="range" class="selectorRange" id="speedSlider" min="1" max="4" step="1" value="2">
+            <div class="selectorOptions">
+                <button class="selectorOption" data-value="1">Slow</button>
+                <button class="selectorOption" data-value="2">Medium</button>
+                <button class="selectorOption" data-value="3">Fast</button>
+                <button class="selectorOption" data-value="4">Extreme</button>
+            </div>
         </div>
         <button class="inBtn" style="right:2%" onclick="off('speed')">❌</button>
     </div>
@@ -115,13 +124,16 @@
 <div id="diff" class="bords">
     <div class="infoX" style="color:#8a38fd;">
         <h1>Choose Monster Difficulty</h1>
-        <h3>You must face the monster - No Practice Mode!</h3>
         <h3>Monster troubles more in higher Difficulties!</h3>
-        <div style="margin-top:3vh; display:flex; gap:2vw; justify-content:center;">
-            <button class="btnXX" style="background:#a9942a; border: 5px solid #564800;" onclick="editz(5,7)">Easy</button>
-            <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="editz(6,7)">Medium</button>
-            <button class="btnXX" style="background:#cd6d00; border: 5px solid #3c2000;" onclick="editz(7,7)">Hard</button>
-            <button class="btnXX" style="background:#7f0000; border: 5px solid #3c0000;" onclick="editz(8,7)">Extreme</button>
+        <h1 id="dft"></h1>
+        <div class="selectorSlider difiSel">
+            <input type="range" class="selectorRange" id="difficultySlider" min="1" max="4" step="1" value="1">
+            <div class="selectorOptions">
+                <button class="selectorOption" data-value="1">Easy</button>
+                <button class="selectorOption" data-value="2">Medium</button>
+                <button class="selectorOption" data-value="3">Hard</button>
+                <button class="selectorOption" data-value="4">Extreme</button>
+            </div>
         </div>
         <button class="inBtn" style="right:2%" onclick="off('diff')">❌</button>
     </div>
@@ -152,8 +164,8 @@
         <h3>After reset you cannot recover your saved data...!</h3>
         <h3>Reset does not affect your skins and game settings</h3>
         <div style="margin-top:3vh; display:flex; gap:2vw; justify-content:center;">
-            <button class="btnXX" style="background:#a93d2a; border: 5px solid #562400;" onclick="delCp(1)">Yes</button>
-            <button class="btnXX" style="background:#67a92a; border: 5px solid #3b5600;" onclick="delCp()">No</button>
+            <button class="btnXX" style="background:#a93d2a; border: 1vh solid #562400;" onclick="delCp(1)">Yes</button>
+            <button class="btnXX" style="background:#67a92a; border: 1vh solid #3b5600;" onclick="delCp()">No</button>
         </div>
     </div>
 </div>
@@ -165,22 +177,9 @@
         <h3>Default removes all the selected skins & other settings!</h3>
         <h3>Default doesn't remove your save checkpoints and data</h3>
         <div style="margin-top:3vh; display:flex; gap:2vw; justify-content:center;">
-            <button class="btnXX" style="background:#a93d2a; border: 5px solid #562400;" onclick="delCp(2)">Yes</button>
-            <button class="btnXX" style="background:#67a92a; border: 5px solid #3b5600;" onclick="delCp()">No</button>
+            <button class="btnXX" style="background:#a93d2a; border: 1vh solid #562400;" onclick="delCp(2)">Yes</button>
+            <button class="btnXX" style="background:#67a92a; border: 1vh solid #3b5600;" onclick="delCp()">No</button>
         </div>
-    </div>
-</div>
-
-<div id="fpsc" class="bords">
-    <div class="infoX" style="color:#d00202;">
-        <h1>FPS - Meter</h1>
-        <h3>Want to enable or disable FPS counter?</h3>
-        <h3>You will be able to see FPS during gameplay...!</h3>
-        <div style="margin-top:20px; display:flex; gap:20px; justify-content:center;">
-            <button class="btnXX" style="background:#007f04; border: 5px solid #043c00;" onclick="showFPS()">Enable</button>
-            <button class="btnXX" style="background:#a93d2a; border: 5px solid #562400;" onclick="hideFPS()">Disable</button>
-        </div>
-        <button class="inBtn" onclick="off('fpsc')" style="right:2%;">❌</button>
     </div>
 </div>
 
@@ -190,16 +189,16 @@
         <h3>Hope You Enjoyed this Game!</h3>
         <h3>Please share a feedback and visit again later!</h3>
         <div id="enduBtn" style="margin-top:3vh; display:none; justify-content:center;">
-            <button class="btnXX" onclick="ends()" style="background:#a93d2a; border: 5px solid #562400;">Menu</button>
+            <button class="btnXX" onclick="ends()" style="background:#a93d2a; border: 1vh solid #562400;">Menu</button>
         </div>
     </div>
 </div>
 
 <div id="gameOver">
     <div id="gameReason">GAME OVER</div>
-    <button class="btnXX" style="background-color: #d7991d; border: 5px solid #8d6802;" onclick="ends()">Menu</button>
-    <button id="continueBtn" class="btnXX" style="background-color: #007000; border: 5px solid #004400;" onclick="conCp()"></button>
-    <button class="btnXX" style="background-color: #a90000; border: 5px solid #5d0000;" onclick="gEnd()">End</button>
+    <button class="btnXX" style="background-color: #d7991d; border: 1vh solid #8d6802;" onclick="ends()">Menu</button>
+    <button id="continueBtn" class="btnXX" style="background-color: #007000; border: 1vh solid #004400;" onclick="conCp()"></button>
+    <button class="btnXX" style="background-color: #a90000; border: 1vh solid #5d0000;" onclick="gEnd()">End</button>
 </div>
 
 <img id="extraLife" src="others/life.webp?v=3.1.9">
@@ -234,10 +233,10 @@
 </div>
 
 <div id="sidebar" style="transform: translateX(-50%); gap:4vh;">
-    <button class="btnXX" style="background-color: #007000; border: 5px solid #004400;" onclick="taskResume()">RESUME</button>
-    <button class="btnXX" style="background-color: #d7711d; border: 5px solid #8d4002;" onclick="ends()">MAIN MENU</button>
-    <button class="btnXX" style="background-color: #002f86; border: 5px solid #002465;" onclick="opening()">INSTRUCTIONS</button>
-    <button class="btnXX" style="background-color: #a90000; border: 5px solid #5d0000;" onclick="gEnd()">END</button>
+    <button class="btnXX" style="background-color: #007000; border: 1vh solid #004400;" onclick="taskResume()">RESUME</button>
+    <button class="btnXX" style="background-color: #d7711d; border: 1vh solid #8d4002;" onclick="ends()">MAIN MENU</button>
+    <button class="btnXX" style="background-color: #002f86; border: 1vh solid #002465;" onclick="opening()">INSTRUCTIONS</button>
+    <button class="btnXX" style="background-color: #a90000; border: 1vh solid #5d0000;" onclick="gEnd()">END</button>
 </div>
 
 <audio id="backgroundMusic" loop>
@@ -252,8 +251,8 @@
     <div id="bg1" class="bg-layer"></div>
     <div id="bg2" class="bg-layer"></div>
     <div id="storyText"></div>
-    <button id="nextBtn" class="btnXX" style="background-color: #9b4600; border: 5px solid #492100; z-index: 1000;" onclick="storyNext()">NEXT</button>
-    <button id="skipBtn" class="btnXX" style="background-color: #a50000; border: 5px solid #450000; z-index: 1000;" onclick="stoppp()">SKIP</button>
+    <button id="nextBtn" class="btnXX" style="background-color: #00939b; border: 1vh solid #003449; z-index: 1000;" onclick="storyNext()">NEXT</button>
+    <button id="skipBtn" class="btnXX" style="background-color: #a50000; border: 1vh solid #450000; z-index: 1000;" onclick="stoppp()">SKIP</button>
 </div>
 
 <button id="advance" onclick="adv()">ADVANCE</button>
