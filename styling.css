@@ -249,10 +249,10 @@ img {
 }
 
 #gameOver {
+    position: absolute;
     display: none;
     flex-direction: column;
     font-size: 4vh;
-    position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
@@ -320,8 +320,8 @@ img {
 }
 
 .bords {
-    display: none;
     position: absolute;
+    display: none;
     top: 0;
     left: 0;
     width: 100vw;
@@ -333,13 +333,13 @@ img {
 }
 
 .infoX {
+    position: absolute;
     top: 10vh;
     left: 50vw;
     width: 80vw;
     color: #bbb;
     transform: translateX(-50%);
-    transition: all 0.3 ease;
-    position: absolute;
+    transition: all 0.3s ease;
     text-align: center;
     background: #222;
     font-size: 4vh;
@@ -448,5 +448,78 @@ img {
 
 #statxx > div { flex-shrink: 0; }
 #statxx h5 { margin: 3vh 0; }
+.fpsSetting h3 { margin: 0; }
+
+.selectorSlider {
+    width: 80%;
+    margin: 4vh auto 0;
+    text-align: center;
+}
+
+.selectorRange {
+    --slider-color: #007f04;
+    width: 100%;
+    height: 7vh;
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--slider-color);
+    border-radius: 4.5vh;
+    border: 1vh solid #000;
+    outline: none;
+    cursor: pointer;
+    touch-action: pan-x;
+}
+
+.selectorRange::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 7vw;
+    height: 7vh;
+    border-radius: 3.5vh;
+    background: linear-gradient(to bottom, #777, #444);
+    border: 1vh solid #000;
+    cursor: grab;
+}
+
+.selectorRange::-moz-range-thumb {
+    width: 7vw;
+    height: 7vh;
+    border-radius: 3.5vh;
+    background: linear-gradient(to bottom, #777, #444);
+    border: 1vh solid #000;
+    cursor: grab;
+}
+
+.selectorOptions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5vh;
+}
+
+.selectorOption {
+    flex: 1;
+    margin: 0 0.5vw;
+    padding: 1vh 0.5vw;
+    background: transparent;
+    border: 1vh solid transparent;
+    border-radius: 2vh;
+    font: inherit;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+    touch-action: manipulation;
+}
+
+.selectorOption.selected { border-color: #000; }
+
+.selectorOption.selected[data-value="1"] { background: #a9942a; }
+.selectorOption.selected[data-value="2"] { background: #007f04; }
+.selectorOption.selected[data-value="3"] { background: #cd6d00; }
+.selectorOption.selected[data-value="4"] { background: #7f0000; }
+
+.difiSel .selectorOption.selected[data-value="1"] { background: #007f04; }
+.difiSel .selectorOption.selected[data-value="2"] { background: #a9942a; }
 
 /* _______________________________________ EXAGGERATION _______________________________________ */
