@@ -29,8 +29,7 @@ html, body {
     background: #000;
 }
 
-html:-webkit-full-screen,
-body:-webkit-full-screen {
+html:-webkit-full-screen, body:-webkit-full-screen {
     width: 100vw;
     height: calc(var(--vh, 1vh) * 100);
     overflow: hidden;
@@ -56,18 +55,13 @@ img {
     cursor: pointer;
 }
 
-#gameCanvasX.blur {
-    filter: blur(7px);
-    transition: filter 0.2s ease;
-}
-
 #studioIntro {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: calc(var(--vh, 1vh) * 100);
-    background-color: black;
+    background-color: #000;
     color: #ddd;
     font-size: 5vh;
     display: flex;
@@ -75,7 +69,7 @@ img {
     justify-content: center;
     align-items: center;
     z-index: 99999;
-    letter-spacing: 4px;
+    letter-spacing: 0.5vh;
     animation: fadeIn 1.5s ease-in-out forwards;
 }
 
@@ -121,17 +115,14 @@ img {
 .btnXX {
     padding: 1vh 1vh;
     font-size: 5vh;
-    border-radius: 10px;
+    border-radius: 1vh;
     color: #eee;
     cursor: pointer;
     transition: all 0.3s ease;
     -webkit-touch-callout: none;
 }
 
-.btnXX:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7) !important;
-    transform: scale(1.1) !important;
-}
+.btnXX:hover { transform: scale(1.1) !important; }
 
 #advance {
     display: none;
@@ -144,11 +135,11 @@ img {
     height: 12vh;
     transform: translate(-50%, -50%);
     padding: 1vh 1vh;
-    border: 8px solid #000000;
-    border-radius: 10px;
+    border: 1vh solid #000;
+    border-radius: 1vh;
     z-index: 99999;
     background-color: #ffae00;
-    color: rgb(0, 0, 0);
+    color: #000;
     transition: opacity 0.3 ease;
     cursor: pointer;
 }
@@ -158,7 +149,7 @@ img {
     color: #ddd;
     padding: 1vh 2vh;
     margin-top: 1vh;
-    border-radius: 12px;
+    border-radius: 1vw;
     font-size: 5vh;
     opacity: 0;
     transition: opacity 1s ease;
@@ -174,7 +165,7 @@ img {
     top: 2vh;
     left: 1vw;
     padding: 1vh 1vh;
-    border-radius: 12px;
+    border-radius: 1vw;
     color: rgb(255, 0, 0);
     font-size: 5vh;
     font-weight: 600;
@@ -189,8 +180,8 @@ img {
     height: 5vh;
     overflow: hidden;
     background-color: #5b5a5a;
-    border-radius: 100px;
-    border: 7px solid rgb(0, 0, 0);
+    border-radius: 7vh;
+    border: 1vh solid #000;
 }
 
 #progressBar {
@@ -208,7 +199,7 @@ img {
     transform: translateX(-50%);
     font-size: 5vh;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 1vw;
     background: rgba(0, 0, 0, 0.7);
     color: rgb(255, 221, 0);
     z-index: 10;
@@ -222,8 +213,8 @@ img {
     width: 30vw;
     height: 1vh;
     background-color: #ff0000;
-    border-radius: 7px;
-    border: 4px solid #000;
+    border-radius: 1.4vh;
+    border: 0.7vh solid #000;
     z-index: 9999;
 }
 
@@ -271,18 +262,14 @@ img {
     height: 15vh;
     border: none;
     border-radius: 50%;
-    background-color: #000000;
+    background-color: #000;
     color: #ddd;
     font-size: 10vh;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
 }
 
-.sphXX:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-}
+.sphXX:hover { transform: scale(1.1); }
 
 .sphXX img {
     width: 67%;
@@ -303,8 +290,7 @@ img {
 }
 
 .selecta {
-    border: 10px solid limegreen !important;
-    box-shadow: 0 0 20px limegreen !important;
+    border: 1vh solid limegreen !important;
     transition: all 0.5s ease;
 }
 
@@ -359,9 +345,7 @@ img {
     transition: all 0.3s ease;
 }
 
-.inBtn:hover {
-    transform: scale(1.3) !important;
-}
+.inBtn:hover { transform: scale(1.3) !important; }
 
 #rotateWarning {
     display: none;
@@ -399,7 +383,7 @@ img {
     gap: 2vh;
     padding: 1vh;
     z-index: 99;
-    border: 30px solid black;
+    border: 2vw solid #000;
     box-sizing: border-box;
 }
 
@@ -424,7 +408,7 @@ img {
     line-height: 2;
     margin-bottom: 3vh;
     z-index: 999;
-    transition: color 2s ease;
+    transition: color 1.5s ease;
 }
 
 #extraLife {
