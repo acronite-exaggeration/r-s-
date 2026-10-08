@@ -943,15 +943,15 @@ function flash(f) {
 let [shaki, refX, turn] = [false,0,0];
 
 function shaker(dt) {
-    cameraX = refX + Math.sin(turn) * 10 * editx;
-    turn += 0.261 * dt;
+    cameraX = refX + Math.sin(turn) * 7 * editx;
+    turn += 0.3926 * dt;
 }
 
 function shake() {
     refX = cameraX;
     turn = 0;
     shaki = true;
-    setTimeout(() => { shaki = false } , 700);
+    setTimeout(() => { shaki = false } , 1000);
 }
 
 
