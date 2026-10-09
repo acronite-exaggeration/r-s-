@@ -2,7 +2,7 @@
 
 // _______________________________________ LOADING BLOCK _______________________________________
 
-const GAME_VERSION = '3.1.9';
+const GAME_VERSION = '3.2.1';
 
 const gett = id => localStorage.getItem(id);
 
@@ -162,29 +162,36 @@ function editz(ed) {
     localStorage.setItem(a + 'Edit', ed);
 }
 
-function setupSelector(slider, options, callback, x) {
+function setupSelector(slider, options, savedValue, x) {
     function updateSlider() {
         const sliderColors = x ? ["#a9942a", "#007f04", "#cd6d00", "#7f0000"] : ["#007f04", "#a9942a", "#cd6d00", "#7f0000"];
-        const emoji = x ? ['🐢', '😎', '🔥', '⚡⚡⚡'] : ['✌️', '😎', '😈🔥', '☠️☠️☠️'];
+        const emoji = x ? ['🐢', '😎', '🔥🔥', '⚡⚡⚡'] : ['✌️', '😎', '😈🔥', '☠️☠️☠️'];
         const mgg = x ? ele('spd') : ele('dft');
         const value = +slider.value;
-        options.forEach((btn, i) => {
-            btn.classList.toggle("selected", i + 1 === value);
+        const index = value - slider.min;
+
+        options.forEach(btn => {
+            btn.classList.toggle("selected", +btn.dataset.value === value);
         });
-        const pos = ((value - 1)/(slider.max - 1)) * 100;
+
+        const pos = ((value - slider.min)/(slider.max - slider.min)) * 100;
         slider.style.setProperty("--slider-pos", `${pos}%`);
-        slider.style.setProperty("--slider-color", sliderColors[value - 1]);
-        callback(value);
-        mgg.innerText = emoji[value - 1];
+        slider.style.setProperty("--slider-color", sliderColors[index]);
+        editz(value);
+        mgg.innerText = emoji[index];
     }
 
+    if (savedValue !== null && savedValue !== undefined) slider.value = savedValue;
+
     slider.addEventListener("input", updateSlider);
+
     options.forEach(btn => {
         btn.addEventListener("click", () => {
             slider.value = btn.dataset.value;
             updateSlider();
         });
     });
+
     updateSlider();
 }
 
@@ -470,9 +477,8 @@ function resiz() {
     CH = canvas.height;
     klupdater();
     checkOrientation();
-    const [x,y] = [gett('trEdit'), gett('mrsEdit')];
-    x ? editz(+x) : editz(2);
-    y ? editz(+y) : editz(6);
+    editz(+(gett('trEdit') ?? 2));
+    editz(+(gett('mrsEdit') ?? 6));
 }
 
 function klupdater() {
@@ -1084,7 +1090,7 @@ function doExp(chh, dt) {
 
 // _______________________________________ FPS BLOCK _______________________________________
 
-let isfps = gett("isfpsc") === null ? true : gett("isfpsc") === "true";
+let isfps = gett('isfpsc') === null ? true : gett('isfpsc') === "true";
 let frames = 0, lastfpx = 0;
 
 function doFPS(dt) {
@@ -1424,7 +1430,7 @@ let [swich, crash, startY, targetY, xx] = [false,false,0,0,0];
 function doTrt(timez, dt) {
     if (crash) return;
     const e = editx;
-    xx += 0.12 * dt;
+    xx += 0.3 * dt;
     const baseX = train.x + Math.sin(xx) * 3 * e;
     let baseY;
 
@@ -1525,7 +1531,7 @@ function doItems(xgr, cww, chh, dt) {
 // _______________________________________ MONSTER BLOCK _______________________________________
 
 const monsterRoar = new Audio(`audios/roarx.mp3?v=${GAME_VERSION}`);
-let [monsterCount, monsterSpeed, mx, my, monsta] = [0,0,0,0];
+let [monsterCount, monsterSpeed, mx, monsta] = [0,0,0];
 
 function spawnMonster() {
     if (monsta) return;
@@ -1545,12 +1551,12 @@ function spawnMonster() {
 
 function doMrs(xgr, dt) {
     if (!monsta) return;
-    if (!crash) mx += 0.16 * dt;
-    my += 0.12 * dt;
+    mx += dt/8;
     const e = editx;
+    const breath = Math.sin(mx) * e;
     const size = train.height;
-    const monsterX = monsta.x - xgr + Math.sin(mx) * 10 * e;
-    const monsterY = monsta.y + Math.sin(my) * 5 * e;
+    const monsterX = monsta.x - xgr + breath;
+    const monsterY = monsta.y - breath * 5;
 
     for (let i = 0; i < size; i += 2) {
         const color = rand(3);
@@ -1560,7 +1566,7 @@ function doMrs(xgr, dt) {
         ctx.fillRect(monsterX + size/3, monsterY + i, flameWidth * e, 2 * e);
     }
 
-    ctx.drawImage(monsterImg, monsterX, monsterY, size, size);
+    ctx.drawImage(monsterImg, monsterX, monsterY, size - breath * 2, size + breath * 5);
 }
 
 
@@ -2047,8 +2053,8 @@ ele("startBtn").addEventListener("click", () => {
     }
 });
 
-setupSelector( ele("speedSlider") , document.querySelectorAll("#speedSlider + .selectorOptions .selectorOption") , value => editz(value) , 2);
+setupSelector( ele("speedSlider") , document.querySelectorAll("#speedSlider + .selectorOptions .selectorOption") , gett("trEdit") ?? 2 , 2);
 
-setupSelector( ele("difficultySlider") , document.querySelectorAll("#difficultySlider + .selectorOptions .selectorOption") , value => editz(value + 4) );
+setupSelector( ele("difficultySlider") , document.querySelectorAll("#difficultySlider + .selectorOptions .selectorOption") , gett("mrsEdit") ?? 6 );
 
 // _______________________________________ EXAGGERATION _______________________________________
