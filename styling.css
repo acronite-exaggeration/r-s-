@@ -94,7 +94,7 @@ img {
     position: absolute;
     width: 100vw;
     height: calc(var(--vh, 1vh) * 100);
-    background: url('bgis/menux.webp?v=3.1.9') no-repeat;
+    background: url('bgis/menux.webp?v=3.2.1') no-repeat;
     background-size: 100vw 100vh;
     background-blend-mode: overlay;
     display: flex;
@@ -497,13 +497,11 @@ img {
 }
 
 .selectorOption.selected { border-color: #000; }
-
 .selectorOption.selected[data-value="1"] { background: #a9942a; }
 .selectorOption.selected[data-value="2"] { background: #007f04; }
-.selectorOption.selected[data-value="3"] { background: #cd6d00; }
-.selectorOption.selected[data-value="4"] { background: #7f0000; }
-
-.difiSel .selectorOption.selected[data-value="1"] { background: #007f04; }
-.difiSel .selectorOption.selected[data-value="2"] { background: #a9942a; }
+.selectorOption.selected[data-value="3"], .selectorOption.selected[data-value="7"] { background: #cd6d00; }
+.selectorOption.selected[data-value="4"], .selectorOption.selected[data-value="8"] { background: #7f0000; }
+.difiSel .selectorOption.selected[data-value="5"] { background: #007f04; }
+.difiSel .selectorOption.selected[data-value="6"] { background: #a9942a; }
 
 /* _______________________________________ EXAGGERATION _______________________________________ */
