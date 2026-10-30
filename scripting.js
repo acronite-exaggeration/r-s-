@@ -12,12 +12,30 @@ const flor = n => (Math.random() * n) | 0;
 
 const rand = (n = 1) => Math.random() * n;
 
-function imgload(s, i = 3) {
-    const ind = ['bgis/backg', 'prototypes/loco', 'prototypes/proto', 'others/'];
-    const img = new Image();
-    img.src = `${ind[i]}${s}.webp?v=${GAME_VERSION}`;
-    return img;
+function imgload(w) {
+    let list = [];
+    const ii = [
+        ['000', '111', '222', '333', '444', '555'],
+        ['life', 'graphene', 'statup', 'statdown', 'smoke', 'sparkx', 'explosion', 'e-spark-burst', 'heavy-burst', 'flame'],
+        ['barrel', 'barrelx', 'crate', 'rock', 'scrap', 'scrapx'],
+        ['cross', 'burst', 'xgr']
+    ];
+    const fol = ['bgis/backg', 'prototypes/loco', 'prototypes/proto', 'others/'];
+    const r = [4,3,5,9,5,2];
+    for (let i = 0; i <= r[w]; i++) {
+        const img = new Image();
+        img.src = fol[Math.min(3,w)] + ii[Math.max(0,w-2)][i] + `.webp?v=${GAME_VERSION}`;
+        list.push(img);
+    }
+    return list;
 }
+
+const backx = imgload(0);
+const trainx = imgload(1);
+const monsterx = imgload(2);
+const [lifeImg, gpImg, statUp, statDown, smokeImg, sparkImg, expImg, esburstImg, hvburstImg, flameImg] = imgload(3);
+const obi = imgload(4);
+const offImgs = imgload(5);
 
 function on(t, ...ids) {
     const z = Number.isInteger(t);
@@ -26,10 +44,10 @@ function on(t, ...ids) {
         setTimeout(() => {
             const e = ele(id);
             if (!e) return;
-            e.style.pointerEvents = "auto";
-            e.style.transition = "opacity 0.7s ease";
+            e.style.pointerEvents = 'auto';
+            e.style.transition = 'opacity 0.7s ease';
             e.style.opacity = 0;
-            e.style.display = z ? "flex" : "block";
+            e.style.display = z ? 'flex' : 'block';
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => { e.style.opacity = 1 });
             });
@@ -42,10 +60,10 @@ function off(...ids) {
         setTimeout(() => {
             const e = ele(id);
             if (!e) return;
-            e.style.pointerEvents = "none";
-            e.style.transition = "opacity 0.7s ease";
+            e.style.pointerEvents = 'none';
+            e.style.transition = 'opacity 0.7s ease';
             e.style.opacity = 0;
-            setTimeout(() => { e.style.display = "none" } , 750);
+            setTimeout(() => { e.style.display = 'none' } , 750);
         }, 50);
     });
 }
@@ -54,40 +72,21 @@ function off(...ids) {
 
 
 
-// _______________________________________ IMAGE LOADINGS _______________________________________
-
-const [lifeImg, gpImg, statUp, statDown, smokeImg, sparkImg, expImg, esburstImg, hvburstImg] =
-[ imgload("life") , imgload("graphene") , imgload("statup") , imgload("statdown") , imgload("smoke") , imgload("sparkx") , imgload("explosion") , imgload("e-spark-burst") , imgload("heavy-burst") ];
-
-const obi = [ imgload("barrel") , imgload("barrelx") , imgload("crate") , imgload("rock") , imgload("scrap") , imgload("scrapx") ];
-
-const offImgs = [ imgload("cross") , imgload("burst") , imgload("xgr") ];
-
-const backx = [ imgload("000", 0) , imgload("111", 0) , imgload("222", 0) , imgload("333", 0) , imgload("444", 0) ];
-
-const trainx = [ imgload("000", 1) , imgload("111", 1) , imgload("222", 1) , imgload("333", 1) ];
-
-const monsterx = [ imgload("000", 2) , imgload("111", 2) , imgload("222", 2) , imgload("333", 2) , imgload("444", 2) , imgload("555", 2) ];
-
-
-
-
-
 // _______________________________________ MODAL BLOCK _______________________________________
 
 const instructions = [
-    ["Use <strong>Arrow Keys / A & D</strong> to move", "Press <strong>Space / S / Shift</strong> to switch tracks", "Screen buttons for Touchscreen clarity..."],
-    ["<strong>M</strong> for Mute-Unmute", "<strong>C</strong> for collecting Graphene or ExtraLife...💰", "<strong>P</strong> for Pause-Resume"],
-    ["Avoid obstacles or you'll crash...🚧", "Stay alert of the Graphene Monster...👾", "Collect ExtraLife and Benefit your Rail Shifter ❤️"],
-    ["Slow down the <strong>Monster</strong> using ADVANCE...", "Collect Minimum Graphene to unlock ADVANCE button...🎯", "Reaching stations saves checkpoints...🚉"],
-    ["Access the Sidebar if got confused...☰", "After dying, press <strong>Continue button</strong> to resume from last checkpoint.", "Benefit from <strong>Pause-Continue & Music-Toggle</strong> features..."],
-    ["Make top scores and enjoy the GamePlay...!", "Don't forget to share a Feedback & further queries...", "/EXAGGERATION/", `[Version : ${GAME_VERSION}]`]
+    ['Use <strong>Arrow Keys / A & D</strong> to move', 'Press <strong>Space / S / Shift</strong> to switch tracks', 'Screen buttons for Touchscreen clarity...'],
+    ['<strong>M</strong> for Mute-Unmute', '<strong>C</strong> for collecting Graphene or ExtraLife...💰', '<strong>P</strong> for Pause-Resume'],
+    ["Avoid obstacles or you'll crash...🚧", 'Stay alert of the Graphene Monster...👾', 'Collect ExtraLife and Benefit your Rail Shifter ❤️'],
+    ['Slow down the <strong>Monster</strong> using ADVANCE...', 'Collect Minimum Graphene to unlock ADVANCE button...🎯', 'Reaching stations saves checkpoints...🚉'],
+    ['Access the Sidebar if got confused...☰', 'After dying, press <strong>Continue button</strong> to resume from last checkpoint.', 'Benefit from <strong>Pause-Continue & Music-Toggle</strong> features...'],
+    ['Make top scores and enjoy the GamePlay...!', "Don't forget to share a Feedback & further queries...", '/EXAGGERATION/', `[Version : ${GAME_VERSION}]`]
 ];
 
 const about = [
-    ["This game was designed and developed by <strong>Acronite Monsta</strong>.", "This is the first ever game that I developed", "All my basics and imagination are here... Enjoy!", `<strong>[Version : ${GAME_VERSION}]</strong`],
-    ["Brought to you by <strong>Exaggeration</strong> gaming studio...", "Passionate about games, code, and creativity.. Hope you enjoy playing!", "Feel free to share feedback & have fun 🎮", `<strong>[Version : ${GAME_VERSION}]</strong`],
-    ["Games often play a great role in <strong>Entertainment</strong>", "My Homeland and Nature has no artificial competitors!", "But still games have their own place in each of us...", "<strong>/EXAGGERATION/</strong>"]
+    ['This game was designed and developed by <strong>Acronite Monsta</strong>.', 'This is the first ever game that I developed', 'All my basics and imagination are here... Enjoy!', `<strong>[Version : ${GAME_VERSION}]</strong`],
+    ['Brought to you by <strong>Exaggeration</strong> gaming studio...', 'Passionate about games, code, and creativity.. Hope you enjoy playing!', 'Feel free to share feedback & have fun 🎮', `<strong>[Version : ${GAME_VERSION}]</strong`],
+    ['Games often play a great role in <strong>Entertainment</strong>', 'My Homeland and Nature has no artificial competitors!', 'But still games have their own place in each of us...', '<strong>/EXAGGERATION/</strong>']
 ];
 
 let [page, what, opend] = [0, true, false];
@@ -97,33 +96,23 @@ function showing(pg) {
     ele('headi').innerHTML = `<h1><strong>${what ? '📘 Game Instructions' : '👨‍💻 About the Developer'}</strong></h1>`;
     const it = what ? instructions : about;
     it[pg].forEach(i => contents += `<h4>${i}</h4>`);
-
-    ele("content").innerHTML = contents;
-    ele("previous").style.display = pg === 0 ? "none" : "block";
-    ele ("next").style.display = pg === it.length - 1 ? "none" : "block";
+    ele('content').innerHTML = contents;
+    ele('previous').style.display = pg === 0 ? 'none' : 'block';
+    ele ('next').style.display = pg === it.length - 1 ? 'none' : 'block';
 }
 
-function pasting() {
-    if (page > 0) {
-        page--;
-        showing(page);
-        sound.currentTime = '0';
-        sound.play();
-    }
-}
-
-function nexting() {
+function pagerx(t) {
     const n = (what ? instructions : about).length;
-    if (page < n - 1) {
-        page++;
+    if ((t && page > 0) || (!t && page < n - 1)) {
+        t ? page-- : page++;
         showing(page);
         sound.currentTime = '0';
         sound.play();
     }
 }
 
-function opening(a = true) {
-    what = a;
+function opening(a) {
+    what = a != 1;
     page = 0;
     opend = true;
     showing(page);
@@ -139,9 +128,9 @@ function closing() {
 
 
 
-// _______________________________________ DIFFICULTY SETTINGS _______________________________________
+// _______________________________________ DIFFICULTY + SKIN SETTINGS _______________________________________
 
-let trainMax, acc, fri, difi, tops, monsterUp, monsterBase, monsterMax;
+let trainMax, acc, fri, difi, tops, monsterUp, monsterBase, monsterMax, bgImg, trainImg, monsterImg, [trainscale, diesel, bgChange] = [3, false, false];
 
 function editz(ed) {
     const dt = [ 8, 12, 18, 24, [5, 1], [6, 1.5], [8, 2.7], [10, 5] ];
@@ -152,41 +141,45 @@ function editz(ed) {
         acc = trainMax/25;
         fri = trainMax/35;
         tops = 24/dt[ed-1];
-        a = "tr";
+        a = 'tr';
     } else {
         [monsterBase, monsterUp] = dt[ed - 1].map(x => x * editx);
         difi = ed - 5;
         monsterMax = monsterBase * 2;
-        a = "mrs";
+        a = 'mrs';
     }
     localStorage.setItem(a + 'Edit', ed);
 }
 
 function setupSelector(slider, options, savedValue, x) {
     function updateSlider() {
-        const sliderColors = x ? ["#a9942a", "#007f04", "#cd6d00", "#7f0000"] : ["#007f04", "#a9942a", "#cd6d00", "#7f0000"];
-        const emoji = x ? ['🐢', '😎', '🔥🔥', '⚡⚡⚡'] : ['✌️', '😎', '😈🔥', '☠️☠️☠️'];
-        const mgg = x ? ele('spd') : ele('dft');
+        const col = ['#007f04', '#a9942a', '#cd6d00', '#7f0000'];
+        if (x) [col[0], col[1]] = [col[1], col[0]];
+        const emoji = ['🐢', '😎', '🔥🔥', '⚡⚡⚡', '✌️', '😎', '😈🔥', '☠️☠️☠️'];
+        const mgg = ele(x ? 'spd' : 'dft');
         const value = +slider.value;
         const index = value - slider.min;
 
         options.forEach(btn => {
-            btn.classList.toggle("selected", +btn.dataset.value === value);
+            const selected = +btn.dataset.value === value;
+            btn.classList.toggle('selected', selected);
+            if (selected) {
+                btn.style.setProperty('--select-color', col[index]);
+            }
         });
 
         const pos = ((value - slider.min)/(slider.max - slider.min)) * 100;
-        slider.style.setProperty("--slider-pos", `${pos}%`);
-        slider.style.setProperty("--slider-color", sliderColors[index]);
+        slider.style.setProperty('--slider-pos', `${pos}%`);
+        slider.style.setProperty('--slider-color', col[index]);
         editz(value);
-        mgg.innerText = emoji[index];
+        mgg.innerText = emoji[value-1];
     }
 
     if (savedValue !== null && savedValue !== undefined) slider.value = savedValue;
-
-    slider.addEventListener("input", updateSlider);
+    slider.addEventListener('input', updateSlider);
 
     options.forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener('click', () => {
             slider.value = btn.dataset.value;
             updateSlider();
         });
@@ -195,58 +188,29 @@ function setupSelector(slider, options, savedValue, x) {
     updateSlider();
 }
 
-
-
-
-
-// _______________________________________ SKIN SELECTION SETTINGS _______________________________________
-
-let bgImg, trainImg, monsterImg, [trainscale, diesel, bgChange] = [3, false, false];
-
-function usage(imgElement) {
-    let rank, skin;
-    const bed = Array.isArray(imgElement);
-
-    if (bed) {
-        [rank, skin] = imgElement;
-    } else {
-        rank = +imgElement.getAttribute('rank') || 1;
-        skin = +imgElement.getAttribute('skin') || 1;
-    }
-
+function usage(rank, skin) {
     if (skin === 1) {
         bgChange = false;
-        bgImg = backx[rank-1];
-
+        bgImg = backx[rank - 1];
     } else if (skin === 2) {
-        trainImg = trainx[rank-1];
+        trainImg = trainx[rank - 1];
         diesel = rank % 2 === 1;
         trainscale = diesel ? 3.5 : 3;
         train.width = train.height * trainscale;
-
     } else if (skin === 3) {
-        monsterImg = monsterx[rank-1];
-
+        monsterImg = monsterx[rank - 1];
     } else {
         bgChange = true;
     }
 
-    const d = skin === 2 ? "tr" : (skin === 3 ? "mr" : "bg");
+    const d = skin === 2 ? 'tr' : skin === 3 ? 'mr' : 'bg';
     const allImgs = document.querySelectorAll(`#${d}Skin img`);
 
-    if (bed) {
-        allImgs.forEach(img => {
-            const src = +img.getAttribute('rank');
-            if (src === rank) {
-                img.classList.add('selecta');
-            }
-        });
+    allImgs.forEach(img => {
+        img.classList.toggle('selected', +img.getAttribute('rank') === rank);
+    });
 
-    } else {
-        localStorage.setItem(d + "Data", JSON.stringify([rank,skin]));
-        allImgs.forEach(im => im.classList.remove("selecta"));
-        imgElement.classList.add("selecta");
-    }
+    localStorage.setItem(d + 'Data', JSON.stringify([rank, skin]));
 }
 
 
@@ -255,8 +219,8 @@ function usage(imgElement) {
 
 // _______________________________________ AUDIO BLOCK _______________________________________
 
-const gameMusic = ele("backgroundMusic");
-const storyMusic = ele("videoMusic");
+const gameMusic = ele('backgroundMusic');
+const storyMusic = ele('videoMusic');
 const sound = new Audio(`audios/shift.mp3?v=${GAME_VERSION}`);
 const treat = new Audio(`audios/treasure.mp3?v=${GAME_VERSION}`);
 let fide, hide, musicOn = true;
@@ -293,9 +257,10 @@ function fadeInMusic(m) {
 }
 
 function musicToggle() {
+    if (!gameRunning || gamePaused || stuck || crash) return;
     musicOn = !musicOn;
     musicOn ? fadeInMusic(1) : fadeOutMusic(1);
-    ele('musicBtn').textContent = musicOn ? "🔊" : "🔇";
+    ele('musicBtn').textContent = musicOn ? '🔊' : '🔇';
 }
 
 
@@ -305,33 +270,28 @@ function musicToggle() {
 // _______________________________________ VIDEO BLOCK _______________________________________
 
 let colint, textint, interl, [line, colChange, stord] = [0, true, false];
-const st = ele("storyText");
+const st = ele('storyText');
 const cols = ['#85ff85', '#ffd979', '#ff6464', '#63aeff', '#9476feff'];
 
 const storiez = [
-    "The year is 2076. A few years ago, something tragic happened... No one knows the full truth. Many believe it was a space attack.",
-    "The outer world was scorched by high-radiation storms and hyper-active thunder, forcing us to hide in the Graphene caves.",
+    'The year is 2076. A few years ago, something tragic happened... No one knows the full truth. Many believe it was a space attack.',
+    'The outer world was scorched by high-radiation storms and hyper-active thunder, forcing us to hide in the Graphene caves.',
     "But even these caves aren't safe — Graphene Monsters roam within, mutated by radiation gone wrong, always hunting us.",
-    "The elders say our only goal is to reach the Final Station — the end of this journey — while collecting rare Graphene and staying alive.",
-    "We are the last hope of mankind, defying fate and outrunning death from the very beginning.",
+    'The elders say our only goal is to reach the Final Station — the end of this journey — while collecting rare Graphene and staying alive.',
+    'We are the last hope of mankind, defying fate and outrunning death from the very beginning.',
     "The world was left shattered by chaos, hunger, and steel... Who would've thought old rusty trains would become our last salvation?",
-    "They were heavy, durable, metallic — we modified these trains to shift tracks in hyper-dangerous conditions.",
+    'They were heavy, durable, metallic — we modified these trains to shift tracks in hyper-dangerous conditions.',
     "And now... you're the pilot of this unstoppable beast — shifting rails and dodging doom until the very end.",
     "These trains are the sci-fi beasts of this era. That's what we call them — RAIL SHIFTER... (*__*)"
 ];
 
-function shuffling() {
-    const col = ['#771b1b', '#7b5e14', '#005e00', '#0f457f'];
-    for (let i = col.length - 1; i > 0; i--) {
-        const j = flor(i + 1);
-        [col[i], col[j]] = [col[j], col[i]];
-    }
-    return col;
-}
-
 function coloring() {
-    const c = shuffling();
-    const cc = `linear-gradient(90deg, ${c.join(",")})`;
+    const c = ['#771b1b', '#7b5e14', '#005e00', '#0f457f'];
+    for (let i = c.length - 1; i > 0; i--) {
+        const j = flor(i + 1);
+        [c[i], c[j]] = [c[j], c[i]];
+    }
+    const cc = `linear-gradient(90deg, ${c.join(',')})`;
     const [b1, b2] = [ele('bg1'), ele('bg2')];
     const [b11, b22] = colChange ? [b2, b1] : [b1, b2];
     b11.style.background = cc;
@@ -341,7 +301,7 @@ function coloring() {
 }
 
 function showLine(index) {
-    st.innerText = "";
+    st.innerText = '';
     let i = 0;
     clearInterval(interl);
     const line = storiez[index];
@@ -349,7 +309,7 @@ function showLine(index) {
         st.innerText += line[i];
         i++;
         if (i >= line.length) clearInterval(interl);
-    }, 50);
+    }, 40);
 }
 
 function stoppp() {
@@ -396,24 +356,7 @@ function storyNext() {
 
 
 
-// _______________________________________ SCALING BLOCK _______________________________________
-
-function setViewportHeight() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-
-function checkOrientation() {
-    const isPortrait = window.innerHeight > window.innerWidth;
-    ele('rotateWarning').style.display = isPortrait ? 'flex' : 'none';
-    if (!gameRunning || gamePaused || isPortrait) return;
-    gamePaused = isPortrait;
-    requestAnimationFrame(() => {
-        if (uploop) cancelAnimationFrame(uploop);
-        if (doloop) cancelAnimationFrame(doloop);
-        update();
-    })
-}
+// _______________________________________ CANVAS + SCALING BLOCK _______________________________________
 
 async function goFullscreen() {
     const elem = document.body;
@@ -427,14 +370,12 @@ async function goFullscreen() {
 
     if (screen.orientation && screen.orientation.lock) {
         try {
-            await screen.orientation.lock("landscape");
-            console.log("Orientation locked to landscape");
+            await screen.orientation.lock('landscape');
+            console.log('Orientation locked to landscape');
         } catch (err) {
-            console.warn("Orientation lock failed:", err);
+            console.warn('Orientation lock failed:', err);
         }
     }
-
-  requestAnimationFrame(setViewportHeight);
 }
 
 function fullx(o) {
@@ -454,62 +395,55 @@ function fullx(o) {
 }
 fullx();
 
-
-
-
-
-// _______________________________________ CANVAS BLOCK _______________________________________
-
-const canvas = ele("gameCanvasX");
-const ctx = canvas.getContext("2d");
+const canvas = ele('gameCanvasX');
+const ctx = canvas.getContext('2d');
 let CW, CH, k, l, editx, resizeTimer, [gameRunning, gamePaused] = [false, false];
 let train = { x: 60 , width: 100 , height: 300 , top: true };
 
 function resiz() {
-    setViewportHeight();
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
     const dpr = window.devicePixelRatio || 1;
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     CW = canvas.width;
     CH = canvas.height;
-    klupdater();
-    checkOrientation();
-    editz(+(gett('trEdit') ?? 2));
-    editz(+(gett('mrsEdit') ?? 6));
-}
-
-function klupdater() {
     const [a,b] = [CH * 0.42, CH * 0.64];
     train.height = CH * 0.17;
     train.width = train.height * trainscale;
     k = a - train.height;
     l = b - train.height;
     editx = ((CW > CH) ? CW : CH)/1300;
+    editz(+(gett('trEdit') ?? 2));
+    editz(+(gett('mrsEdit') ?? 6));
+    const isPortrait = window.innerHeight > window.innerWidth;
+    ele('rotateWarning').style.display = isPortrait ? 'flex' : 'none';
+    if (!gameRunning || gamePaused || isPortrait) return;
+    gamePaused = isPortrait;
+    requestAnimationFrame(() => {
+        if (uploop) cancelAnimationFrame(uploop);
+        if (doloop) cancelAnimationFrame(doloop);
+        update();
+    })
 }
-
-
-
-
-
-// _______________________________________ TASKS BLOCK _______________________________________
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 function waitUntilNoRotateWarning() {
     return new Promise(resolve => {
         const check = () => {
-            const warning = ele("rotateWarning");
-            const isHidden = !warning || warning.style.display === "none";
+            const warning = ele('rotateWarning');
+            const isHidden = !warning || warning.style.display === 'none';
             isHidden ? resolve() : setTimeout(check, 100);
         };
         check();
     });
 }
 
-window.addEventListener("load", async () => {
+window.addEventListener('load', async () => {
     resiz();
     await waitUntilNoRotateWarning();
 
@@ -531,32 +465,35 @@ window.addEventListener("load", async () => {
     on(4, 'menu');
 });
 
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => resiz() , 100);
 });
 
-document.addEventListener('fullscreenchange', () => {
-    const isFull = document.fullscreenElement !== null;
+function fuller() {
+    const isFull = document.fullscreenElement !== null || document.webkitFullscreenElement !== null || browserFullscreen.matches;
     fullx(isFull);
-});
+}
+
+const browserFullscreen = window.matchMedia('(display-mode: fullscreen)');
+browserFullscreen.addEventListener('change', fuller);
+document.addEventListener('fullscreenchange', fuller);
 
 setTimeout(() => {
     ['bgData','trData','mrData'].forEach(x => {
-        const y = JSON.parse(gett(x));
-        usage(y);
+        const [y,z] = JSON.parse(gett(x));
+        usage(y,z);
     });
-    klupdater();
 }, 1000);
 
 
 
 
 
-// _______________________________________ SIDEBAR & RESUME - PAUSE BLOCK _______________________________________
+// _______________________________________ SIDEBAR BLOCK _______________________________________
 
-ele('sideBy').addEventListener("click", () => {
-    if (bursting || flashing) return;
+ele('sideBy').addEventListener('click', () => {
+    if (bursting || flashing || stuck || crash) return;
     setLife(false);
     on(1, 'sidebar');
     on('dark');
@@ -566,7 +503,6 @@ ele('sideBy').addEventListener("click", () => {
 });
 
 function taskResume() {
-    if (bursting || flashing) return;
     if (isfps) on('fpsx');
     off('dark', 'sidebar');
     on('envy');
@@ -576,24 +512,85 @@ function taskResume() {
     setLife(extralife);
 }
 
-function resumePause() {
-    if (!gameRunning || stuck || bursting || flashing) return;
-    gamePaused = !gamePaused;
-    ele("pauser").textContent = gamePaused ? "⏸" : "▶";
 
-    if (gamePaused) {
-        if (musicOn) fadeOutMusic(1);
-    } else {
-        if (musicOn) fadeInMusic(1);
-        update();
+
+
+
+// _______________________________________ CHECKPOINT, STATS & ACHIEVEMENTS BLOCK _______________________________________
+
+let warnn = true;
+
+const cpKey = () => `trainGameCheckpoint_${difi}`;
+
+const existCp = () => gett(cpKey()) !== null;
+
+function saveCp() {
+    const cpData = {
+        difficulty: difi,
+        rrr: run + Math.floor((reach - CW * 10)/50),
+        dd: dist + reach,
+        xp: exp,
+        org: requirement,
+        gt: gpGot,
+        pt: stat.plot + 1
+    };
+    localStorage.setItem(`trainGameCheckpoint_${difi}`, JSON.stringify(cpData));
+}
+
+function loadCp() {
+    [reach, cameraX, exp, run, speedX, monsterCount, kb, gpGot, border, dist, stat.plot] = [0,0,0,0,0,0,0,0,0,0,0];
+    [showAdvance, gamePaused, crash, challenge, onpro, offpro] = [false, false, false, false, false, false];
+    [monsterSpeed, requirement, mono, monsta, gameRunning, popx] = [monsterBase, 50, 1, null, true, true];
+    ski = (18000 + rand(7000)) * editx;
+    if (bgChange) climate();
+    smokeParticles.length = 0;
+    genX();
+    setLife(extralife);
+    if (isfps) on('fpsx');
+    const sData = gett(cpKey());
+
+    if (sData) {
+        const cpp = JSON.parse(sData);
+        if (cpp.difficulty === difi) {
+            run = cpp.rrr;
+            dist = cpp.dd;
+            exp = cpp.xp;
+            requirement = cpp.org;
+            gpGot = cpp.gt || 0;
+            stat.plot = cpp.pt;
+            stat.rtx = false;
+        }
     }
 }
 
+function warns(z) {
+    on('warn', z ? 'reset' : 'default');
+    warnn = z ? true : false;
+}
 
-
-
-
-// _______________________________________ STATS & ACHIEVEMENTS BLOCK _______________________________________
+function delCp(ddd) {
+    if (ddd) {
+        if (warnn) {
+            const hasCp = [0,1,2,3].some(n => gett(`trainGameCheckpoint_${n}`) !== null);
+            showPopup(hasCp ? '😎 Checkpoint removed succesfully...!' : '😤 No checkpoint exists...!');
+            if (hasCp) {
+                for (let i = 0; i < 4; i++) {
+                    localStorage.removeItem(`trainGameCheckpoint_${i}`);
+                }
+            }
+        } else {
+            ['bgData', 'trData', 'mrData', 'trEdit', 'mrsEdit', 'isfpsc'].forEach(id => localStorage.removeItem(id));
+            showPopup('😎 All settings default...');
+            [bgImg, trainImg, monsterImg] = [];
+            editz(2);
+            editz(6);
+            const allImgs = document.querySelectorAll('img');
+            allImgs.forEach(im => im.classList.remove('selected'));
+        } 
+    } else {
+        off('warn','default','reset');
+    }
+}
 
 function openStats() {
     stats();
@@ -602,15 +599,15 @@ function openStats() {
 
 function stats() {
     const statxx = ele('statxx');
-    const difNames = ["Easy...✌️", "Medium...😎", "Hard...😈", "Extreme...☠️"];
-    const dcol = ["#4ba94f", "#8ea94b", "#a97d4b", "#a94b4b"];
-    let html = "";
+    const difNames = ['Easy...✌️', 'Medium...😎', 'Hard...😈', 'Extreme...☠️'];
+    const dcol = ['#4ba94f', '#8ea94b', '#a97d4b', '#a94b4b'];
+    let html = '';
 
     for (let i = 0; i < 4; i++) {
         const data = gett(`trainGameCheckpoint_${i}`);
         const cp = data ? JSON.parse(data) : null;
 
-        const dt = cp ? `<h5>🚂 Runner Score : ${cp.rrr}</h5>
+        const dt = cp ? `<h5>🚂 Score : ${cp.rrr} | ${cp.dd}km</h5>
             <h5>🎯 Graphene : ${cp.gt}</h5>
             <h5>⭐ XP : ${cp.xp}</h5>
             <h5>📍 Platform : ${cp.pt}</h5>` :
@@ -628,88 +625,17 @@ function stats() {
 
 
 
-// _______________________________________ CHECKPOINT BLOCK _______________________________________
-
-const cpKey = () => `trainGameCheckpoint_${difi}`;
-
-const existCp = () => gett(cpKey()) !== null;
-
-function saveCp() {
-    const cpData = {
-        difficulty: difi,
-        rrr: run + Math.floor((reach - CW * 10)/50),
-        xp: exp,
-        org: requirement,
-        gt: gpGot,
-        pt: stat.plot + 1
-    };
-    localStorage.setItem(`trainGameCheckpoint_${difi}`, JSON.stringify(cpData));
-}
-
-function loadCp() {
-    [reach, cameraX, exp, run, speedX, monsterCount, kb, gpGot, border, stat.plot] = [0,0,0,0,0,0,0,0,0,0];
-    [showAdvance, gamePaused, crash, challenge, onpro, offpro] = [false, false, false, false, false, false];
-    [monsterSpeed, requirement, mono, monsta, gameRunning, popx] = [monsterBase, 50, 1, null, true, true];
-    ski = (18000 + rand(7000)) * editx;
-    if (bgChange) climate();
-    smokeParticles.length = 0;
-    genX();
-    setLife(extralife);
-    if (isfps) on('fpsx');
-    const sData = gett(cpKey());
-
-    if (sData) {
-        const cpp = JSON.parse(sData);
-        if (cpp.difficulty === difi) {
-            run = cpp.rrr;
-            exp = cpp.xp;
-            requirement = cpp.org;
-            gpGot = cpp.gt || 0;
-            stat.plot = cpp.pt;
-            stat.rtx = false;
-        }
-    }
-}
-
-function delCp(ddd) {
-    if (ddd === 1) {
-        const hasCp = [0,1,2,3].some(n => gett(`trainGameCheckpoint_${n}`) !== null);
-        showPopup(hasCp ? "😎 Checkpoint removed succesfully...!" : "😤 No checkpoint exists...!");
-        if (hasCp) {
-            for (let i = 0; i < 4; i++) {
-                localStorage.removeItem(`trainGameCheckpoint_${i}`);
-            }
-        }
-
-    } else if (ddd === 2) {
-        ["bgData", "trData", "mrData", "trEdit", "mrsEdit", "isfpsc"].forEach(id => localStorage.removeItem(id));
-        showPopup("😎 All settings default...");
-        [bgImg, trainImg, monsterImg] = [];
-        editz(2);
-        editz(6);
-        const allImgs = document.querySelectorAll('img');
-        allImgs.forEach(im => im.classList.remove("selecta"));
-        
-    } else {
-        off('reset','default');
-    }
-}
-
-
-
-
-
 // _______________________________________ GAME OVER BLOCK _______________________________________
 
 let q;
-const query = ["🔥 Why these obstacles... Hmm...", "🔥 Why only me ─ *****", "🔥 Damn... This monster", "🔥 What the Hell ─ *****"];
+const query = ['🔥 Why these obstacles... Hmm...', '🔥 Why only me ─ *****', '🔥 Damn... This monster', '🔥 What the Hell ─ *****'];
 
 function gOver(rg) {
     off('gameCanvasX', 'envy');
     setLife(false);
     ele('gameReason').innerHTML = `<h2>GAME OVER : ${rg ? 'THE TRAIN DONE COLLISION' : 'MONSTER DESTROYED THE TRAIN'}</h2>`;
     q = flor(2) + (rg ? 0 : 2);
-    ele('continueBtn').innerText = existCp() ? "Continue" : "Restart";
+    ele('continueBtn').innerText = existCp() ? 'Continue' : 'Restart';
     on(1, 'gameOver');
     started = false;
 }
@@ -737,72 +663,7 @@ function conCp() {
 
 
 
-// _______________________________________ POPUP BLOCK _______________________________________
-
-function showPopup(msg = "Popup!", dura = 2500) {
-    const container = document.getElementById('popupContainer') || (() => {
-        const d = document.createElement('div');
-        d.id = 'popupContainer';
-        d.style.position = 'fixed';
-        d.style.top = '10vh';
-        d.style.left = '50%';
-        d.style.transform = 'translateX(-50%)';
-        d.style.zIndex = '9999999';
-        d.style.pointerEvents = 'none';
-        document.body.appendChild(d);
-        return d;
-    })();
-
-    const pp = document.createElement('div');
-    pp.className = 'Popup';
-    pp.innerText = msg;
-    pp.style.opacity = '0';
-    container.appendChild(pp);
-    requestAnimationFrame(() => {
-        pp.style.opacity = '1';
-
-        setTimeout(() => {
-            pp.style.opacity = '0';
-            setTimeout(() => { pp.remove() } , 1000);
-        }, dura);
-    });
-}
-
-
-
-
-
-// _______________________________________ BACKGROUND HANDLING BLOCK _______________________________________
-
-let ski;
-
-function climate() {
-    if (!bgChange) return;
-    const available = backx.filter(bg => bg !== bgImg);
-    if (available.length === 0) return;
-    bgImg = available[flor(available.length)];
-    setTimeout(() => flash(3), 10);
-}
-
-setTimeout(() => { if (bgChange) climate() } , 1500);
-
-function changer(xgr) {
-    if (xgr < ski) return;
-    climate();
-    ski += (18000 + rand(7000)) * editx;
-}
-
-function doBg(xgr, cww, chh) {
-    const bgw = bgImg.width * (chh/bgImg.height);
-    const init = -xgr/4 % bgw;
-    for (let x = init; x < cww; x += bgw) ctx.drawImage(bgImg, x, 0, bgw, chh);
-}
-
-
-
-
-
-// _______________________________________ ADVANCE BLOCK _______________________________________
+// _______________________________________ ADVANCE + POPUP BLOCK _______________________________________
 
 let advanceAF, showAdvance = false;
 
@@ -851,20 +712,49 @@ function adv() {
         gpgp = true;
         setTimeout(() => xgrBurst(1) , 20);
         setTimeout(() => {
-            ["Used ADVANCE...🔥", "XP Boost...🔥", "─ Monster Slowed Down ─"].forEach(p => showPopup(p));
+            ['Used ADVANCE...🔥', 'XP Boost...🔥', '─ Monster Slowed Down ─'].forEach(p => showPopup(p));
         }, 1000);
     } else {
         showPopup(`🔥 Minimum ${requirement} Graphene for ADVANCE...!`);
     }
 }
 
+function showPopup(msg = 'Popup!', dura = 2500) {
+    const container = document.getElementById('popupContainer') || (() => {
+        const d = document.createElement('div');
+        d.id = 'popupContainer';
+        d.style.position = 'fixed';
+        d.style.top = '10vh';
+        d.style.left = '50%';
+        d.style.transform = 'translateX(-50%)';
+        d.style.zIndex = '9999999';
+        d.style.pointerEvents = 'none';
+        document.body.appendChild(d);
+        return d;
+    })();
+
+    const pp = document.createElement('div');
+    pp.className = 'Popup';
+    pp.innerText = msg;
+    pp.style.opacity = '0';
+    container.appendChild(pp);
+    requestAnimationFrame(() => {
+        pp.style.opacity = '1';
+
+        setTimeout(() => {
+            pp.style.opacity = '0';
+            setTimeout(() => { pp.remove() } , 1000);
+        }, dura);
+    });
+}
 
 
 
 
-// _______________________________________ XGR ─ BURST EFFECT _______________________________________
 
-let bursting = false, lastE;
+// _______________________________________ XGR ─ BURST & FLASH EFFECT _______________________________________
+
+let lastE, [bursting, flashing, opacityF, lastF] = [false,false,0.75,0];
 
 function xgrBurst(krg) {
     const [cx, cy] = [ train.x + train.width * (krg ? 0.5 : 0.65) , (train.top ? k : l) + train.height/2 ];
@@ -910,14 +800,6 @@ function xgrBurst(krg) {
     requestAnimationFrame(animate);
 }
 
-
-
-
-
-// _______________________________________ FLASH EFFECT _______________________________________
-
-let [flashing, opacityF, lastF] = [false,0.75,0];
-
 function flash(f) {
     const [cww, chh, red] = [CW, CH, 0.009];
 
@@ -944,26 +826,6 @@ function flash(f) {
 
 
 
-// _______________________________________ SHAKE EFFECT _______________________________________
-
-let [shaki, refX, turn] = [false,0,0];
-
-function shaker(dt) {
-    cameraX = refX + Math.sin(turn) * 7 * editx;
-    turn += 0.3926 * dt;
-}
-
-function shake() {
-    refX = cameraX;
-    turn = 0;
-    shaki = true;
-    setTimeout(() => { shaki = false } , 1000);
-}
-
-
-
-
-
 // _______________________________________ EXTRA LIFE BLOCK _______________________________________
 
 let lifeX, lifeY, extralife = false;
@@ -975,7 +837,7 @@ function lifer() {
     setLife(extralife);
     on('envy');
     flash();
-    setTimeout(() => showPopup("🔥 — Resurrection — 🔥") , 800);
+    setTimeout(() => showPopup('🔥 — Resurrection — 🔥') , 800);
 }
 
 function doLife(xgr, cww, end, chh) {
@@ -988,9 +850,10 @@ function doLife(xgr, cww, end, chh) {
 
 
 
-// _______________________________________ SMOKE EFFECT _______________________________________
+// _______________________________________ SMOKE & SPARK EFFECT _______________________________________
 
 const smokeParticles = [];
+let electricSpark;
 
 function genSmoke(xgr, e) {
     smokeParticles.push({
@@ -1034,14 +897,6 @@ function doSmoke(xgr, dt) {
     }
 }
 
-
-
-
-
-// _______________________________________ SPARK EFFECT _______________________________________
-
-let electricSpark;
-
 function genSpark(e) {
     electricSpark = {
         x: train.x + train.width / 2,
@@ -1070,10 +925,10 @@ function doSparks() {
 
 
 
-// _______________________________________ EXPLOSION BLOCK _______________________________________
+// _______________________________________ EXPLOSION & SHAKE BLOCK _______________________________________
 
 const boom = new Audio(`audios/explode.mp3?v=${GAME_VERSION}`);
-let mono = 1, exuping = true;
+let [exuping, shaki, mono, refX, turn] = [true,false,1,0,0];
 
 function doExp(chh, dt) {
     const exup = chh/110000 * dt;
@@ -1084,13 +939,25 @@ function doExp(chh, dt) {
     mono += exup * (exuping ? 1 : -3.5);
 }
 
+function shaker(dt) {
+    cameraX = refX + Math.sin(turn) * 7 * editx;
+    turn += 0.3926 * dt;
+}
+
+function shake() {
+    refX = cameraX;
+    turn = 0;
+    shaki = true;
+    setTimeout(() => { shaki = false } , 1000);
+}
+
 
 
 
 
 // _______________________________________ FPS BLOCK _______________________________________
 
-let isfps = gett('isfpsc') === null ? true : gett('isfpsc') === "true";
+let isfps = gett('isfpsc') === null ? true : gett('isfpsc') === 'true';
 let frames = 0, lastfpx = 0;
 
 function doFPS(dt) {
@@ -1127,15 +994,20 @@ ele('fpsSlider').addEventListener('input', function () {
 
 // _______________________________________ SCORE-PROGRESS BLOCK _______________________________________
 
-let [gpgp, run, exp, trackk] = [true,0,0,0];
-const runup = ele('runnerScore');
+let [gpgp, run, exp, trackk, spdx, dist] = [true,0,0,0,0,0];
+const [runup, spdd, distt] = [ele('runnerScore') , ele('trainSpeed') , ele('trainDistance')];
 
-function progression(xgr, end, dt) {
+function progression(xgr, end, dt, del) {
+    const smoothing = 1 - Math.exp(-0.1 * del);
+    spdx += (Math.abs(speedX) * 5 - spdx) * smoothing;
+    spdd.innerText = `${Math.round(spdx)} Km/H`;
+    distt.innerText = `${((dist + reach)/(CW * 27)).toFixed(2)} Km`;
+
     if (!challenge) return;
-    runup.innerText = `Score : ${run + Math.floor(xgr/50)} || XP : ${exp}`;
+    runup.innerText = `Score : ${run + Math.round(xgr/50)} || XP : ${exp}`;
 
     if (gpgp) {
-        ele("progressBar").style.width = `${(gpGot/requirement) * 100}` + "%";
+        ele('progressBar').style.width = `${(gpGot/requirement) * 100}%`;
         ele('score').textContent = `Graphene : ${gpGot}/${requirement}`;
         gpgp = false;
     }
@@ -1147,12 +1019,6 @@ function progression(xgr, end, dt) {
         trackk = dt;
     }
 }
-
-
-
-
-
-// _______________________________________ COLLECTOR BLOCK _______________________________________
 
 function collects() {
     if (!gameRunning || gamePaused || stuck) return;
@@ -1285,47 +1151,30 @@ function worldStream(xgr, cww, end) {
 
 
 
-// _______________________________________ BILL BOARDS BLOCK _______________________________________
+// _______________________________________ BACKGROUND HANDLING BLOCK _______________________________________
 
-function doBoardz(x, chh, ww) {
-    const boardW = chh * (ww ? 0.6 : 0.4);
-    const [boardH, boardY, pilW, pilH, pilY] = [chh/10, chh/5, chh/40, chh/20, chh * 0.3];
-    const label = ww ? "Challenge Begins  >>>" : "Safe Area  >>>";
+let ski;
 
-    ctx.fillStyle = "#201000";
-    ctx.fillRect(x - pilW/2, pilY, pilW, pilH);
-
-    ctx.fillStyle = "#111";
-    ctx.fillRect(x - boardW/2, boardY, boardW, boardH);
-
-    ctx.strokeStyle = "#ccc";
-    ctx.lineWidth = 4 * editx;
-    ctx.strokeRect(x - boardW/2, boardY, boardW, boardH);
-
-    ctx.save();
-    ctx.translate(x, boardY + boardH/2);
-    ctx.fillStyle = "#ffcc00";
-    ctx.font = `bold ${boardH/2}px system-ui`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(label, 8, 0);
-    ctx.restore();
+function climate() {
+    if (!bgChange) return;
+    const available = backx.filter(bg => bg !== bgImg);
+    if (available.length === 0) return;
+    bgImg = available[flor(available.length)];
+    setTimeout(() => flash(3), 10);
 }
 
-let signData = [];
+setTimeout(() => { if (bgChange) climate() } , 1500);
 
-function doSign(xgr, cww, chh) {
-    const signY = chh/5;
-    const size = chh * 0.15;
+function changer(xgr) {
+    if (xgr < ski) return;
+    climate();
+    ski += (18000 + rand(7000)) * editx;
+}
 
-    for (const s of signData) {
-        const signX = s.x - xgr;
-        if (signX > cww * 1.05) break;
-        if (signX > -signY) {
-            const img = offImgs[s.skin];
-            ctx.drawImage(img, signX, signY, size, size);
-        }
-    }
+function doBg(xgr, cww, chh) {
+    const bgw = bgImg.width * (chh/bgImg.height);
+    const init = -xgr/4 % bgw;
+    for (let x = init; x < cww; x += bgw) ctx.drawImage(bgImg, x, 0, bgw, chh);
 }
 
 
@@ -1355,20 +1204,20 @@ function doPlot(x, chh, p = 0) {
     const [boardW, boardH, boardY] = [chh/10, chh * 0.41, chh * 0.32];
     const [cx, cy] = [x + boardW/2, boardY + boardH/2];
 
-    ctx.fillStyle = "#111";
+    ctx.fillStyle = '#111';
     ctx.fillRect(x, boardY, boardW, boardH);
 
-    ctx.strokeStyle = "#ccc";
+    ctx.strokeStyle = '#ccc';
     ctx.lineWidth = 4 * editx;
     ctx.strokeRect(x, boardY, boardW, boardH);
 
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(Math.PI/2);
-    ctx.fillStyle = "#ffcc00";
+    ctx.fillStyle = '#ffcc00';
     ctx.font = `bold ${boardW/2}px system-ui`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText(`Platform ─ ${stat.plot + p}`, 0, 0);
     ctx.restore();
 }
@@ -1377,15 +1226,17 @@ function doPlot(x, chh, p = 0) {
 
 
 
-// _______________________________________ AREA MAINTAIN FUNCTION _______________________________________
+// _______________________________________ AREA MAINTAIN BLOCK _______________________________________
+
+let signData = [];
 
 function doArea(xgr, cww, end, chh) {
     const [gSize, trackU, trackD, baseY, shadowH] = [chh * 0.35, chh/20, chh/12.5, chh * 0.7, chh * 0.075];
 
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = '#000000';
     ctx.fillRect(0, gSize, cww, gSize);
 
-    ctx.fillStyle = "#818A8B";
+    ctx.fillStyle = '#818A8B';
     const [rpg, barGap, adjust, rGap] = [10 * editx, 30 * editx, chh/100, cww/2];
     const firstBar = Math.max(0, Math.floor((xgr - cww/32)/barGap) * barGap);
     const lastBar = Math.min(end, xgr + cww * 1.04);
@@ -1396,7 +1247,7 @@ function doArea(xgr, cww, end, chh) {
         ctx.fillRect(barX, gSize + gSize - trackD - adjust, rpg, trackU);
     }
 
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = '#000';
     const firstR = Math.max(0, Math.floor((xgr - cww/20)/rGap) * rGap);
     const lastR = Math.min(end, xgr + cww * 1.05);
 
@@ -1407,7 +1258,7 @@ function doArea(xgr, cww, end, chh) {
         }
     }
 
-    ctx.strokeStyle = "#42220b";
+    ctx.strokeStyle = '#42220b';
     ctx.lineWidth = rpg/2;
     ctx.beginPath();
 
@@ -1417,6 +1268,45 @@ function doArea(xgr, cww, end, chh) {
         ctx.lineTo(cww, y);
     }
     ctx.stroke();
+}
+
+function doBoardz(x, chh, ww) {
+    const boardW = chh * (ww ? 0.6 : 0.4);
+    const [boardH, boardY, pilW, pilH, pilY] = [chh/10, chh/5, chh/40, chh/20, chh * 0.3];
+    const label = ww ? 'Challenge Begins  >>>' : 'Safe Area  >>>';
+
+    ctx.fillStyle = '#201000';
+    ctx.fillRect(x - pilW/2, pilY, pilW, pilH);
+
+    ctx.fillStyle = '#111';
+    ctx.fillRect(x - boardW/2, boardY, boardW, boardH);
+
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 4 * editx;
+    ctx.strokeRect(x - boardW/2, boardY, boardW, boardH);
+
+    ctx.save();
+    ctx.translate(x, boardY + boardH/2);
+    ctx.fillStyle = '#ffcc00';
+    ctx.font = `bold ${boardH/2}px system-ui`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, 8, 0);
+    ctx.restore();
+}
+
+function doSign(xgr, cww, chh) {
+    const signY = chh/5;
+    const size = chh * 0.15;
+
+    for (const s of signData) {
+        const signX = s.x - xgr;
+        if (signX > cww * 1.05) break;
+        if (signX > -signY) {
+            const img = offImgs[s.skin];
+            ctx.drawImage(img, signX, signY, size, size);
+        }
+    }
 }
 
 
@@ -1443,7 +1333,7 @@ function doTrt(timez, dt) {
             traintime = 0;
         }
 
-        ctx.fillStyle = "#5dade2";
+        ctx.fillStyle = '#5dade2';
         const [barX, barS, barH] = [baseX - train.width/20, 12 * e, 100 * e];
 
         for (let i = 0; i < train.width * 1.1; i += barS) {
@@ -1472,7 +1362,7 @@ function swicher() {
 
 // _______________________________________ ITEMS BLOCK _______________________________________
 
-const cryCol = ["#00f0ff", "#ff00f0", "#00ff88", "#ffee00", "#ff6600", "#df0000", "#5800df"];
+const cryCol = ['#00f0ff', '#ff00f0', '#00ff88', '#ffee00', '#ff6600', '#df0000', '#5800df'];
 let gpGot = 0, requirement = 50, crystals = [], obstacles = [], gpBlocks = [];
 
 function doItems(xgr, cww, chh, dt) {
@@ -1531,7 +1421,7 @@ function doItems(xgr, cww, chh, dt) {
 // _______________________________________ MONSTER BLOCK _______________________________________
 
 const monsterRoar = new Audio(`audios/roarx.mp3?v=${GAME_VERSION}`);
-let [monsterCount, monsterSpeed, mx, monsta] = [0,0,0];
+let monsta, [monsterCount, monsterSpeed, mx, fx] = [0,0,0,0];
 
 function spawnMonster() {
     if (monsta) return;
@@ -1552,28 +1442,33 @@ function spawnMonster() {
 function doMrs(xgr, dt) {
     if (!monsta) return;
     mx += dt/8;
+    fx += dt/20 + rand(dt/10);
     const e = editx;
-    const breath = Math.sin(mx) * e;
+    const ffx = Math.sin(mx) * 2 * e;
+    const breath = crash ? Math.sin(mx) * e : 0;
     const size = train.height;
-    const monsterX = monsta.x - xgr + breath;
-    const monsterY = monsta.y - breath * 5;
+    const monsterX = monsta.x - xgr;
+    ctx.save();
+    ctx.globalAlpha = 0.6 + Math.sin(fx)/5;
 
-    for (let i = 0; i < size; i += 2) {
-        const color = rand(3);
-        const flameColor = color < 1 ? "#ff0202ff" : (color < 2 ? "#ffe802" : "#000");
-        const flameWidth = i < size/2 ? 20 + i/2 + rand(70) : 50 + (size - i)/2 + rand(70);
-        ctx.fillStyle = flameColor;
-        ctx.fillRect(monsterX + size/3, monsterY + i, flameWidth * e, 2 * e);
+    if (crash) {
+        ctx.translate(monsterX + ffx, monsta.y - size/2);
+        ctx.drawImage(flameImg, 0, 0, size, size * 1.2);
+    } else {
+        ctx.translate(monsterX + size * 1.8, monsta.y + e * 2 + ffx);
+        ctx.rotate(Math.PI/2);
+        ctx.drawImage(flameImg, 0, 0, size, size * 1.5);
     }
 
-    ctx.drawImage(monsterImg, monsterX, monsterY, size - breath * 2, size + breath * 5);
+    ctx.restore();
+    ctx.drawImage(monsterImg, monsterX + breath, monsta.y - breath * 5, size - breath * 2, size + breath * 5);
 }
 
 
 
 
 
-// _______________________________________ OBSTACLE COLLISION _______________________________________
+// _______________________________________ COLLISION BLOCK _______________________________________
 
 function crashOb(xgr) {
     if (crash) return;
@@ -1608,7 +1503,7 @@ function crashOb(xgr) {
                 stuck = true;
                 obstacles.splice(i, 1);
                 smokeParticles.length = 0;
-                showPopup("🔥 — EXTRA LIFE — 🔥");
+                showPopup('🔥 — EXTRA LIFE — 🔥');
 
                 setTimeout(() => {
                     exuping = false;
@@ -1624,12 +1519,6 @@ function crashOb(xgr) {
         }
     }
 }
-
-
-
-
-
-// _______________________________________ MONSTER COLLISION _______________________________________
 
 function crashMrs(xgr, dt) {
     if (!monsta || crash) return;
@@ -1661,7 +1550,7 @@ function crashMrs(xgr, dt) {
         } else {
             stuck = true;
             smokeParticles.length = 0;
-            showPopup("🔥 — EXTRA LIFE — 🔥");
+            showPopup('🔥 — EXTRA LIFE — 🔥');
 
             setTimeout(() => {
                 exuping = false;
@@ -1677,16 +1566,10 @@ function crashMrs(xgr, dt) {
     } else if (monsta.x < -100 || monsta.x < xgr - 500) monsta = null;
 }
 
-
-
-
-
-// _______________________________________ STATION COLLISION _______________________________________
-
 function crashStat(xgr) {
     if (stat.rtx || xgr < stat.x - train.width/2) return;
     stat.rtx = true;
-    showPopup("😤 Saving the Checkpoint...! 🚉");
+    showPopup('😤 Saving the Checkpoint...! 🚉');
     saveCp();
     const Acc = acc;
     acc = 0;
@@ -1708,7 +1591,7 @@ function crashStat(xgr) {
         loadCp();
         acc = Acc;
         flash();
-        setTimeout(() => showPopup("😎 Checkpoint Saved...! 🚉") , 1000);
+        setTimeout(() => showPopup('😎 Checkpoint Saved...! 🚉') , 1000);
     }, 2000);
 }
 
@@ -1716,10 +1599,10 @@ function crashStat(xgr) {
 
 
 
-// _______________________________________ SPEED HANDLER BLOCK _______________________________________
+// _______________________________________ SPEED + EVENT HANDLING BLOCK _______________________________________
 
-let lasting, [cameraX, speedX, remind, reach] = [0,0,0,0];
-let [righto, lefto, pressT, stuck, braver, braverr] = [false, false, false, false, true, true];
+let lasting, [cameraX, speedX, remind, reach, border, lasttime, kb, lastly, traintime, spawner, timer] = [0,0,0,0,0,0,0,0,0,20,400];
+let [righto, lefto, pressT, stuck, challenge, onpro, offpro, popx, braver, braverr] = [false,false,false,false,false,false,false,true,true,true];
 
 function handleSpeed(xgr, dt) {
     if (stuck) {
@@ -1744,7 +1627,7 @@ function handleSpeed(xgr, dt) {
 
             if (braver) {
                 braver = false;
-                showPopup(rand() > 0.5 ? "🔥 Brave People... Never Turn Back!" : "🔥 What's the fear to move Back...");
+                showPopup(rand() > 0.5 ? '🔥 Brave People... Never Turn Back!' : "🔥 What's the fear to move Back...");
                 setTimeout(() => { braver = true } , 3500);
             }
         }
@@ -1767,15 +1650,6 @@ function handleSpeed(xgr, dt) {
     }
 }
 
-
-
-
-
-// _______________________________________ EVENT HANDLER BLOCK _______________________________________
-
-let [border, lasttime, kb, lastly, traintime, spawner, timer] = [0,0,0,0,0,20,400];
-let [challenge, onpro, offpro, popx] = [false, false, false, true];
-
 function distanceHandler(end, cww) {
     const d1 = cww * 5.5;
     const d2 = end - cww * 4.5;
@@ -1793,7 +1667,7 @@ function distanceHandler(end, cww) {
     }
 
     if (reach > d1/2 && popx) {
-        showPopup("🔥 — Mortal Metal Torgue — 🔥");
+        showPopup('🔥 — Mortal Metal Torgue — 🔥');
         popx = false;
     }
 
@@ -1884,7 +1758,7 @@ function update(timestamp) {
     if (camx < cww * 1.6) doPlot(cww/2 - camx, chh);
     if (camx > end - cww * 0.4) doPlot(stat.x + cww/2 - camx, chh, 1);
 
-    progression(reach - cww * 5.5, end - cww * 10, timestamp);
+    progression(reach - cww * 5.5, end - cww * 10, timestamp, deltaT);
     crashMrs(camx, deltaT);
     crashOb(camx);
     crashStat(camx);
@@ -1927,36 +1801,32 @@ function reUpdate(timestamp) {
 
 const isKey = (e, keys) => keys.includes(e.key) || keys.includes(e.code);
 
-window.addEventListener("keydown", (e) => {
-    if (isKey(e, ["Space"])) {
-        e.preventDefault();
-    }
+window.addEventListener('keydown', (e) => {
+    if (isKey(e, ['Space'])) e.preventDefault();
+    if (isKey(e, ['m', 'M'])) musicToggle();
+    if (isKey(e, ['c', 'C'])) collects();
 
-    if (isKey(e, ["p", "P"])) resumePause();
-    if (isKey(e, ["m", "M"])) musicToggle();
-    if (isKey(e, ["c", "C"])) collects();
-
-    if (isKey(e, ["Space", "Shift", "s", "S"]) && !pressT) {
+    if (isKey(e, ['Space', 'Shift', 's', 'S']) && !pressT) {
         swicher();
         pressT = true;
         if (stord) storyNext();
     }
 
-    if (isKey(e, ["ArrowRight", "d", "D"])) {
+    if (isKey(e, ['ArrowRight', 'd', 'D'])) {
         righto = true;
-        if (opend) nexting();
+        if (opend) pagerx();
     }
 
-    if (isKey(e, ["ArrowLeft", "a", "A"])) {
+    if (isKey(e, ['ArrowLeft', 'a', 'A'])) {
         lefto = true;
-        if (opend) pasting();
+        if (opend) pagerx(1);
     }
 });
 
-window.addEventListener("keyup", (e) => {
-    if (isKey(e, ["Space", "Shift", "s", "S"])) pressT = false;
-    if (isKey(e, ["ArrowRight", "d", "D"])) righto = false;
-    if (isKey(e, ["ArrowLeft", "a", "A"])) lefto = false;
+window.addEventListener('keyup', (e) => {
+    if (isKey(e, ['Space', 'Shift', 's', 'S'])) pressT = false;
+    if (isKey(e, ['ArrowRight', 'd', 'D'])) righto = false;
+    if (isKey(e, ['ArrowLeft', 'a', 'A'])) lefto = false;
 });
 
 
@@ -1965,23 +1835,23 @@ window.addEventListener("keyup", (e) => {
 // _______________________________________ MOBILE CONTROLS _______________________________________
 
 function setupHoldButton(el, onStart, onEnd) {
-    el.addEventListener("pointerdown", (e) => {
+    el.addEventListener('pointerdown', (e) => {
         e.preventDefault();
         el.setPointerCapture(e.pointerId);
         onStart();
     });
 
-    el.addEventListener("pointerup", (e) => {
+    el.addEventListener('pointerup', (e) => {
         el.releasePointerCapture(e.pointerId);
         onEnd();
     });
 
-    el.addEventListener("pointercancel", (e) => {
+    el.addEventListener('pointercancel', (e) => {
         el.releasePointerCapture(e.pointerId);
         onEnd();
     });
     
-    el.addEventListener("pointerleave", (e) => {
+    el.addEventListener('pointerleave', (e) => {
         if (el.hasPointerCapture(e.pointerId)) {
             el.releasePointerCapture(e.pointerId);
             onEnd();
@@ -1992,12 +1862,12 @@ function setupHoldButton(el, onStart, onEnd) {
 setupHoldButton(ele('lefter'), () => { lefto = true }, () => { lefto = false });
 setupHoldButton(ele('righter'), () => { righto = true }, () => { righto = false });
 
-ele("switcher").addEventListener("pointerdown", (e) => {
+ele('switcher').addEventListener('pointerdown', (e) => {
     e.preventDefault();
     swicher();
 });
 
-ele("coll").addEventListener("pointerdown", (e) => {
+ele('coll').addEventListener('pointerdown', (e) => {
     e.preventDefault();
     collects();
 });
@@ -2015,15 +1885,15 @@ function startGame() {
     started = true;
   
     const help = [
-        "😤 You can always set Train Speed from Settings",
-        "😤 Boost your Reflexes by increasing difficulty & speed",
-        "😤 You can always set Monster Difficulty from Settings",
-        "🔥 Track & Enable game FPS via settings",
-        "😤 You can reset your progress or default the settings",
-        "🔥 Always learn from your tiny mistakes",
-        "😎 Use Toggle-Music and Pause-Resume feature effectively",
-        "😎 Collect Graphene or ExtraLife ❤️ using 💰 button",
-        "😎 Increase your XP + Slow down Monster ─ by practicing ADVANCE",
+        '😤 You can always set Train Speed from Settings',
+        '😤 Boost your Reflexes by increasing difficulty & speed',
+        '😤 You can always set Monster Difficulty from Settings',
+        '🔥 Track & Enable game FPS via settings',
+        '😤 You can reset your progress or default the settings',
+        '🔥 Always learn from your tiny mistakes',
+        '😎 Use Toggle-Music and Pause-Resume feature effectively',
+        '😎 Collect Graphene or ExtraLife ❤️ using 💰 button',
+        '😎 Increase your XP + Slow down Monster ─ by practicing ADVANCE',
     ];
 
     on('dark');
@@ -2042,19 +1912,19 @@ function startGame() {
     }, 3500);
 }
 
-ele("startBtn").addEventListener("click", () => {
+ele('startBtn').addEventListener('click', () => {
     if (bgImg && trainImg && monsterImg) {
         off('menuxBtn');
         gameMusic.currentTime ='0';
         startGame();
-        setTimeout(() => showPopup("🔥 Time for the Torgue 🔥") , 4500);
+        setTimeout(() => showPopup('🔥 Time for the Torgue 🔥') , 4500);
     } else {
-        showPopup("Please Choose All the Skins for the GamePlay First...!");
+        showPopup('Please Choose All the Skins for the GamePlay First...!');
     }
 });
 
-setupSelector( ele("speedSlider") , document.querySelectorAll("#speedSlider + .selectorOptions .selectorOption") , gett("trEdit") ?? 2 , 2);
+setupSelector( ele('speedSlider') , document.querySelectorAll('#speedSlider + .selecter .selectX') , gett('trEdit') ?? 2 , 2);
 
-setupSelector( ele("difficultySlider") , document.querySelectorAll("#difficultySlider + .selectorOptions .selectorOption") , gett("mrsEdit") ?? 6 );
+setupSelector( ele('difiSlider') , document.querySelectorAll('#difiSlider + .selecter .selectX') , gett('mrsEdit') ?? 6 );
 
 // _______________________________________ EXAGGERATION _______________________________________
