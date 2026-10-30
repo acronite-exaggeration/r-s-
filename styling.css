@@ -93,7 +93,7 @@ img.selected {
     position: absolute;
     width: 100vw;
     height: calc(var(--vh, 1vh) * 100);
-    background: url('bgis/menux.webp?v=3.2.1') no-repeat;
+    background: url('bgis/menux.webp?v=3.3.1') no-repeat;
     background-size: 100vw 100vh;
     background-blend-mode: overlay;
     display: flex;
@@ -229,7 +229,7 @@ img.selected {
     position: absolute;
     width: 30vw;
     aspect-ratio: 1050/304;
-    background: url('others/meter.webp?v=3.2.1') center / 100% 100% no-repeat;
+    background: url('others/meter.webp?v=3.3.1') center / 100% 100% no-repeat;
     left: 50%;
     bottom: 8%;
     transform: translateX(-50%);
