@@ -2,7 +2,7 @@
 
 // _______________________________________ LOADING BLOCK _______________________________________
 
-const GAME_VERSION = '3.2.1';
+const GAME_VERSION = '3.3.1';
 
 const gett = id => localStorage.getItem(id);
 
