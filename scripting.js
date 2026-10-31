@@ -13,29 +13,25 @@ const flor = n => (Math.random() * n) | 0;
 const rand = (n = 1) => Math.random() * n;
 
 function imgload(w) {
-    let list = [];
+    const list = [];
     const ii = [
         ['000', '111', '222', '333', '444', '555'],
         ['life', 'graphene', 'statup', 'statdown', 'smoke', 'sparkx', 'explosion', 'e-spark-burst', 'heavy-burst', 'flame'],
         ['barrel', 'barrelx', 'crate', 'rock', 'scrap', 'scrapx'],
         ['cross', 'burst', 'xgr']
     ];
-    const fol = ['bgis/backg', 'prototypes/loco', 'prototypes/proto', 'others/'];
+    const fol = ['bgis/backg', 'prototypes/loco', 'prototypes/proto', 'others/'][Math.min(3,w)];
     const r = [4,3,5,9,5,2];
     for (let i = 0; i <= r[w]; i++) {
         const img = new Image();
-        img.src = fol[Math.min(3,w)] + ii[Math.max(0,w-2)][i] + `.webp?v=${GAME_VERSION}`;
+        img.src = fol + ii[Math.max(0,w-2)][i] + `.webp?v=${GAME_VERSION}`;
         list.push(img);
     }
     return list;
 }
 
-const backx = imgload(0);
-const trainx = imgload(1);
-const monsterx = imgload(2);
+const [backx, trainx, monsterx, obi, offImgs] = [imgload(0), imgload(1), imgload(2), imgload(4), imgload(5)];
 const [lifeImg, gpImg, statUp, statDown, smokeImg, sparkImg, expImg, esburstImg, hvburstImg, flameImg] = imgload(3);
-const obi = imgload(4);
-const offImgs = imgload(5);
 
 function on(t, ...ids) {
     const z = Number.isInteger(t);
@@ -72,65 +68,9 @@ function off(...ids) {
 
 
 
-// _______________________________________ MODAL BLOCK _______________________________________
-
-const instructions = [
-    ['Use <strong>Arrow Keys / A & D</strong> to move', 'Press <strong>Space / S / Shift</strong> to switch tracks', 'Screen buttons for Touchscreen clarity...'],
-    ['<strong>M</strong> for Mute-Unmute', '<strong>C</strong> for collecting Graphene or ExtraLife...💰', '<strong>P</strong> for Pause-Resume'],
-    ["Avoid obstacles or you'll crash...🚧", 'Stay alert of the Graphene Monster...👾', 'Collect ExtraLife and Benefit your Rail Shifter ❤️'],
-    ['Slow down the <strong>Monster</strong> using ADVANCE...', 'Collect Minimum Graphene to unlock ADVANCE button...🎯', 'Reaching stations saves checkpoints...🚉'],
-    ['Access the Sidebar if got confused...☰', 'After dying, press <strong>Continue button</strong> to resume from last checkpoint.', 'Benefit from <strong>Pause-Continue & Music-Toggle</strong> features...'],
-    ['Make top scores and enjoy the GamePlay...!', "Don't forget to share a Feedback & further queries...", '/EXAGGERATION/', `[Version : ${GAME_VERSION}]`]
-];
-
-const about = [
-    ['This game was designed and developed by <strong>Acronite Monsta</strong>.', 'This is the first ever game that I developed', 'All my basics and imagination are here... Enjoy!', `<strong>[Version : ${GAME_VERSION}]</strong`],
-    ['Brought to you by <strong>Exaggeration</strong> gaming studio...', 'Passionate about games, code, and creativity.. Hope you enjoy playing!', 'Feel free to share feedback & have fun 🎮', `<strong>[Version : ${GAME_VERSION}]</strong`],
-    ['Games often play a great role in <strong>Entertainment</strong>', 'My Homeland and Nature has no artificial competitors!', 'But still games have their own place in each of us...', '<strong>/EXAGGERATION/</strong>']
-];
-
-let [page, what, opend] = [0, true, false];
-
-function showing(pg) {
-    let contents = ``;
-    ele('headi').innerHTML = `<h1><strong>${what ? '📘 Game Instructions' : '👨‍💻 About the Developer'}</strong></h1>`;
-    const it = what ? instructions : about;
-    it[pg].forEach(i => contents += `<h4>${i}</h4>`);
-    ele('content').innerHTML = contents;
-    ele('previous').style.display = pg === 0 ? 'none' : 'block';
-    ele ('next').style.display = pg === it.length - 1 ? 'none' : 'block';
-}
-
-function pagerx(t) {
-    const n = (what ? instructions : about).length;
-    if ((t && page > 0) || (!t && page < n - 1)) {
-        t ? page-- : page++;
-        showing(page);
-        sound.currentTime = '0';
-        sound.play();
-    }
-}
-
-function opening(a) {
-    what = a != 1;
-    page = 0;
-    opend = true;
-    showing(page);
-    on('modal');
-}
-
-function closing() {
-    off('modal');
-    opend = false;
-}
-
-
-
-
-
 // _______________________________________ DIFFICULTY + SKIN SETTINGS _______________________________________
 
-let trainMax, acc, fri, difi, tops, monsterUp, monsterBase, monsterMax, bgImg, trainImg, monsterImg, [trainscale, diesel, bgChange] = [3, false, false];
+let trainMax, acc, fri, difi, tops, monsterUp, monsterBase, monsterMax, bgImg, trainImg, monsterImg, [trainscale, diesel, bgChange] = [3,false,false];
 
 function editz(ed) {
     const dt = [ 8, 12, 18, 24, [5, 1], [6, 1.5], [8, 2.7], [10, 5] ];
@@ -217,13 +157,67 @@ function usage(rank, skin) {
 
 
 
+// _______________________________________ MODAL BLOCK _______________________________________
+
+let [page, what, opend] = [0,true,false];
+const instructions = [
+    ['Use <strong>Arrow Keys / A & D</strong> to move', 'Press <strong>Space / S / Shift</strong> to switch tracks', 'Screen buttons for Touchscreen clarity...'],
+    ['<strong>M</strong> for Mute-Unmute', '<strong>C</strong> for collecting Graphene or ExtraLife...💰', '<strong>P</strong> for Pause-Resume'],
+    ["Avoid obstacles or you'll crash...🚧", 'Stay alert of the Graphene Monster...👾', 'Collect ExtraLife and Benefit your Rail Shifter ❤️'],
+    ['Slow down the <strong>Monster</strong> using ADVANCE...', 'Collect Minimum Graphene to unlock ADVANCE button...🎯', 'Reaching stations saves checkpoints...🚉'],
+    ['Access the Sidebar if got confused...☰', 'After dying, press <strong>Continue button</strong> to resume from last checkpoint.', 'Benefit from <strong>Pause-Continue & Music-Toggle</strong> features...'],
+    ['Make top scores and enjoy the GamePlay...!', "Don't forget to share a Feedback & further queries...", '/EXAGGERATION/', `[Version : ${GAME_VERSION}]`]
+],
+about = [
+    ['This game was designed and developed by <strong>Acronite Monsta</strong>.', 'This is the first ever game that I developed', 'All my basics and imagination are here... Enjoy!', `<strong>[Version : ${GAME_VERSION}]</strong`],
+    ['Brought to you by <strong>Exaggeration</strong> gaming studio...', 'Passionate about games, code, and creativity.. Hope you enjoy playing!', 'Feel free to share feedback & have fun 🎮', `<strong>[Version : ${GAME_VERSION}]</strong`],
+    ['Games often play a great role in <strong>Entertainment</strong>', 'My Homeland and Nature has no artificial competitors!', 'But still games have their own place in each of us...', '<strong>/EXAGGERATION/</strong>']
+];
+
+function showing(pg) {
+    let contents = ``;
+    ele('headi').innerHTML = `<h1><strong>${what ? '📘 Game Instructions' : '👨‍💻 About the Developer'}</strong></h1>`;
+    const it = what ? instructions : about;
+    it[pg].forEach(i => contents += `<h4>${i}</h4>`);
+    ele('content').innerHTML = contents;
+    ele('previous').style.display = pg === 0 ? 'none' : 'block';
+    ele ('next').style.display = pg === it.length - 1 ? 'none' : 'block';
+}
+
+function pagerx(t) {
+    const n = (what ? instructions : about).length;
+    if ((t && page > 0) || (!t && page < n - 1)) {
+        t ? page-- : page++;
+        showing(page);
+        sound.currentTime = '0';
+        sound.play();
+    }
+}
+
+function opening(a) {
+    what = a != 1;
+    page = 0;
+    opend = true;
+    showing(page);
+    on('modal');
+}
+
+function closing() {
+    off('modal');
+    opend = false;
+}
+
+
+
+
+
 // _______________________________________ AUDIO BLOCK _______________________________________
 
-const gameMusic = ele('backgroundMusic');
-const storyMusic = ele('videoMusic');
-const sound = new Audio(`audios/shift.mp3?v=${GAME_VERSION}`);
-const treat = new Audio(`audios/treasure.mp3?v=${GAME_VERSION}`);
 let fide, hide, musicOn = true;
+const gameMusic = ele('musicB'),
+storyMusic = ele('musicV'),
+sound = new Audio(`audios/shift.mp3?v=${GAME_VERSION}`),
+treat = new Audio(`audios/treasure.mp3?v=${GAME_VERSION}`);
 
 function fadeOutMusic(m) {
     if (fide) clearInterval(fide);
@@ -269,9 +263,8 @@ function musicToggle() {
 
 // _______________________________________ VIDEO BLOCK _______________________________________
 
-let colint, textint, interl, [line, colChange, stord] = [0, true, false];
-const st = ele('storyText');
-const cols = ['#85ff85', '#ffd979', '#ff6464', '#63aeff', '#9476feff'];
+let colint, textint, interl, [line, colChange, stord] = [0,true,false];
+const st = ele('storyText'), cols = ['#85ff85', '#ffd979', '#ff6464', '#63aeff', '#9476feff'];
 
 const storiez = [
     'The year is 2076. A few years ago, something tragic happened... No one knows the full truth. Many believe it was a space attack.',
@@ -286,17 +279,17 @@ const storiez = [
 ];
 
 function coloring() {
-    const c = ['#771b1b', '#7b5e14', '#005e00', '#0f457f'];
+    const c = ['#690b0b', '#70540c', '#005b00', '#064385'];
     for (let i = c.length - 1; i > 0; i--) {
         const j = flor(i + 1);
         [c[i], c[j]] = [c[j], c[i]];
     }
     const cc = `linear-gradient(90deg, ${c.join(',')})`;
-    const [b1, b2] = [ele('bg1'), ele('bg2')];
-    const [b11, b22] = colChange ? [b2, b1] : [b1, b2];
-    b11.style.background = cc;
-    b11.style.opacity = 1;
-    b22.style.opacity = 0;
+    let [b1, b2] = [ele('bg1'), ele('bg2')];
+    if (colChange) [b1, b2] = [b2, b1];
+    b1.style.background = cc;
+    b1.style.opacity = 1;
+    b2.style.opacity = 0;
     colChange = !colChange;
 }
 
@@ -316,7 +309,6 @@ function stoppp() {
     clearInterval(interl);
     clearInterval(colint);
     clearInterval(textint);
-
     off('storyContainer');
     stord = false;
     setTimeout(() => {
@@ -335,7 +327,6 @@ function storyyy() {
     fadeInMusic();
     st.style.color = cols[flor(5)];
     coloring();
-
     colint = setInterval(() => coloring() , 2500);
     textint = setInterval(() => { st.style.color = cols[flor(5)] } , 7500);
 }
@@ -367,7 +358,6 @@ async function goFullscreen() {
     } else if (elem.msRequestFullscreen) {
         elem.msRequestFullscreen();
     }
-
     if (screen.orientation && screen.orientation.lock) {
         try {
             await screen.orientation.lock('landscape');
@@ -395,10 +385,10 @@ function fullx(o) {
 }
 fullx();
 
+const wait = ms => new Promise(r => setTimeout(r, ms));
 const canvas = ele('gameCanvasX');
 const ctx = canvas.getContext('2d');
-let CW, CH, k, l, editx, resizeTimer, [gameRunning, gamePaused] = [false, false];
-let train = { x: 60 , width: 100 , height: 300 , top: true };
+let CW, CH, k, l, editx, resizeTimer, gameRunning = false, gamePaused = false, train = { x: 60 , width: 100 , height: 300 , top: true };
 
 function resiz() {
     const vh = window.innerHeight * 0.01;
@@ -408,15 +398,11 @@ function resiz() {
     canvas.height = window.innerHeight * dpr;
     canvas.style.width = window.innerWidth + 'px';
     canvas.style.height = window.innerHeight + 'px';
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.setTransform(1,0,0,1,0,0);
     CW = canvas.width;
     CH = canvas.height;
-    const [a,b] = [CH * 0.42, CH * 0.64];
     train.height = CH * 0.17;
-    train.width = train.height * trainscale;
-    k = a - train.height;
-    l = b - train.height;
-    editx = ((CW > CH) ? CW : CH)/1300;
+    [train.x, train.width, k, l, editx] = [CW/25, train.height * trainscale, CH * 0.25, CH * 0.47, Math.max(CH,CW)/1300];
     editz(+(gett('trEdit') ?? 2));
     editz(+(gett('mrsEdit') ?? 6));
     const isPortrait = window.innerHeight > window.innerWidth;
@@ -429,8 +415,6 @@ function resiz() {
         update();
     })
 }
-
-const wait = ms => new Promise(r => setTimeout(r, ms));
 
 function waitUntilNoRotateWarning() {
     return new Promise(resolve => {
@@ -446,23 +430,22 @@ function waitUntilNoRotateWarning() {
 window.addEventListener('load', async () => {
     resiz();
     await waitUntilNoRotateWarning();
-
     await wait(1500);
-
     on(2, 'studioIntro', 'version');
     await wait(2500);
-
     off('studioIntro');
     await wait(1500);
-
     ele('studioIntro').innerHTML = `<h3>EXAGGERATION Studio Presents...</h3>`;
     on(3, 'studioIntro');
     await wait(2500);
-
     off('studioIntro', 'version');
     await wait(1500);
-
     on(4, 'menu');
+    ['bgData','trData','mrData'].forEach(x => {
+        const [y,z] = JSON.parse(gett(x));
+        usage(y,z);
+    });
+    if (bgChange) climate();
 });
 
 window.addEventListener('resize', () => {
@@ -479,30 +462,29 @@ const browserFullscreen = window.matchMedia('(display-mode: fullscreen)');
 browserFullscreen.addEventListener('change', fuller);
 document.addEventListener('fullscreenchange', fuller);
 
-setTimeout(() => {
-    ['bgData','trData','mrData'].forEach(x => {
-        const [y,z] = JSON.parse(gett(x));
-        usage(y,z);
-    });
-}, 1000);
 
 
 
 
 
-// _______________________________________ SIDEBAR BLOCK _______________________________________
+// _______________________________________ SIDEBAR & GAME OVER BLOCK _______________________________________
 
-ele('sideBy').addEventListener('click', () => {
-    if (bursting || flashing || stuck || crash) return;
+let q, sidez = false, warnn = true;
+const query = ['🔥 Why these obstacles... Hmm...', '🔥 Why only me ─ *****', '🔥 Damn... This monster', '🔥 What the Hell ─ *****'];
+
+function sideToggle() {
+    if (bursting || flashing || stuck || crash || sidez) return;
+    sidez = true;
     setLife(false);
     on(1, 'sidebar');
     on('dark');
     off('fpsx', 'envy');
     gamePaused = true;
     if (musicOn) fadeOutMusic(1);
-});
+}
 
 function taskResume() {
+    sidez = false;
     if (isfps) on('fpsx');
     off('dark', 'sidebar');
     on('envy');
@@ -512,13 +494,42 @@ function taskResume() {
     setLife(extralife);
 }
 
+function gOver(rg) {
+    off('gameCanvasX', 'envy');
+    setLife(false);
+    ele('gameReason').innerHTML = `<h2>GAME OVER : ${rg ? 'THE TRAIN DONE COLLISION' : 'MONSTER DESTROYED THE TRAIN'}</h2>`;
+    q = flor(2) + (rg ? 0 : 2);
+    ele('continueBtn').innerText = existCp() ? 'Continue' : 'Restart';
+    on(1, 'gameOver');
+    started = false;
+}
+
+function gEnd() {
+    sidez = false;
+    off('gameCanvasX', 'gameOver', 'sidebar');
+    on('endu');
+    setTimeout(() => on(2, 'enduBtn') , 2000);
+    started = false;
+}
+
+function ends() {
+    sidez = false;
+    started = false;
+    off('gameCanvasX', 'gameOver', 'sidebar', 'dark', 'endu', 'enduBtn');
+    setTimeout(() => on(2, 'menuxBtn') , 2000);
+}
+
+function conCp() {
+    off('gameOver');
+    startGame();
+    setTimeout(() => showPopup(query[q]) , 4500);
+}
+
 
 
 
 
 // _______________________________________ CHECKPOINT, STATS & ACHIEVEMENTS BLOCK _______________________________________
-
-let warnn = true;
 
 const cpKey = () => `trainGameCheckpoint_${difi}`;
 
@@ -602,20 +613,17 @@ function stats() {
     const difNames = ['Easy...✌️', 'Medium...😎', 'Hard...😈', 'Extreme...☠️'];
     const dcol = ['#4ba94f', '#8ea94b', '#a97d4b', '#a94b4b'];
     let html = '';
-
     for (let i = 0; i < 4; i++) {
         const data = gett(`trainGameCheckpoint_${i}`);
         const cp = data ? JSON.parse(data) : null;
-
-        const dt = cp ? `<h5>🚂 Score : ${cp.rrr} | ${cp.dd}km</h5>
+        const dt = cp ? `<h5>🚂 Score : ${cp.rrr} | ${(cp.dd/(CW * 27)).toFixed(2)}km</h5>
             <h5>🎯 Graphene : ${cp.gt}</h5>
             <h5>⭐ XP : ${cp.xp}</h5>
             <h5>📍 Platform : ${cp.pt}</h5>` :
             `<h5>-</h5><h5>-</h5><h5>💾 No Checkpoint</h5><h5>-</h5>`;
-
         html += `<div style="min-width:40vw;text-align:center;color:${dcol[i]}">
-                <h3>Difficulty ${difNames[i]}</h3>
-                ${dt}
+            <h3>Difficulty ${difNames[i]}</h3>
+            ${dt}
             </div>`;
     }
     statxx.innerHTML = html;
@@ -625,47 +633,11 @@ function stats() {
 
 
 
-// _______________________________________ GAME OVER BLOCK _______________________________________
+// _______________________________________ SPECIAL EFFECT BLOCK _______________________________________
 
-let q;
-const query = ['🔥 Why these obstacles... Hmm...', '🔥 Why only me ─ *****', '🔥 Damn... This monster', '🔥 What the Hell ─ *****'];
-
-function gOver(rg) {
-    off('gameCanvasX', 'envy');
-    setLife(false);
-    ele('gameReason').innerHTML = `<h2>GAME OVER : ${rg ? 'THE TRAIN DONE COLLISION' : 'MONSTER DESTROYED THE TRAIN'}</h2>`;
-    q = flor(2) + (rg ? 0 : 2);
-    ele('continueBtn').innerText = existCp() ? 'Continue' : 'Restart';
-    on(1, 'gameOver');
-    started = false;
-}
-
-function gEnd() {
-    off('gameCanvasX', 'gameOver', 'sidebar');
-    on('endu');
-    setTimeout(() => on(2, 'enduBtn') , 2000);
-    started = false;
-}
-
-function ends() {
-    started = false;
-    off('gameCanvasX', 'gameOver', 'sidebar', 'dark', 'endu', 'enduBtn');
-    setTimeout(() => on(2, 'menuxBtn') , 2000);
-}
-
-function conCp() {
-    off('gameOver');
-    startGame();
-    setTimeout(() => showPopup(query[q]) , 4500);
-}
-
-
-
-
-
-// _______________________________________ ADVANCE + POPUP BLOCK _______________________________________
-
-let advanceAF, showAdvance = false;
+let advanceAF, lastE, electricSpark, [exuping, shaki, showAdvance, bursting, flashing, opacityF, lastF, mono, refX, turn] = [true,false,false,false,false,0.75,0,1,0,0];
+const boom = new Audio(`audios/explode.mp3?v=${GAME_VERSION}`);
+const smokeParticles = [];
 
 function doAdv() {
     if (advanceAF) return;
@@ -718,43 +690,6 @@ function adv() {
         showPopup(`🔥 Minimum ${requirement} Graphene for ADVANCE...!`);
     }
 }
-
-function showPopup(msg = 'Popup!', dura = 2500) {
-    const container = document.getElementById('popupContainer') || (() => {
-        const d = document.createElement('div');
-        d.id = 'popupContainer';
-        d.style.position = 'fixed';
-        d.style.top = '10vh';
-        d.style.left = '50%';
-        d.style.transform = 'translateX(-50%)';
-        d.style.zIndex = '9999999';
-        d.style.pointerEvents = 'none';
-        document.body.appendChild(d);
-        return d;
-    })();
-
-    const pp = document.createElement('div');
-    pp.className = 'Popup';
-    pp.innerText = msg;
-    pp.style.opacity = '0';
-    container.appendChild(pp);
-    requestAnimationFrame(() => {
-        pp.style.opacity = '1';
-
-        setTimeout(() => {
-            pp.style.opacity = '0';
-            setTimeout(() => { pp.remove() } , 1000);
-        }, dura);
-    });
-}
-
-
-
-
-
-// _______________________________________ XGR ─ BURST & FLASH EFFECT _______________________________________
-
-let lastE, [bursting, flashing, opacityF, lastF] = [false,false,0.75,0];
 
 function xgrBurst(krg) {
     const [cx, cy] = [ train.x + train.width * (krg ? 0.5 : 0.65) , (train.top ? k : l) + train.height/2 ];
@@ -822,38 +757,26 @@ function flash(f) {
     flas();
 }
 
-
-
-
-
-// _______________________________________ EXTRA LIFE BLOCK _______________________________________
-
-let lifeX, lifeY, extralife = false;
-
-const setLife = active => active ? on('extraLife') : off('extraLife');
-
-function lifer() {
-    [monsta, extralife, crash, stuck, exuping, mono] = [null, false, false, false, true, 1];
-    setLife(extralife);
-    on('envy');
-    flash();
-    setTimeout(() => showPopup('🔥 — Resurrection — 🔥') , 800);
+function doExp(chh, dt) {
+    const exup = chh/110000 * dt;
+    const size = chh * mono;
+    const cx = train.x + train.width * 0.65 - size/2;
+    const cy = (train.top ? k : l) + train.height/2 - size/2;
+    ctx.drawImage(expImg, cx, cy, size, size);
+    mono += exup * (exuping ? 1 : -3.5);
 }
 
-function doLife(xgr, cww, end, chh) {
-    const lifeYY = lifeY * chh;
-    const sizi = chh * 0.15;
-    if (xgr < cww * 7) ctx.drawImage(lifeImg, lifeX - xgr, lifeYY, sizi, sizi);
+function shaker(dt) {
+    cameraX = refX + Math.sin(turn) * 7 * editx;
+    turn += 0.3926 * dt;
 }
 
-
-
-
-
-// _______________________________________ SMOKE & SPARK EFFECT _______________________________________
-
-const smokeParticles = [];
-let electricSpark;
+function shake() {
+    refX = cameraX;
+    turn = 0;
+    shaki = true;
+    setTimeout(() => { shaki = false } , 1000);
+}
 
 function genSmoke(xgr, e) {
     smokeParticles.push({
@@ -925,40 +848,10 @@ function doSparks() {
 
 
 
-// _______________________________________ EXPLOSION & SHAKE BLOCK _______________________________________
+// _______________________________________ FEATURES BLOCK _______________________________________
 
-const boom = new Audio(`audios/explode.mp3?v=${GAME_VERSION}`);
-let [exuping, shaki, mono, refX, turn] = [true,false,1,0,0];
-
-function doExp(chh, dt) {
-    const exup = chh/110000 * dt;
-    const size = chh * mono;
-    const cx = train.x + train.width * 0.65 - size/2;
-    const cy = (train.top ? k : l) + train.height/2 - size/2;
-    ctx.drawImage(expImg, cx, cy, size, size);
-    mono += exup * (exuping ? 1 : -3.5);
-}
-
-function shaker(dt) {
-    cameraX = refX + Math.sin(turn) * 7 * editx;
-    turn += 0.3926 * dt;
-}
-
-function shake() {
-    refX = cameraX;
-    turn = 0;
-    shaki = true;
-    setTimeout(() => { shaki = false } , 1000);
-}
-
-
-
-
-
-// _______________________________________ FPS BLOCK _______________________________________
-
-let isfps = gett('isfpsc') === null ? true : gett('isfpsc') === 'true';
-let frames = 0, lastfpx = 0;
+let lifeX, lifeY, [extralife, frames, lastfpx] = [false,0,0], isfps = gett('isfpsc') === null ? true : gett('isfpsc') === 'true';
+const setLife = active => active ? on('extraLife') : off('extraLife');
 
 function doFPS(dt) {
     frames++;
@@ -988,18 +881,60 @@ ele('fpsSlider').addEventListener('input', function () {
     toggleFPS(this.value === '1');
 });
 
+function showPopup(msg) {
+    const container = document.getElementById('popupContainer') || (() => {
+        const d = document.createElement('div');
+        d.id = 'popupContainer';
+        d.style.position = 'fixed';
+        d.style.top = '10vh';
+        d.style.left = '50%';
+        d.style.transform = 'translateX(-50%)';
+        d.style.zIndex = '9999999';
+        d.style.pointerEvents = 'none';
+        document.body.appendChild(d);
+        return d;
+    })();
+
+    const pp = document.createElement('div');
+    pp.className = 'Popup';
+    pp.innerText = msg;
+    pp.style.opacity = '0';
+    container.appendChild(pp);
+    requestAnimationFrame(() => {
+        pp.style.opacity = '1';
+        setTimeout(() => {
+            pp.style.opacity = '0';
+            setTimeout(() => { pp.remove() } , 1000);
+        }, 2500);
+    });
+}
+
+function lifer() {
+    [monsta, extralife, crash, stuck, exuping, mono] = [null, false, false, false, true, 1];
+    setLife(extralife);
+    on('envy');
+    flash();
+    setTimeout(() => showPopup('🔥 — Resurrection — 🔥') , 800);
+}
+
+function doLife(xgr, cww, end, chh) {
+    const lifeYY = lifeY * chh;
+    const sizi = chh * 0.15;
+    if (xgr < cww * 7) ctx.drawImage(lifeImg, lifeX - xgr, lifeYY, sizi, sizi);
+}
 
 
 
 
-// _______________________________________ SCORE-PROGRESS BLOCK _______________________________________
 
-let [gpgp, run, exp, trackk, spdx, dist] = [true,0,0,0,0,0];
+// _______________________________________ SCORE-PROGRESS & GENERATOR BLOCK _______________________________________
+
+let [gpgp, run, exp, trackk, spdx, dist, generate, lastCleanup, lastOb] = [true,0,0,0,0,0,0,0,0];
 const [runup, spdd, distt] = [ele('runnerScore') , ele('trainSpeed') , ele('trainDistance')];
 
-function progression(xgr, end, dt, del) {
-    const smoothing = 1 - Math.exp(-0.1 * del);
-    spdx += (Math.abs(speedX) * 5 - spdx) * smoothing;
+function progression(xgr, end, t, dt) {
+    const smoothing = 1 - Math.exp(-0.1 * dt);
+    spdx += (Math.abs(speedX)/dt * 7 - spdx) * smoothing;
     spdd.innerText = `${Math.round(spdx)} Km/H`;
     distt.innerText = `${((dist + reach)/(CW * 27)).toFixed(2)} Km`;
 
@@ -1012,11 +947,11 @@ function progression(xgr, end, dt, del) {
         gpgp = false;
     }
 
-    if (dt - trackk > 300) {
+    if (t - trackk > 300) {
         const trackWidth = ele('trackingContainer').clientWidth;
         const percent = Math.min(1, Math.max(0, xgr/end));
         ele('tracking').style.left = `${percent * trackWidth}px`;
-        trackk = dt;
+        trackk = t;
     }
 }
 
@@ -1049,14 +984,6 @@ function collects() {
         treat.play();
     }
 }
-
-
-
-
-
-// _______________________________________ GENERATOR BLOCK _______________________________________
-
-let [generate, lastCleanup, lastOb] = [0,0,0];
 
 function genX() {
     ending = endx * editx;
@@ -1153,7 +1080,8 @@ function worldStream(xgr, cww, end) {
 
 // _______________________________________ BACKGROUND HANDLING BLOCK _______________________________________
 
-let ski;
+let ski, ending, endx = 60000 + flor(15000), signData = [];
+const stat = { x: ending , rtx: false , plot: 0 };
 
 function climate() {
     if (!bgChange) return;
@@ -1162,8 +1090,6 @@ function climate() {
     bgImg = available[flor(available.length)];
     setTimeout(() => flash(3), 10);
 }
-
-setTimeout(() => { if (bgChange) climate() } , 1500);
 
 function changer(xgr) {
     if (xgr < ski) return;
@@ -1176,15 +1102,6 @@ function doBg(xgr, cww, chh) {
     const init = -xgr/4 % bgw;
     for (let x = init; x < cww; x += bgw) ctx.drawImage(bgImg, x, 0, bgw, chh);
 }
-
-
-
-
-
-// _______________________________________ STATION BLOCK _______________________________________
-
-let ending, endx = 60000 + flor(15000);
-const stat = { x: ending , rtx: false , plot: 0 };
 
 function doStat(xgr, cww, chh) {
     const [x, statX, statY, statE, statR] = [-xgr -5, stat.x - xgr, chh * 0.35, chh * 0.3, chh * 0.7];
@@ -1221,14 +1138,6 @@ function doPlot(x, chh, p = 0) {
     ctx.fillText(`Platform ─ ${stat.plot + p}`, 0, 0);
     ctx.restore();
 }
-
-
-
-
-
-// _______________________________________ AREA MAINTAIN BLOCK _______________________________________
-
-let signData = [];
 
 function doArea(xgr, cww, end, chh) {
     const [gSize, trackU, trackD, baseY, shadowH] = [chh * 0.35, chh/20, chh/12.5, chh * 0.7, chh * 0.075];
@@ -1313,9 +1222,11 @@ function doSign(xgr, cww, chh) {
 
 
 
-// _______________________________________ TRAIN BLOCK _______________________________________
+// _______________________________________ GAME OBJECTS BLOCK _______________________________________
 
-let [swich, crash, startY, targetY, xx] = [false,false,0,0,0];
+let monsta, crystals = [], obstacles = [], gpBlocks = [], [swich, crash, startY, targetY, xx, monsterCount, monsterSpeed, mx, fx, gpGot, requirement] = [false,false,0,0,0,0,0,0,0,0,50];
+const cryCol = ['#00f0ff', '#ff00f0', '#00ff88', '#ffee00', '#ff6600', '#df0000', '#5800df'];
+const monsterRoar = new Audio(`audios/roarx.mp3?v=${GAME_VERSION}`);
 
 function doTrt(timez, dt) {
     if (crash) return;
@@ -1355,15 +1266,6 @@ function swicher() {
     sound.currentTime = '0';
     sound.play();
 }
-
-
-
-
-
-// _______________________________________ ITEMS BLOCK _______________________________________
-
-const cryCol = ['#00f0ff', '#ff00f0', '#00ff88', '#ffee00', '#ff6600', '#df0000', '#5800df'];
-let gpGot = 0, requirement = 50, crystals = [], obstacles = [], gpBlocks = [];
 
 function doItems(xgr, cww, chh, dt) {
     const pi = Math.PI * 2;
@@ -1413,15 +1315,6 @@ function doItems(xgr, cww, chh, dt) {
         }
     }
 }
-
-
-
-
-
-// _______________________________________ MONSTER BLOCK _______________________________________
-
-const monsterRoar = new Audio(`audios/roarx.mp3?v=${GAME_VERSION}`);
-let monsta, [monsterCount, monsterSpeed, mx, fx] = [0,0,0,0];
 
 function spawnMonster() {
     if (monsta) return;
@@ -1713,9 +1606,9 @@ function hyper(timez, xgr) {
 
 
 
-// _______________________________________ GAME LOOPS _______________________________________
+// _______________________________________ FINAL BLOCK + GAME LOOPS _______________________________________
 
-let uploop, doloop, reas, relasting = 0, allowed = true;
+let uploop, doloop, reas, [relasting, allowed, started] = [0,true,false];
 
 function update(timestamp) {
     if (gamePaused || !gameRunning) return;
@@ -1793,93 +1686,6 @@ function reUpdate(timestamp) {
     }
 }
 
-
-
-
-
-// _______________________________________ PC CONTROLS _______________________________________
-
-const isKey = (e, keys) => keys.includes(e.key) || keys.includes(e.code);
-
-window.addEventListener('keydown', (e) => {
-    if (isKey(e, ['Space'])) e.preventDefault();
-    if (isKey(e, ['m', 'M'])) musicToggle();
-    if (isKey(e, ['c', 'C'])) collects();
-
-    if (isKey(e, ['Space', 'Shift', 's', 'S']) && !pressT) {
-        swicher();
-        pressT = true;
-        if (stord) storyNext();
-    }
-
-    if (isKey(e, ['ArrowRight', 'd', 'D'])) {
-        righto = true;
-        if (opend) pagerx();
-    }
-
-    if (isKey(e, ['ArrowLeft', 'a', 'A'])) {
-        lefto = true;
-        if (opend) pagerx(1);
-    }
-});
-
-window.addEventListener('keyup', (e) => {
-    if (isKey(e, ['Space', 'Shift', 's', 'S'])) pressT = false;
-    if (isKey(e, ['ArrowRight', 'd', 'D'])) righto = false;
-    if (isKey(e, ['ArrowLeft', 'a', 'A'])) lefto = false;
-});
-
-
-
-
-// _______________________________________ MOBILE CONTROLS _______________________________________
-
-function setupHoldButton(el, onStart, onEnd) {
-    el.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        el.setPointerCapture(e.pointerId);
-        onStart();
-    });
-
-    el.addEventListener('pointerup', (e) => {
-        el.releasePointerCapture(e.pointerId);
-        onEnd();
-    });
-
-    el.addEventListener('pointercancel', (e) => {
-        el.releasePointerCapture(e.pointerId);
-        onEnd();
-    });
-    
-    el.addEventListener('pointerleave', (e) => {
-        if (el.hasPointerCapture(e.pointerId)) {
-            el.releasePointerCapture(e.pointerId);
-            onEnd();
-        }
-    });
-}
-
-setupHoldButton(ele('lefter'), () => { lefto = true }, () => { lefto = false });
-setupHoldButton(ele('righter'), () => { righto = true }, () => { righto = false });
-
-ele('switcher').addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    swicher();
-});
-
-ele('coll').addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    collects();
-});
-
-
-
-
-
-// _______________________________________ FINAL BLOCK _______________________________________
-
-let started = false;
-
 function startGame() {
     if (started) return;
     started = true;
@@ -1921,6 +1727,81 @@ ele('startBtn').addEventListener('click', () => {
     } else {
         showPopup('Please Choose All the Skins for the GamePlay First...!');
     }
+});
+
+
+
+
+
+// _______________________________________ CONTROLS _______________________________________
+
+const isKey = (e, keys) => keys.includes(e.key) || keys.includes(e.code);
+
+window.addEventListener('keydown', (e) => {
+    if (isKey(e, ['Space'])) e.preventDefault();
+    if (isKey(e, ['m', 'M'])) musicToggle();
+    if (isKey(e, ['p', 'P'])) sideToggle();
+    if (isKey(e, ['c', 'C'])) collects();
+
+    if (isKey(e, ['Space', 'Shift', 's', 'S']) && !pressT) {
+        swicher();
+        pressT = true;
+        if (stord) storyNext();
+    }
+
+    if (isKey(e, ['ArrowRight', 'd', 'D'])) {
+        righto = true;
+        if (opend) pagerx();
+    }
+
+    if (isKey(e, ['ArrowLeft', 'a', 'A'])) {
+        lefto = true;
+        if (opend) pagerx(1);
+    }
+});
+
+window.addEventListener('keyup', (e) => {
+    if (isKey(e, ['Space', 'Shift', 's', 'S'])) pressT = false;
+    if (isKey(e, ['ArrowRight', 'd', 'D'])) righto = false;
+    if (isKey(e, ['ArrowLeft', 'a', 'A'])) lefto = false;
+});
+
+function setupHoldButton(el, onStart, onEnd) {
+    el.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        el.setPointerCapture(e.pointerId);
+        onStart();
+    });
+
+    el.addEventListener('pointerup', (e) => {
+        el.releasePointerCapture(e.pointerId);
+        onEnd();
+    });
+
+    el.addEventListener('pointercancel', (e) => {
+        el.releasePointerCapture(e.pointerId);
+        onEnd();
+    });
+    
+    el.addEventListener('pointerleave', (e) => {
+        if (el.hasPointerCapture(e.pointerId)) {
+            el.releasePointerCapture(e.pointerId);
+            onEnd();
+        }
+    });
+}
+
+setupHoldButton(ele('lefter'), () => {lefto = true}, () => {lefto = false});
+setupHoldButton(ele('righter'), () => {righto = true}, () => {righto = false});
+
+ele('switcher').addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    swicher();
+});
+
+ele('coll').addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    collects();
 });
 
 setupSelector( ele('speedSlider') , document.querySelectorAll('#speedSlider + .selecter .selectX') , gett('trEdit') ?? 2 , 2);
