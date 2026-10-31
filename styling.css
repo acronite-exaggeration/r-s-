@@ -12,7 +12,7 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-button, .btnXX, .sphXX, canvas, span, h1, h2, h3, h4 {
+button, canvas, span, h1, h2, h3, h4 {
     outline: none;
     touch-action: none !important;
     -webkit-touch-callout: none !important;
@@ -49,10 +49,7 @@ img {
     cursor: pointer;
 }
 
-img.selected {
-    border: 1vh solid #32cd32;
-    transition: all 0.7s ease;
-}
+img.selected { border: 1vh solid #32cd32; }
 
 #studioIntro {
     position: fixed;
@@ -118,7 +115,6 @@ img.selected {
     color: #eee;
     cursor: pointer;
     transition: all 0.3s ease;
-    -webkit-touch-callout: none;
 }
 
 #advance {
@@ -424,8 +420,6 @@ img.selected {
   left: 23vw;
   width: 8vh;
   height: 8vh;
-  transition: opacity 0.5s ease;
-  opacity: 1;
   pointer-events: none;
   animation: pulse 1.5s infinite ease-in-out;
   z-index: 100000;
@@ -499,7 +493,7 @@ img.selected {
     font-weight: bold;
     color: #fff;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.3s ease;
     touch-action: manipulation;
 }
 
